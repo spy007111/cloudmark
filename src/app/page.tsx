@@ -1,101 +1,115 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { Button } from "@/components/ui/button"
+import { Bookmark, Github, Search } from "lucide-react"
+import Link from "next/link"
+
+export default function Page() {
+  const bookmarkletCode = `javascript:(function(){window.open('https://yourdomain.com/save?url='+encodeURIComponent(window.location.href)+'&title='+encodeURIComponent(document.title),'_blank');})();`
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-dvh bg-gradient-to-br from-background to-background relative overflow-hidden">
+      {/* Gradient Effects */}
+      <div className="absolute top-0 right-0 w-[800px] h-[600px] bg-purple-500/30 blur-[128px] opacity-20" />
+      <div className="absolute top-20 right-20 w-[600px] h-[400px] bg-blue-500/30 blur-[128px] opacity-20" />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Header */}
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center">
+          <Link href="/" className="flex items-center space-x-2">
+            <Bookmark className="h-6 w-6 text-primary" />
+            <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+              BookmarkHub
+            </span>
+          </Link>
+
+          {/* Search */}
+          <div className="flex items-center ml-4 lg:ml-6">
+            <Button variant="ghost" size="icon" className="mr-2">
+              <Search className="h-4 w-4" />
+            </Button>
+            <span className="text-sm text-muted-foreground hidden sm:inline-block">⌘K</span>
+          </div>
+
+          <nav className="ml-auto flex gap-4 sm:gap-6">
+            <Link href="#features" className="text-sm font-medium text-muted-foreground hover:text-primary">
+              Features
+            </Link>
+            <Link href="#docs" className="text-sm font-medium text-muted-foreground hover:text-primary">
+              Docs
+            </Link>
+            <Link href="https://github.com" className="text-sm font-medium text-muted-foreground hover:text-primary">
+              <Github className="h-5 w-5" />
+            </Link>
+          </nav>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </header>
+
+      {/* Hero Section */}
+      <div className="container relative">
+        <div className="flex flex-col items-start py-20 lg:py-32 gap-4">
+          {/* Main Title */}
+          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 mb-2">
+            BookmarkHub
+          </h1>
+          <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl text-foreground max-w-3xl">
+            Your Universal Bookmark Manager
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-[42rem]">
+            Save and organize your bookmarks with one click. Access them anywhere, anytime.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex gap-4 mt-4">
+            <Link
+              href={bookmarkletCode}
+              onClick={(e) => {
+                e.preventDefault()
+                alert("请将此按钮拖拽到您的书签栏")
+              }}
+              className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
+              draggable="true"
+            >
+              开始使用
+            </Link>
+            <Link
+              href="#quickstart"
+              className="inline-flex h-10 items-center justify-center rounded-md border border-input px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+            >
+              快速入门
+            </Link>
+          </div>
+        </div>
+
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-20">
+          <div className="group relative rounded-lg border p-6 shadow-md transition-shadow hover:shadow-lg">
+            <h3 className="font-semibold mb-2 text-lg">一键收藏</h3>
+            <p className="text-sm text-muted-foreground">通过简单的拖拽安装，一键保存任何网页到您的收藏夹。</p>
+          </div>
+          <div className="group relative rounded-lg border p-6 shadow-md transition-shadow hover:shadow-lg">
+            <h3 className="font-semibold mb-2 text-lg">智能分类</h3>
+            <p className="text-sm text-muted-foreground">自动对书签进行分类，让您的收藏更有条理。</p>
+          </div>
+          <div className="group relative rounded-lg border p-6 shadow-md transition-shadow hover:shadow-lg">
+            <h3 className="font-semibold mb-2 text-lg">随处访问</h3>
+            <p className="text-sm text-muted-foreground">跨设备同步，随时随地访问您的书签收藏。</p>
+          </div>
+          <div className="group relative rounded-lg border p-6 shadow-md transition-shadow hover:shadow-lg">
+            <h3 className="font-semibold mb-2 text-lg">分享协作</h3>
+            <p className="text-sm text-muted-foreground">轻松与他人分享书签集合，协同整理资源。</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-border/40">
+        <div className="container flex flex-col gap-2 py-6 text-center">
+          <p className="text-xs text-muted-foreground">Released under the MIT License.</p>
+          <p className="text-xs text-muted-foreground">Copyright © {new Date().getFullYear()} BookmarkHub</p>
+        </div>
       </footer>
     </div>
-  );
+  )
 }
+
