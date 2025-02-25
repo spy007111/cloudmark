@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { Bookmark, Github, Search } from "lucide-react";
+import { Github, Search } from "lucide-react";
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "cloudmark",
   description: "A cloudbased bookmarking service",
+  icons: {
+    icon: [
+      {
+        url: '/favicon.svg',
+        type: 'image/svg+xml',
+      }
+    ],
+  }
 };
 
 export default async function RootLayout({
@@ -32,7 +41,13 @@ export default async function RootLayout({
             <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="container flex h-14 items-center">
                 <Link href="/" className="flex items-center space-x-2">
-                  <Bookmark className="h-6 w-6 text-primary" />
+                  <Image 
+                    src="/favicon.svg" 
+                    alt="Cloudmark logo" 
+                    width={24} 
+                    height={24} 
+                    className="h-6 w-6 text-primary" 
+                  />
                   <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
                     Cloudmark
                   </span>
