@@ -1,6 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getRequestContext } from "@cloudflare/next-on-pages";
-import { BookmarkInstance, BookmarksData, createDefaultBookmarksData } from "../types";
+import {
+  BookmarkInstance,
+  BookmarksData,
+  createDefaultBookmarksData,
+} from "../../../lib/types";
 
 export const runtime = "edge";
 
@@ -38,12 +42,13 @@ export async function GET(request: NextRequest) {
     await KV.put(mark, JSON.stringify(data));
 
     // 重定向到成功页面
-    return NextResponse.redirect(
-      new URL(`/bookmarks/${mark}`, request.url)
-    );
+    return NextResponse.redirect(new URL(`/${mark}`, request.url));
   } catch (error) {
     console.error("Error processing bookmark:", error);
     // 重定向到错误页面
-    return NextResponse.redirect(new URL("/bookmarks/error", request.url));
+    return NextResponse.json(
+      { error: "Failed to process bookmark" },
+      { status: 500 }
+    );
   }
 }

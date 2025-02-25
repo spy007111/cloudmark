@@ -6,6 +6,7 @@ import { MarkInput } from "@/components/mark-input";
 import { BookmarkButtons } from "@/components/bookmark-buttons";
 import styles from "./bookmarklet-installer.module.css";
 import { Button } from "@/components/ui/button";
+import { defaultMark } from "@/lib/types";
 
 interface BookmarkletInstallerProps {
   mark?: string;
@@ -16,7 +17,7 @@ export default function BookmarkletInstaller({
   mark: externalMark,
   onMarkChange: externalOnMarkChange,
 }: BookmarkletInstallerProps) {
-  const [localMark, setLocalMark] = useState("my-bookmark");
+  const [localMark, setLocalMark] = useState(defaultMark);
   const [bookmarkletCode, setBookmarkletCode] = useState("");
   const [copied, setCopied] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -42,7 +43,7 @@ export default function BookmarkletInstaller({
   // 生成bookmarklet代码
   const generateBookmarkletCode = useCallback(
     (markValue: string) => {
-      const code = `javascript:(function(){let m='${markValue}',u=encodeURIComponent(location.href),t=encodeURIComponent(document.title),f=encodeURIComponent((document.querySelector('link[rel="icon"]')||document.querySelector('link[rel="shortcut icon"]')||{href:'/favicon.ico'}).href);location.href='${baseUrl}/add?mark='+m+'?title='+t+'?url='+u+'?favicon='+f})()`;
+      const code = `javascript:(function(){let m='${markValue}',u=encodeURIComponent(location.href),t=encodeURIComponent(document.title),f=encodeURIComponent((document.querySelector('link[rel="icon"]')||document.querySelector('link[rel="shortcut icon"]')||{href:'/favicon.ico'}).href);window.open('${baseUrl}/api/add?mark='+m+'&title='+t+'&url='+u+'&favicon='+f, '_blank').focus()})()`;
       setBookmarkletCode(code);
     },
     [baseUrl]

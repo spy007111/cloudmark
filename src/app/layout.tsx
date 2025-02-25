@@ -18,11 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-background relative overflow-hidden">
-          {/* Gradient Effects */}
-          <div className="absolute top-0 right-0 w-[800px] h-[600px] bg-purple-500/30 blur-[128px] opacity-20" />
-          <div className="absolute top-20 right-20 w-[600px] h-[400px] bg-blue-500/30 blur-[128px] opacity-20" />
-
+        <div className="min-h-screen flex flex-col relative overflow-hidden bg-[radial-gradient(ellipse_at_top_right,rgba(147,51,234,0.15),transparent_70%),radial-gradient(ellipse_at_right,rgba(59,130,246,0.15),transparent_70%)]">
           {/* Header */}
           <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-14 items-center">
