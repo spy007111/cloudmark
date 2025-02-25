@@ -2,5 +2,5 @@
 	"files.associations": {
 		"wrangler.json": "jsonc"
 	},
-	"github.copilot.chat.localeOverride": "en"
+	"github.copilot.chat.localeOverride": "zh-CN"
 }
