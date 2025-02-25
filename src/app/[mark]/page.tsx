@@ -1,97 +1,108 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
-import type { BookmarkInstance, BookmarksData } from "@/lib/types"
-import { getBookmarkData, deleteBookmarkData } from "@/lib/actions"
-import { BookmarkCard } from "@/components/bookmark-card"
-import { CategoryFilter } from "@/components/category-filter"
-import { AddBookmarkDialog } from "@/components/add-bookmark-dialog"
-import { EditBookmarkDialog } from "@/components/edit-bookmark-dialog"
-import { Button } from "@/components/ui/button"
-import { PlusCircle } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import type { BookmarkInstance, BookmarksData } from "@/lib/types";
+import { getBookmarkData, deleteBookmarkData } from "@/lib/actions";
+import { BookmarkCard } from "@/components/bookmark-card";
+import { CategoryFilter } from "@/components/category-filter";
+import { AddBookmarkDialog } from "@/components/add-bookmark-dialog";
+import { EditBookmarkDialog } from "@/components/edit-bookmark-dialog";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 
-export const runtime = 'edge'
+export const runtime = "edge";
 
 export default function BookmarksPage() {
-  const params = useParams()
-  const mark = params.mark as string
+  const params = useParams();
+  const mark = params.mark as string;
 
-  const [bookmarksData, setBookmarksData] = useState<BookmarksData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [selectedBookmark, setSelectedBookmark] = useState<BookmarkInstance | null>(null)
+  const [bookmarksData, setBookmarksData] = useState<BookmarksData | null>(
+    null,
+  );
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedBookmark, setSelectedBookmark] =
+    useState<BookmarkInstance | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true)
-      const formData = new FormData()
-      formData.append("mark", mark)
+      setIsLoading(true);
+      const formData = new FormData();
+      formData.append("mark", mark);
 
       try {
-        const data = await getBookmarkData(formData)
-        setBookmarksData(data)
+        const data = await getBookmarkData(formData);
+        setBookmarksData(data);
       } catch (error) {
-        console.error("Failed to fetch bookmarks:", error)
+        console.error("Failed to fetch bookmarks:", error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [mark])
+    fetchData();
+  }, [mark]);
 
   const handleDeleteBookmark = async (url: string) => {
-    if (!bookmarksData) return
+    if (!bookmarksData) return;
 
-    const formData = new FormData()
-    formData.append("mark", mark)
-    formData.append("url", url)
+    const formData = new FormData();
+    formData.append("mark", mark);
+    formData.append("url", url);
 
     try {
-      await deleteBookmarkData(formData)
+      await deleteBookmarkData(formData);
 
       // Update local state
       setBookmarksData({
         ...bookmarksData,
         bookmarks: bookmarksData.bookmarks.filter((b) => b.url !== url),
-        categories: [...new Set(bookmarksData.bookmarks.filter((b) => b.url !== url).map((b) => b.category))],
-      })
+        categories: [
+          ...new Set(
+            bookmarksData.bookmarks
+              .filter((b) => b.url !== url)
+              .map((b) => b.category),
+          ),
+        ],
+      });
     } catch (error) {
-      console.error("Failed to delete bookmark:", error)
+      console.error("Failed to delete bookmark:", error);
     }
-  }
+  };
 
   const handleEditBookmark = (bookmark: BookmarkInstance) => {
-    setSelectedBookmark(bookmark)
-    setIsEditDialogOpen(true)
-  }
+    setSelectedBookmark(bookmark);
+    setIsEditDialogOpen(true);
+  };
 
   const handleBookmarkUpdated = (updatedBookmark: BookmarkInstance) => {
-    if (!bookmarksData) return
+    if (!bookmarksData) return;
 
     // Update local state
-    const updatedBookmarks = bookmarksData.bookmarks.map((b) => (b.url === updatedBookmark.url ? updatedBookmark : b))
+    const updatedBookmarks = bookmarksData.bookmarks.map((b) =>
+      b.url === updatedBookmark.url ? updatedBookmark : b,
+    );
 
     setBookmarksData({
       ...bookmarksData,
       bookmarks: updatedBookmarks,
       categories: [...new Set(updatedBookmarks.map((b) => b.category))],
-    })
-  }
+    });
+  };
 
   const filteredBookmarks = bookmarksData?.bookmarks.filter(
     (bookmark) => !selectedCategory || bookmark.category === selectedCategory,
-  )
+  );
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
-    )
+    );
   }
 
   return (
@@ -101,7 +112,10 @@ export default function BookmarksPage() {
           <h1 className="text-3xl font-bold tracking-tight">Bookmarks</h1>
           <p className="text-muted-foreground mt-1">Collection: {mark}</p>
         </div>
-        <Button onClick={() => setIsAddDialogOpen(true)} className="flex items-center gap-2">
+        <Button
+          onClick={() => setIsAddDialogOpen(true)}
+          className="flex items-center gap-2"
+        >
           <PlusCircle className="h-4 w-4" />
           Add Bookmark
         </Button>
@@ -131,7 +145,11 @@ export default function BookmarksPage() {
       ) : (
         <div className="text-center py-12">
           <p className="text-muted-foreground">No bookmarks found.</p>
-          <Button variant="outline" className="mt-4" onClick={() => setIsAddDialogOpen(true)}>
+          <Button
+            variant="outline"
+            className="mt-4"
+            onClick={() => setIsAddDialogOpen(true)}
+          >
             Add your first bookmark
           </Button>
         </div>
@@ -147,8 +165,10 @@ export default function BookmarksPage() {
             setBookmarksData({
               ...bookmarksData,
               bookmarks: [...bookmarksData.bookmarks, newBookmark],
-              categories: [...new Set([...bookmarksData.categories, newBookmark.category])],
-            })
+              categories: [
+                ...new Set([...bookmarksData.categories, newBookmark.category]),
+              ],
+            });
           }
         }}
       />
@@ -164,6 +184,5 @@ export default function BookmarksPage() {
         />
       )}
     </div>
-  )
+  );
 }
-

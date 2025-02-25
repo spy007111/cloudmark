@@ -1,101 +1,108 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import type { BookmarkInstance } from "@/lib/types"
-import { putBookmarkData } from "@/lib/actions"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { Loader2 } from "lucide-react"
+import { useState } from "react";
+import type { BookmarkInstance } from "@/lib/types";
+import { putBookmarkData } from "@/lib/actions";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2 } from "lucide-react";
 
 interface AddBookmarkDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  mark: string
-  categories: string[]
-  onBookmarkAdded: (bookmark: BookmarkInstance) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  mark: string;
+  categories: string[];
+  onBookmarkAdded: (bookmark: BookmarkInstance) => void;
 }
 
-export function AddBookmarkDialog({ open, onOpenChange, mark, categories, onBookmarkAdded }: AddBookmarkDialogProps) {
-  const [url, setUrl] = useState("")
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const [category, setCategory] = useState(categories[0] || "")
-  const [newCategory, setNewCategory] = useState("")
-  const [isCustomCategory, setIsCustomCategory] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+export function AddBookmarkDialog({
+  open,
+  onOpenChange,
+  mark,
+  categories,
+  onBookmarkAdded,
+}: AddBookmarkDialogProps) {
+  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState(categories[0] || "");
+  const [newCategory, setNewCategory] = useState("");
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
 
     if (!url) {
-      setError("URL is required")
-      return
+      setError("URL is required");
+      return;
     }
 
     // Basic URL validation
     try {
-      new URL(url)
+      new URL(url);
     } catch (e) {
-      setError("Please enter a valid URL")
-      return
+      setError("Please enter a valid URL");
+      return;
     }
 
-    const selectedCategory = isCustomCategory ? newCategory : category
+    const selectedCategory = isCustomCategory ? newCategory : category;
 
     if (isCustomCategory && !newCategory) {
-      setError("Category name is required")
-      return
+      setError("Category name is required");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
-      const formData = new FormData()
-      formData.append("mark", mark)
-      formData.append("url", url)
-      formData.append("title", title || new URL(url).hostname)
-      formData.append("favicon", `https://www.google.com/s2/favicons?domain=${url}`)
-      formData.append("category", selectedCategory)
-      formData.append("description", description)
+      const formData = new FormData();
+      formData.append("mark", mark);
+      formData.append("url", url);
+      formData.append("title", title || new URL(url).hostname);
+      formData.append("category", selectedCategory);
+      formData.append("description", description);
 
-      await putBookmarkData(formData)
+      const newBookmark = await putBookmarkData(formData);
 
-      const newBookmark: BookmarkInstance = {
-        url,
-        title: title || new URL(url).hostname,
-        favicon: `https://www.google.com/s2/favicons?domain=${url}`,
-        category: selectedCategory,
-        description,
-        createdAt: new Date().toISOString(),
-        modifiedAt: new Date().toISOString(),
-      }
-
-      onBookmarkAdded(newBookmark)
+      onBookmarkAdded(newBookmark);
 
       // Reset form
-      setUrl("")
-      setTitle("")
-      setDescription("")
-      setCategory(categories[0] || "")
-      setNewCategory("")
-      setIsCustomCategory(false)
+      setUrl("");
+      setTitle("");
+      setDescription("");
+      setCategory(categories[0] || "");
+      setNewCategory("");
+      setIsCustomCategory(false);
 
-      onOpenChange(false)
+      onOpenChange(false);
     } catch (error) {
-      console.error("Failed to add bookmark:", error)
-      setError("Failed to add bookmark. Please try again.")
+      console.error("Failed to add bookmark:", error);
+      setError("Failed to add bookmark. Please try again.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -117,7 +124,12 @@ export function AddBookmarkDialog({ open, onOpenChange, mark, categories, onBook
 
           <div className="space-y-2">
             <Label htmlFor="title">Title (Optional)</Label>
-            <Input id="title" placeholder="My Bookmark" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input
+              id="title"
+              placeholder="My Bookmark"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
 
           <div className="space-y-2">
@@ -147,7 +159,11 @@ export function AddBookmarkDialog({ open, onOpenChange, mark, categories, onBook
                     ))}
                   </SelectContent>
                 </Select>
-                <Button type="button" variant="outline" onClick={() => setIsCustomCategory(true)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsCustomCategory(true)}
+                >
                   New
                 </Button>
               </div>
@@ -160,7 +176,11 @@ export function AddBookmarkDialog({ open, onOpenChange, mark, categories, onBook
                   onChange={(e) => setNewCategory(e.target.value)}
                 />
                 {categories.length > 0 && (
-                  <Button type="button" variant="outline" onClick={() => setIsCustomCategory(false)}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsCustomCategory(false)}
+                  >
                     Existing
                   </Button>
                 )}
@@ -168,20 +188,27 @@ export function AddBookmarkDialog({ open, onOpenChange, mark, categories, onBook
             )}
           </div>
 
-          {error && <div className="text-sm font-medium text-destructive">{error}</div>}
+          {error && (
+            <div className="text-sm font-medium text-destructive">{error}</div>
+          )}
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isSubmitting && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Add Bookmark
             </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
-

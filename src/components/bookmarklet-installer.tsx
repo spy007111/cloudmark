@@ -32,7 +32,7 @@ export default function BookmarkletInstaller({
         setLocalMark(newMark);
       }
     },
-    [externalOnMarkChange]
+    [externalOnMarkChange],
   );
 
   // 获取当前网站的基础 URL
@@ -43,10 +43,10 @@ export default function BookmarkletInstaller({
   // 生成bookmarklet代码
   const generateBookmarkletCode = useCallback(
     (markValue: string) => {
-      const code = `javascript:(function(){let m='${markValue}',u=encodeURIComponent(location.href),t=encodeURIComponent(document.title),f=encodeURIComponent((document.querySelector('link[rel="icon"]')||document.querySelector('link[rel="shortcut icon"]')||{href:'/favicon.ico'}).href);window.open('${baseUrl}/api/add?mark='+m+'&title='+t+'&url='+u+'&favicon='+f, '_blank').focus()})()`;
+      const code = `javascript:(function(){let m='${markValue}',u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('${baseUrl}/api/add?mark='+m+'&title='+t+'&url='+u, '_blank').focus()})()`;
       setBookmarkletCode(code);
     },
-    [baseUrl]
+    [baseUrl],
   );
 
   // 生成随机字符串

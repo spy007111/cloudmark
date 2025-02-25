@@ -1,25 +1,37 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import type { BookmarkInstance } from "@/lib/types"
-import { putBookmarkData } from "@/lib/actions"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { Loader2 } from "lucide-react"
+import { useState } from "react";
+import type { BookmarkInstance } from "@/lib/types";
+import { putBookmarkData } from "@/lib/actions";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2 } from "lucide-react";
 
 interface EditBookmarkDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  mark: string
-  bookmark: BookmarkInstance
-  categories: string[]
-  onBookmarkUpdated: (updatedBookmark: BookmarkInstance) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  mark: string;
+  bookmark: BookmarkInstance;
+  categories: string[];
+  onBookmarkUpdated: (updatedBookmark: BookmarkInstance) => void;
 }
 
 export function EditBookmarkDialog({
@@ -30,51 +42,51 @@ export function EditBookmarkDialog({
   categories,
   onBookmarkUpdated,
 }: EditBookmarkDialogProps) {
-  const [url, setUrl] = useState(bookmark.url)
-  const [title, setTitle] = useState(bookmark.title)
-  const [category, setCategory] = useState(bookmark.category)
-  const [description, setDescription] = useState(bookmark.description || "")
-  const [newCategory, setNewCategory] = useState("")
-  const [isCustomCategory, setIsCustomCategory] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [url, setUrl] = useState(bookmark.url);
+  const [title, setTitle] = useState(bookmark.title);
+  const [category, setCategory] = useState(bookmark.category);
+  const [description, setDescription] = useState(bookmark.description || "");
+  const [newCategory, setNewCategory] = useState("");
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
 
     if (!url) {
-      setError("URL is required")
-      return
+      setError("URL is required");
+      return;
     }
 
     // Basic URL validation
     try {
-      new URL(url)
+      new URL(url);
     } catch (e) {
-      setError("Please enter a valid URL")
-      return
+      setError("Please enter a valid URL");
+      return;
     }
 
-    const selectedCategory = isCustomCategory ? newCategory : category
+    const selectedCategory = isCustomCategory ? newCategory : category;
 
     if (isCustomCategory && !newCategory) {
-      setError("Category name is required")
-      return
+      setError("Category name is required");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
-      const formData = new FormData()
-      formData.append("mark", mark)
-      formData.append("url", url)
-      formData.append("title", title)
-      formData.append("favicon", bookmark.favicon)
-      formData.append("category", selectedCategory)
-      formData.append("description", description)
+      const formData = new FormData();
+      formData.append("mark", mark);
+      formData.append("url", url);
+      formData.append("title", title);
+      formData.append("favicon", bookmark.favicon);
+      formData.append("category", selectedCategory);
+      formData.append("description", description);
 
-      await putBookmarkData(formData)
+      await putBookmarkData(formData);
 
       const updatedBookmark: BookmarkInstance = {
         ...bookmark,
@@ -83,17 +95,17 @@ export function EditBookmarkDialog({
         category: selectedCategory,
         description,
         modifiedAt: new Date().toISOString(),
-      }
+      };
 
-      onBookmarkUpdated(updatedBookmark)
-      onOpenChange(false)
+      onBookmarkUpdated(updatedBookmark);
+      onOpenChange(false);
     } catch (error) {
-      console.error("Failed to update bookmark:", error)
-      setError("Failed to update bookmark. Please try again.")
+      console.error("Failed to update bookmark:", error);
+      setError("Failed to update bookmark. Please try again.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -151,7 +163,11 @@ export function EditBookmarkDialog({
                     ))}
                   </SelectContent>
                 </Select>
-                <Button type="button" variant="outline" onClick={() => setIsCustomCategory(true)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsCustomCategory(true)}
+                >
                   New
                 </Button>
               </div>
@@ -164,7 +180,11 @@ export function EditBookmarkDialog({
                   onChange={(e) => setNewCategory(e.target.value)}
                 />
                 {categories.length > 0 && (
-                  <Button type="button" variant="outline" onClick={() => setIsCustomCategory(false)}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsCustomCategory(false)}
+                  >
                     Existing
                   </Button>
                 )}
@@ -172,20 +192,27 @@ export function EditBookmarkDialog({
             )}
           </div>
 
-          {error && <div className="text-sm font-medium text-destructive">{error}</div>}
+          {error && (
+            <div className="text-sm font-medium text-destructive">{error}</div>
+          )}
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isSubmitting && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Save Changes
             </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
-

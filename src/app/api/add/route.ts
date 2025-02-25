@@ -5,6 +5,7 @@ import {
   BookmarksData,
   createDefaultBookmarksData,
 } from "../../../lib/types";
+import { getFavicon } from "@/lib/actions";
 
 export const runtime = "edge";
 
@@ -14,13 +15,13 @@ export async function GET(request: NextRequest) {
     const mark = searchParams.get("mark") || "default";
     const title = searchParams.get("title") || "Untitled";
     const url = searchParams.get("url");
-    const favicon = searchParams.get("favicon") || "";
     const defaultCategory = "Uncategorized";
 
     // 验证必要参数
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 });
     }
+    const favicon = await getFavicon(url);
 
     const bookmark: BookmarkInstance = {
       url: decodeURIComponent(url),
@@ -28,6 +29,7 @@ export async function GET(request: NextRequest) {
       favicon: decodeURIComponent(favicon),
       createdAt: new Date().toISOString(),
       modifiedAt: new Date().toISOString(),
+      description: "",
       category: defaultCategory,
     };
 
@@ -41,14 +43,12 @@ export async function GET(request: NextRequest) {
     data.categories = [...new Set(data.bookmarks.map((b) => b.category))];
     await KV.put(mark, JSON.stringify(data));
 
-    // 重定向到成功页面
     return NextResponse.redirect(new URL(`/${mark}`, request.url));
   } catch (error) {
     console.error("Error processing bookmark:", error);
-    // 重定向到错误页面
     return NextResponse.json(
       { error: "Failed to process bookmark" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

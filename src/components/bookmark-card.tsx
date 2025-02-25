@@ -1,36 +1,48 @@
-import type { BookmarkInstance } from "@/lib/types"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ExternalLink, Trash2, Edit2 } from "lucide-react"
-import { formatDistanceToNow } from "date-fns"
+import type { BookmarkInstance } from "@/lib/types";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ExternalLink, Trash2, Edit2 } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 interface BookmarkCardProps {
-  bookmark: BookmarkInstance
-  onDelete: () => void
-  onEdit: () => void
+  bookmark: BookmarkInstance;
+  onDelete: () => void;
+  onEdit: () => void;
 }
 
-export function BookmarkCard({ bookmark, onDelete, onEdit }: BookmarkCardProps) {
-  const { url, title, favicon, createdAt, category, description } = bookmark
+export function BookmarkCard({
+  bookmark,
+  onDelete,
+  onEdit,
+}: BookmarkCardProps) {
+  const { url, title, favicon, createdAt, category, description } = bookmark;
 
   // Format the date to be more readable
-  const formattedDate = formatDistanceToNow(new Date(createdAt), { addSuffix: true })
+  const formattedDate = formatDistanceToNow(new Date(createdAt), {
+    addSuffix: true,
+  });
 
   // Extract domain for display
-  const domain = new URL(url).hostname.replace("www.", "")
+  const domain = new URL(url).hostname.replace("www.", "");
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
       <CardHeader className="p-4 pb-0 flex flex-row items-center gap-2">
         {favicon ? (
           <img
-            src={favicon || "/placeholder.svg"}
+            src={favicon || `https://favicone.com/${domain}?s=32`}
             alt={`${title} favicon`}
             className="w-5 h-5 rounded-sm"
             onError={(e) => {
               // If favicon fails to load, replace with a default icon
-              ;(e.target as HTMLImageElement).src = "/placeholder.svg?height=20&width=20"
+              (e.target as HTMLImageElement).src =
+                "/placeholder.svg?height=20&width=20";
             }}
           />
         ) : (
@@ -48,7 +60,11 @@ export function BookmarkCard({ bookmark, onDelete, onEdit }: BookmarkCardProps) 
         </div>
       </CardHeader>
       <CardContent className="p-4">
-        {description && <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{description}</p>}
+        {description && (
+          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+            {description}
+          </p>
+        )}
         <div className="flex items-center justify-between">
           <Badge variant="outline" className="text-xs">
             {category}
@@ -57,7 +73,12 @@ export function BookmarkCard({ bookmark, onDelete, onEdit }: BookmarkCardProps) 
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between">
-        <Button variant="outline" size="sm" className="w-full mr-2" onClick={() => window.open(url, "_blank")}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full mr-2"
+          onClick={() => window.open(url, "_blank")}
+        >
           <ExternalLink className="h-3 w-3 mr-1" />
           Visit
         </Button>
@@ -73,6 +94,5 @@ export function BookmarkCard({ bookmark, onDelete, onEdit }: BookmarkCardProps) 
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
-

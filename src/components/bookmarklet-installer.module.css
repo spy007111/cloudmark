@@ -1,17 +1,17 @@
 .summary {
-    transition: all 0.2s ease;
-  }
-  
-  .summary svg {
-    transition: transform 0.2s ease;
-  }
-  
-  /* 当 details 打开时旋转图标 */
-  .details[open] .summary svg {
-    transform: rotate(90deg);
-  }
-  
-  /* 悬停效果 */
-  .summary:hover {
-    color: hsl(var(--primary));
-  }
+  transition: all 0.2s ease;
+}
+
+.summary svg {
+  transition: transform 0.2s ease;
+}
+
+/* 当 details 打开时旋转图标 */
+.details[open] .summary svg {
+  transform: rotate(90deg);
+}
+
+/* 悬停效果 */
+.summary:hover {
+  color: hsl(var(--primary));
+}

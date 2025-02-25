@@ -1,25 +1,30 @@
-'use client'
+"use client";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { Globe } from "lucide-react"
-import { useRouter, useSearchParams } from "next/navigation"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Globe } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const languages = [
-  { code: 'en', name: 'English' },
-  { code: 'zh', name: '中文' }
-]
+  { code: "en", name: "English" },
+  { code: "zh", name: "中文" },
+];
 
 export function LanguageSwitcher() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const currentLang = searchParams.get('lang') || 'en'
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentLang = searchParams.get("lang") || "en";
 
   const handleLanguageChange = (langCode: string) => {
-    const params = new URLSearchParams(searchParams)
-    params.set('lang', langCode)
-    router.push(`?${params.toString()}`)
-  }
+    const params = new URLSearchParams(searchParams);
+    params.set("lang", langCode);
+    router.push(`?${params.toString()}`);
+  };
 
   return (
     <DropdownMenu>
@@ -40,5 +45,5 @@ export function LanguageSwitcher() {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

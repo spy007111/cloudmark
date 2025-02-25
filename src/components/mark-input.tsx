@@ -35,7 +35,7 @@ export function MarkInput({
               variant="ghost"
               className={cn(
                 "absolute right-0 top-0 h-full w-10 px-3 transition-transform",
-                isGenerating && "animate-spin"
+                isGenerating && "animate-spin",
               )}
               onClick={onGenerateRandom}
             >

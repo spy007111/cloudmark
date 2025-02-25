@@ -1,7 +1,7 @@
 export interface BookmarkInstance {
   url: string;
   title: string;
-  favicon: string;
+  favicon?: string;
   createdAt: string;
   modifiedAt: string;
   category: string;
