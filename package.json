@@ -38,5 +38,12 @@
 		"typescript": "^5",
 		"vercel": "^41.2.0",
 		"wrangler": "^3.109.3"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild",
+			"sharp",
+			"workerd"
+		]
 	}
 }
