@@ -38,7 +38,7 @@ export function BookmarkCard({
           <img
             src={favicon || `https://favicone.com/${domain}?s=32`}
             alt={`${title} favicon`}
-            className="w-5 h-5 rounded-sm"
+            className="w-8 h-8 rounded-sm"
             onError={(e) => {
               // If favicon fails to load, replace with a default icon
               (e.target as HTMLImageElement).src =
@@ -46,7 +46,7 @@ export function BookmarkCard({
             }}
           />
         ) : (
-          <div className="w-5 h-5 bg-muted rounded-sm flex items-center justify-center">
+          <div className="w-8 h-8 bg-muted rounded-sm flex items-center justify-center">
             <ExternalLink className="w-3 h-3 text-muted-foreground" />
           </div>
         )}

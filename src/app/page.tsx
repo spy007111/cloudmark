@@ -1,4 +1,6 @@
 import BookmarkletInstaller from "@/components/bookmarklet-installer";
+import { Button } from "@/components/ui/button";
+import { MoveRight } from "lucide-react";
 import Link from "next/link";
 
 interface PageProps {
@@ -66,7 +68,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <div className="container relative">
-      <div className="flex flex-col items-start py-10 lg:py-16 gap-4">
+      <div className="flex flex-col items-start pt-10 lg:pt-16 gap-4">
         {/* Main Title */}
         <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 mb-2">
           Cloudmark {mark && `- ${mark}`}
@@ -77,15 +79,17 @@ export default async function Page({ searchParams }: PageProps) {
         <p className="text-xl text-muted-foreground max-w-[42rem]">
           {t.description}
         </p>
-
-        {/* Quick Start */}
-        <div className="flex flex-col items-start gap-4">
-          <BookmarkletInstaller mark={mark} />
-        </div>
+        <Button asChild>
+          <Link href="/doc">
+            {" "}
+            <MoveRight />
+            Quick Start
+          </Link>
+        </Button>
       </div>
 
       {/* Feature Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-20">
         {Object.entries(t.features).map(([key, feature]) => (
           <div
             key={key}

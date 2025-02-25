@@ -8,16 +8,17 @@ import {
 } from "@/lib/types";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 
-export async function getFavicon(url: string) {
+export async function getFavicon(url: string, size: number = 64) {
   const domain = new URL(url).hostname.replace("www.", "");
-  const faviconResponse = await fetch(`https://favicone.com/${domain}?json`);
-  const faviconData = await faviconResponse.json<{
-    hasIcon: boolean;
-    icon: string;
-    format: string;
-  }>();
-  const favicon = faviconData.hasIcon ? faviconData.icon : "";
-  return favicon;
+  // const faviconResponse = await fetch(`https://favicone.com/${domain}?json`);
+  // const faviconData = await faviconResponse.json<{
+  //   hasIcon: boolean;
+  //   icon: string;
+  //   format: string;
+  // }>();
+  // const favicon = faviconData.hasIcon ? faviconData.icon : "";
+  // return favicon;
+  return `https://www.google.com/s2/favicons?domain=${domain}&sz=${size}`;
 }
 
 export async function getBookmarkData(formData: FormData) {
@@ -82,7 +83,7 @@ export async function deleteBookmarkData(formData: FormData) {
     return;
   }
   bookmarksdata.bookmarks = bookmarksdata.bookmarks.filter(
-    (b) => b.url !== url,
+    (b) => b.url !== url
   );
   bookmarksdata.categories = [
     ...new Set(bookmarksdata.bookmarks.map((b) => b.category)),

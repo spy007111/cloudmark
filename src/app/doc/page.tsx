@@ -13,7 +13,7 @@ import { Bookmark } from "lucide-react";
 export default function DocPage() {
   const [mark, setMark] = useState("my-bookmark"); // 添加状态
   return (
-    <div className="container py-8">
+    <div className="container py-12">
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

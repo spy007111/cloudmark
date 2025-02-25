@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     const bookmark: BookmarkInstance = {
       url: decodeURIComponent(url),
       title: decodeURIComponent(title),
-      favicon: decodeURIComponent(favicon),
+      favicon,
       createdAt: new Date().toISOString(),
       modifiedAt: new Date().toISOString(),
       description: "",
@@ -47,8 +47,11 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("Error processing bookmark:", error);
     return NextResponse.json(
-      { error: "Failed to process bookmark" },
-      { status: 500 },
+      {
+        error: "Failed to process bookmark",
+        details: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
     );
   }
 }
