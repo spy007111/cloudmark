@@ -50,7 +50,9 @@ export default function RootLayout({
               </nav>
             </div>
           </header>
-          {children}
+          <main className="flex-1">
+            {children}
+          </main>
           {/* Footer */}
           <footer className="border-t border-border/40 mt-auto">
             <div className="container flex flex-col gap-2 py-6 text-center">
