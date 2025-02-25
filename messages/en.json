@@ -1,0 +1,25 @@
+{
+  "HomePage": {
+    "quickstart": "Quick Start",
+    "title": "Your Universal Bookmark Manager",
+    "description": "Save and organize your bookmarks with one click. Access them anywhere, anytime.",
+    "features": {
+      "save": {
+        "title": "One-Click Save",
+        "desc": "Save any webpage to your collection with a simple drag and drop installation."
+      },
+      "categorize": {
+        "title": "Smart Categories",
+        "desc": "Automatically categorize your bookmarks for better organization."
+      },
+      "access": {
+        "title": "Access Anywhere",
+        "desc": "Sync across devices, access your bookmarks anywhere."
+      },
+      "share": {
+        "title": "Share & Collaborate",
+        "desc": "Easily share bookmark collections and collaborate with others."
+      }
+    }
+  }
+}

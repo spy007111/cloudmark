@@ -8,7 +8,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Globe } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Locale } from "@/i18n/config";
+import { setUserLocale } from "@/services/locale";
+import { useLocale } from "next-intl";
 
 const languages = [
   { code: "en", name: "English" },
@@ -16,14 +18,10 @@ const languages = [
 ];
 
 export function LanguageSwitcher() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const currentLang = searchParams.get("lang") || "en";
-
+  const currentLang = useLocale();
   const handleLanguageChange = (langCode: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("lang", langCode);
-    router.push(`?${params.toString()}`);
+    const locale = langCode as Locale;
+    setUserLocale(locale);
   };
 
   return (
