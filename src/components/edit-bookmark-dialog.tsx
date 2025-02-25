@@ -82,7 +82,6 @@ export function EditBookmarkDialog({
       formData.append("mark", mark);
       formData.append("url", url);
       formData.append("title", title);
-      formData.append("favicon", bookmark.favicon);
       formData.append("category", selectedCategory);
       formData.append("description", description);
 
