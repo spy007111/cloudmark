@@ -3,10 +3,11 @@ import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import { useMessages, useTranslations } from "next-intl";
 
-export default async function Page() {
+export default function Page() {
   const t = useTranslations("HomePage");
   const messages = useMessages();
-  const keys = Object.keys(messages["HomePage.features"]);
+  // @ts-expect-error
+  const keys = Object.keys(messages.HomePage.features);
   return (
     <div className="container relative">
       <div className="flex flex-col items-start pt-10 lg:pt-16 gap-4">

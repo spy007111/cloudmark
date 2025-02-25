@@ -21,5 +21,53 @@
         "desc": "Easily share bookmark collections and collaborate with others."
       }
     }
+  },
+  "NotFoundPage": {
+    "title": "404: This page could not be found.",
+    "errorCode": "404",
+    "description": "This page could not be found."
+  },
+  "DocPage": {
+    "title": "Customize Your Cloudmark Bookmark",
+    "description": "Customize your bookmark ID, or use a randomly generated marker",
+    "keyboard": {
+      "showBookmarks": "Ctrl+Shift+B / Cmd+Shift+B"
+    },
+    "method1": {
+      "title": "Method 1: Drag and Drop (Recommended)",
+      "steps": {
+        "1": "Make sure your browser shows the bookmark bar (Press",
+        "1_end": " to show in Chrome)",
+        "2": "Drag both buttons above to your bookmark bar:",
+        "2_1": "\"Save to {mark}\" - to save the current page",
+        "2_2": "\"Open {mark}\" - to quickly view your saved content",
+        "3": "Release the mouse to complete installation"
+      }
+    },
+    "method2": {
+      "title": "Method 2: Manual Creation",
+      "steps": {
+        "1": "Make sure your browser shows the bookmark bar (Press",
+        "1_end": " to show in Chrome)",
+        "2": "Right-click on the bookmarks bar and select \"Add Page\" or \"Add Bookmark\"",
+        "3": "Change the bookmark name to \"{mark}\"",
+        "4": "Paste the complete code from the code box above in the URL/address field",
+        "5": "Choose to save in the \"Bookmarks Bar\" folder",
+        "6": "Click save to complete installation"
+      }
+    },
+    "usage": {
+      "title": "Usage Instructions:",
+      "intro": "When you browse to a page you want to save:",
+      "steps": {
+        "1": "Click on \"Save to {mark}\" in your bookmarks bar",
+        "2": "The page will automatically redirect to the collection system",
+        "3": "The system will save the current page's:",
+        "3_1": "Page title",
+        "3_2": "URL address",
+        "3_3": "Website icon"
+      },
+      "tip": "Tip: You can return to this page anytime to regenerate bookmark tools with different markers. Different markers can help you better categorize and manage your saved content."
+    }
   }
 }

@@ -1,9 +1,13 @@
+import { useTranslations } from "next-intl";
+
 export const runtime = "edge";
 
 export default function NotFound() {
+  const t = useTranslations("NotFoundPage");
+
   return (
     <>
-      <title>404: This page could not be found.</title>
+      <title>{t("title")}</title>
       <div style={styles.error}>
         <div>
           <style
@@ -12,10 +16,10 @@ export default function NotFound() {
             }}
           />
           <h1 className="next-error-h1" style={styles.h1}>
-            404
+            {t("errorCode")}
           </h1>
           <div style={styles.desc}>
-            <h2 style={styles.h2}>This page could not be found.</h2>
+            <h2 style={styles.h2}>{t("description")}</h2>
           </div>
         </div>
       </div>
