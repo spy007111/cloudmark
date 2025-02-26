@@ -58,17 +58,18 @@
     },
     "usage": {
       "title": "Usage Instructions:",
-      "intro": "When you browse to a page you want to save:",
+      "intro": "When you browse to a page you want to save",
       "steps": {
         "1": "Click on \"Save to {mark}\" in your bookmarks bar",
         "2": "The page will automatically redirect to the collection system",
-        "3": "The system will save the current page's:",
+        "3": "The system will save the current page's",
         "3_1": "Page title",
         "3_2": "URL address",
         "3_3": "Website icon"
       },
       "tip": "Tip: You can return to this page anytime to regenerate bookmark tools with different markers. Different markers can help you better categorize and manage your saved content."
-    }
+    },
+    "loading": "Loading..."
   },
   "Navigation": {
     "quickstart": "Quick Start",

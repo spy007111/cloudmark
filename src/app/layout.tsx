@@ -58,13 +58,13 @@ function Navigation() {
   const t = useTranslations("Navigation");
 
   return (
-    <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
+    <nav className="ml-auto flex gap-2 sm:gap-4 items-center">
       <Link
         href="/doc"
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors duration-200"
       >
         <FileText className="h-4 w-4" />
-        <span>{t("quickstart")}</span>
+        <span className="hidden sm:inline">{t("quickstart")}</span>
       </Link>
       <Link
         href="https://github.com/wesleyel/cloudmark"
@@ -73,7 +73,7 @@ function Navigation() {
         <Github className="h-4 w-4" />
         <span className="hidden sm:inline">{t("github")}</span>
       </Link>
-      <div className="pl-1 border-l border-border/40">
+      <div className="pl-1 border-border/40">
         <LanguageSwitcher />
       </div>
     </nav>
@@ -127,7 +127,13 @@ export default async function RootLayout({
                     Released under the AGPL License.
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Copyright © {new Date().getFullYear()} Wesley Yang
+                    Copyright © {new Date().getFullYear()}{" "}
+                    <Link
+                      href="https://github.com/wesleyel"
+                      className="hover:text-primary"
+                    >
+                      Wesley Yang
+                    </Link>
                   </p>
                 </div>
               </footer>

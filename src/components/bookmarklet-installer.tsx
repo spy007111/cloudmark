@@ -35,7 +35,7 @@ export default function BookmarkletInstaller({
         setLocalMark(newMark);
       }
     },
-    [externalOnMarkChange]
+    [externalOnMarkChange],
   );
 
   // 获取当前网站的基础 URL
@@ -51,7 +51,7 @@ export default function BookmarkletInstaller({
       const code = `javascript:(function(){let m='${markValue}',u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('${baseUrl}/api/add?mark='+m+'&title='+t+'&url='+u, '_blank').focus()})()`;
       setBookmarkletCode(code);
     },
-    [baseUrl]
+    [baseUrl],
   );
 
   // 生成随机字符串

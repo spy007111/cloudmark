@@ -17,23 +17,41 @@ export default function DocPage() {
   const t = useTranslations("DocPage");
   const messages = useMessages();
   const [mark, setMark] = useState("");
-  
+
   useEffect(() => {
     const generateRandomMark = () => {
       const adjectives = [
-        "vacuous", "tearful", "faint", "jumbled", "wandering", "mature", 
-        "savory", "mighty", "disgusted", "abstracted", "telling"
+        "vacuous",
+        "tearful",
+        "faint",
+        "jumbled",
+        "wandering",
+        "mature",
+        "savory",
+        "mighty",
+        "disgusted",
+        "abstracted",
+        "telling",
       ];
       const nouns = [
-        "person", "inspector", "significance", "chapter", "reputation", 
-        "outcome", "association", "failure", "population", "wealth", "bird"
+        "person",
+        "inspector",
+        "significance",
+        "chapter",
+        "reputation",
+        "outcome",
+        "association",
+        "failure",
+        "population",
+        "wealth",
+        "bird",
       ];
       const randomNum = Math.floor(Math.random() * 10000);
       return `${
         adjectives[Math.floor(Math.random() * adjectives.length)]
       }-${nouns[Math.floor(Math.random() * nouns.length)]}-${randomNum}`;
     };
-    
+
     setMark(generateRandomMark());
   }, []);
 

@@ -128,14 +128,14 @@ export default function BookmarksPage() {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      
+
       // 如果是demo模式，使用预设的演示数据
       if (mark === "demo") {
         setBookmarksData(DEMO_BOOKMARKS_DATA);
         setIsLoading(false);
         return;
       }
-      
+
       // 否则正常获取数据
       const formData = new FormData();
       formData.append("mark", mark);
@@ -266,7 +266,18 @@ export default function BookmarksPage() {
           >
             <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
               <div className="flex items-center gap-2 text-amber-600 font-medium">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-5 w-5"
+                >
                   <path d="M12 9v4"></path>
                   <path d="M12 16h.01"></path>
                   <path d="M3.8 9.7a8 8 0 0 0 0 4.6"></path>
@@ -284,12 +295,14 @@ export default function BookmarksPage() {
                 </svg>
                 <span>{t("demoMode")}</span>
               </div>
-              <p className="text-muted-foreground text-sm flex-1">{t("demoDescription")}</p>
+              <p className="text-muted-foreground text-sm flex-1">
+                {t("demoDescription")}
+              </p>
               <Button
                 variant="outline"
                 size="sm"
                 className="border-amber-500/20 hover:border-amber-500/40 bg-amber-500/5 hover:bg-amber-500/10 text-amber-700"
-                onClick={() => window.location.href = '/doc'}
+                onClick={() => (window.location.href = "/doc")}
               >
                 {t("createOwn")}
               </Button>

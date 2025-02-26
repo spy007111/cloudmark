@@ -9,7 +9,7 @@
   "compatibility_flags": ["nodejs_compat"],
   "pages_build_output_dir": ".vercel/output/static",
   "observability": {
-    "enabled": true
+    "enabled": true,
   },
   /**
    * Smart Placement
@@ -26,21 +26,21 @@
   "kv_namespaces": [
     {
       "binding": "cloudmark",
-      "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-    }
+      "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    },
   ],
   "routes": [
     {
       "pattern": "cloudmark.site",
-      "custom_domain": true
-    }
+      "custom_domain": true,
+    },
   ],
 
   /**
    * Environment Variables
    * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
    */
-  "vars": { "NEXT_PUBLIC_BASE_URL": "https://cloudmark.site" }
+  "vars": { "NEXT_PUBLIC_BASE_URL": "https://cloudmark.site" },
   /**
    * Note: Use secrets to store sensitive data.
    * https://developers.cloudflare.com/workers/configuration/secrets/

@@ -32,11 +32,11 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          size="icon"
-          className="rounded-full hover:bg-primary/10 transition-colors duration-200 focus-visible:ring-offset-0"
+          size="sm"
+          className="rounded-md text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors duration-200 focus-visible:ring-offset-0 flex items-center gap-2"
         >
-          <Globe className="h-[18px] w-[18px] text-muted-foreground hover:text-primary transition-colors duration-200" />
-          <span className="sr-only">{t("switchLanguage")}</span>
+          <Globe className="h-4 w-4" />
+          <span className="hidden sm:inline">{t("switchLanguage")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[130px] overflow-hidden">

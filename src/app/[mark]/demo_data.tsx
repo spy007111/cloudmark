@@ -121,7 +121,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 1).toISOString(),
       modifiedAt: new Date(2023, 0, 1).toISOString(),
       category: "AI工具",
-      description: "OpenAI开发的对话式人工智能助手"
+      description: "OpenAI开发的对话式人工智能助手",
     },
     {
       url: "https://github.com",
@@ -130,7 +130,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 2).toISOString(),
       modifiedAt: new Date(2023, 0, 2).toISOString(),
       category: "开发工具",
-      description: "全球最大的代码托管平台"
+      description: "全球最大的代码托管平台",
     },
     {
       url: "https://reactjs.org",
@@ -139,7 +139,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 3).toISOString(),
       modifiedAt: new Date(2023, 0, 3).toISOString(),
       category: "开发工具",
-      description: "用于构建用户界面的JavaScript库"
+      description: "用于构建用户界面的JavaScript库",
     },
     {
       url: "https://nextjs.org",
@@ -148,7 +148,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 4).toISOString(),
       modifiedAt: new Date(2023, 0, 4).toISOString(),
       category: "开发工具",
-      description: "React框架，用于生产环境的应用"
+      description: "React框架，用于生产环境的应用",
     },
     {
       url: "https://www.coursera.org",
@@ -157,7 +157,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 5).toISOString(),
       modifiedAt: new Date(2023, 0, 5).toISOString(),
       category: "学习资源",
-      description: "提供来自世界各地大学的在线课程"
+      description: "提供来自世界各地大学的在线课程",
     },
     {
       url: "https://www.figma.com",
@@ -166,7 +166,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 6).toISOString(),
       modifiedAt: new Date(2023, 0, 6).toISOString(),
       category: "设计资源",
-      description: "基于浏览器的界面设计工具"
+      description: "基于浏览器的界面设计工具",
     },
     {
       url: "https://news.ycombinator.com",
@@ -175,7 +175,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 7).toISOString(),
       modifiedAt: new Date(2023, 0, 7).toISOString(),
       category: "新闻资讯",
-      description: "专注于计算机科学和创业的社交新闻网站"
+      description: "专注于计算机科学和创业的社交新闻网站",
     },
     {
       url: "https://claude.ai",
@@ -184,7 +184,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 8).toISOString(),
       modifiedAt: new Date(2023, 0, 8).toISOString(),
       category: "AI工具",
-      description: "Anthropic开发的AI助手"
+      description: "Anthropic开发的AI助手",
     },
     {
       url: "https://www.midjourney.com",
@@ -193,7 +193,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 9).toISOString(),
       modifiedAt: new Date(2023, 0, 9).toISOString(),
       category: "AI工具",
-      description: "AI图像生成工具"
+      description: "AI图像生成工具",
     },
     {
       url: "https://tailwindcss.com",
@@ -202,7 +202,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       createdAt: new Date(2023, 0, 10).toISOString(),
       modifiedAt: new Date(2023, 0, 10).toISOString(),
       category: "开发工具",
-      description: "功能类优先的CSS框架"
-    }
-  ]
+      description: "功能类优先的CSS框架",
+    },
+  ],
 };

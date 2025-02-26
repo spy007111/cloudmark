@@ -93,7 +93,7 @@ export function AddBookmarkDialog({
           createdAt: new Date().toISOString(),
           modifiedAt: new Date().toISOString(),
         };
-        
+
         onBookmarkAdded(newBookmark);
       } else {
         // 正常模式，调用API
