@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
-import { Github, FileText, Globe } from "lucide-react";
+import { Github, FileText } from "lucide-react";
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import "./globals.css";
@@ -9,6 +8,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ToastProvider } from "@/components/toast-provider";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -134,6 +134,7 @@ export default async function RootLayout({
             </div>
           </ToastProvider>
         </NextIntlClientProvider>
+        <GoogleAnalytics gaId="G-2JX3NYK495" />
       </body>
     </html>
   );
