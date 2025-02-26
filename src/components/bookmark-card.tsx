@@ -41,7 +41,7 @@ export function BookmarkCard({
   };
 
   return (
-    <Card className="h-[240px] w-full flex flex-col overflow-hidden transition-all hover:shadow-md backdrop-blur-sm bg-card/50 border border-border/60">
+    <Card className="h-[220px] w-full flex flex-col overflow-hidden transition-all hover:shadow-md backdrop-blur-sm bg-card/50 border border-border/60">
       <CardHeader className="p-4 pb-2 flex flex-row items-center gap-2 flex-shrink-0">
         {favicon ? (
           <div className="relative w-8 h-8 flex-shrink-0 flex items-center justify-center">
