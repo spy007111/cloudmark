@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { Github, Search } from "lucide-react";
+import { Github, FileText, Globe } from "lucide-react";
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export const metadata: Metadata = {
   title: "cloudmark",
@@ -20,6 +21,32 @@ export const metadata: Metadata = {
     ],
   }
 };
+
+function Navigation() {
+  const t = useTranslations("Navigation");
+  
+  return (
+    <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
+      <Link
+        href="/doc"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors duration-200"
+      >
+        <FileText className="h-4 w-4" />
+        <span>{t("docs")}</span>
+      </Link>
+      <Link
+        href="https://github.com/wesleyel/cloudmark"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors duration-200"
+      >
+        <Github className="h-4 w-4" />
+        <span className="hidden sm:inline">{t("github")}</span>
+      </Link>
+      <div className="pl-1 border-l border-border/40">
+        <LanguageSwitcher />
+      </div>
+    </nav>
+  );
+}
 
 export default async function RootLayout({
   children,
@@ -40,7 +67,7 @@ export default async function RootLayout({
             {/* Header */}
             <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="container flex h-14 items-center">
-                <Link href="/" className="flex items-center space-x-2">
+                <Link href="/" className="flex items-center space-x-2 transition-transform duration-200 hover:scale-105">
                   <Image 
                     src="/favicon.svg" 
                     alt="Cloudmark logo" 
@@ -53,21 +80,7 @@ export default async function RootLayout({
                   </span>
                 </Link>
 
-                <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
-                  <Link
-                    href="/doc"
-                    className="text-sm font-medium text-muted-foreground hover:text-primary"
-                  >
-                    Docs
-                  </Link>
-                  <Link
-                    href="https://github.com/wesleyel/cloudmark"
-                    className="text-sm font-medium text-muted-foreground hover:text-primary"
-                  >
-                    <Github className="h-5 w-5" />
-                  </Link>
-                  <LanguageSwitcher />
-                </nav>
+                <Navigation />
               </div>
             </header>
             <main className="flex-1">{children}</main>

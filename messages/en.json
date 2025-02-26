@@ -70,6 +70,11 @@
       "tip": "Tip: You can return to this page anytime to regenerate bookmark tools with different markers. Different markers can help you better categorize and manage your saved content."
     }
   },
+  "Navigation": {
+    "docs": "Docs",
+    "github": "GitHub",
+    "switchLanguage": "Switch Language"
+  },
   "BookmarksPage": {
     "title": "Bookmark Collection",
     "collection": "{mark}'s Collection",

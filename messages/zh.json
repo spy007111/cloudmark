@@ -70,9 +70,14 @@
       "tip": "提示：你可以随时回到本页面，重新生成带有不同标记的书签工具。不同的标记可以帮助你更好地分类管理保存的内容。"
     }
   },
+  "Navigation": {
+    "docs": "文档",
+    "github": "GitHub",
+    "switchLanguage": "切换语言"
+  },
   "BookmarksPage": {
     "title": "书签收藏",
-    "collection": "{mark} 的收藏",
+    "collection": "收藏集 {mark}",
     "addBookmark": "添加书签",
     "noBookmarks": "暂无书签",
     "addFirstBookmark": "添加第一个书签",

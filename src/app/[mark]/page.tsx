@@ -167,7 +167,6 @@ export default function BookmarksPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex items-center gap-2 mb-2"
             >
-              <Bookmark className="h-6 w-6 text-blue-500" />
               <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500">
                 {t("title")}
               </h1>
