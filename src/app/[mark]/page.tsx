@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import type { BookmarkInstance, BookmarksData } from "@/lib/types";
 import { getBookmarkData, deleteBookmarkData } from "@/lib/actions";
@@ -9,7 +9,7 @@ import { CategoryFilter } from "@/components/category-filter";
 import { AddBookmarkDialog } from "@/components/add-bookmark-dialog";
 import { EditBookmarkDialog } from "@/components/edit-bookmark-dialog";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Bookmark, Search } from "lucide-react";
+import { PlusCircle, Bookmark, Search, BookmarkPlus } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
@@ -19,6 +19,7 @@ export default function BookmarksPage() {
   const params = useParams();
   const mark = params.mark as string;
   const t = useTranslations("BookmarksPage");
+  const tButtons = useTranslations("Components.BookmarkButtons");
 
   const [bookmarksData, setBookmarksData] = useState<BookmarksData | null>(
     null,
@@ -29,6 +30,18 @@ export default function BookmarksPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedBookmark, setSelectedBookmark] =
     useState<BookmarkInstance | null>(null);
+  const [bookmarkletCode, setBookmarkletCode] = useState("");
+
+  // 获取当前网站的基础 URL
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (typeof window !== "undefined" ? window.location.origin : "");
+
+  // 生成bookmarklet代码
+  const generateBookmarkletCode = useCallback(() => {
+    const code = `javascript:(function(){let m='${mark}',u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('${baseUrl}/api/add?mark='+m+'&title='+t+'&url='+u, '_blank').focus()})()`;
+    setBookmarkletCode(code);
+  }, [mark, baseUrl]);
 
   // 动画变体
   const container = {
@@ -63,7 +76,8 @@ export default function BookmarksPage() {
     };
 
     fetchData();
-  }, [mark]);
+    generateBookmarkletCode();
+  }, [mark, generateBookmarkletCode]);
 
   const handleDeleteBookmark = async (url: string) => {
     if (!bookmarksData) return;
@@ -168,21 +182,51 @@ export default function BookmarksPage() {
             </motion.p>
           </div>
           
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Button
-              onClick={() => setIsAddDialogOpen(true)}
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-md"
+          <div className="flex flex-col sm:flex-row gap-3">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <PlusCircle className="h-4 w-4" />
-              {t("addBookmark")}
-            </Button>
-          </motion.div>
+              <Button
+                onClick={() => setIsAddDialogOpen(true)}
+                className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-md"
+              >
+                <PlusCircle className="h-4 w-4" />
+                {t("addBookmark")}
+              </Button>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <a
+                href="#"
+                draggable={true}
+                ref={(node) => {
+                  if (node) {
+                    node.setAttribute("href", bookmarkletCode);
+                  }
+                }}
+                onClick={(e) => e.preventDefault()}
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-foreground h-10 px-4 py-2 select-all cursor-move shadow-sm hover:shadow-md"
+                title={t("bookmarkletTip")}
+              >
+                <BookmarkPlus className="h-4 w-4 mr-2 text-blue-500" />
+                {tButtons("saveButton", { mark })}
+              </a>
+              <div className="hidden sm:flex items-center mt-1 text-xs text-muted-foreground">
+                <span className="animate-pulse">↑</span>
+                <span className="ml-1">{tButtons("dragTip")}</span>
+              </div>
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* 分类筛选 */}

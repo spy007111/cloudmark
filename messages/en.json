@@ -77,6 +77,7 @@
     "noBookmarks": "No bookmarks yet",
     "addFirstBookmark": "Add your first bookmark",
     "loading": "Loading bookmarks...",
+    "bookmarkletTip": "Drag this button to your bookmarks bar to save webpages to this collection",
     "categories": {
       "all": "All",
       "filter": "Filter"
@@ -91,6 +92,7 @@
     },
     "BookmarkButtons": {
       "saveButton": "Save to {mark}",
+      "openButton": "Open {mark}",
       "dragTip": "Drag to bookmarks bar"
     },
     "BookmarkletInstaller": {
