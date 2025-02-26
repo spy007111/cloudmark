@@ -1,5 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Tag } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 interface CategoryFilterProps {
   categories: string[];
@@ -12,30 +15,46 @@ export function CategoryFilter({
   selectedCategory,
   onSelectCategory,
 }: CategoryFilterProps) {
+  const t = useTranslations("BookmarksPage.categories");
+
   return (
     <div className="mb-4">
-      <h2 className="text-sm font-medium mb-2">Categories</h2>
+      <div className="flex items-center gap-2 mb-3">
+        <Tag className="h-4 w-4 text-blue-500" />
+        <h2 className="text-sm font-medium text-muted-foreground">{t("filter")}</h2>
+      </div>
       <ScrollArea className="w-full whitespace-nowrap">
         <div className="flex space-x-2 pb-1">
-          <Badge
-            variant={selectedCategory === null ? "default" : "outline"}
-            className="cursor-pointer"
-            onClick={() => onSelectCategory(null)}
-          >
-            All
-          </Badge>
-          {categories.map((category) => (
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Badge
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              className="cursor-pointer"
-              onClick={() => onSelectCategory(category)}
+              variant={selectedCategory === null ? "default" : "outline"}
+              className={`cursor-pointer ${
+                selectedCategory === null 
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700" 
+                  : "hover:bg-blue-500/10"
+              }`}
+              onClick={() => onSelectCategory(null)}
             >
-              {category}
+              {t("all")}
             </Badge>
+          </motion.div>
+          {categories.map((category) => (
+            <motion.div key={category} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Badge
+                variant={selectedCategory === category ? "default" : "outline"}
+                className={`cursor-pointer ${
+                  selectedCategory === category 
+                    ? "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700" 
+                    : "hover:bg-blue-500/10"
+                }`}
+                onClick={() => onSelectCategory(category)}
+              >
+                {category}
+              </Badge>
+            </motion.div>
           ))}
         </div>
-        <ScrollBar orientation="horizontal" />
+        <ScrollBar orientation="horizontal" className="h-2" />
       </ScrollArea>
     </div>
   );

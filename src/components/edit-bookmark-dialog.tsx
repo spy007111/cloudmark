@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,7 +24,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
+import { Loader2, Link, FileText, Tag, Edit } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 interface EditBookmarkDialogProps {
   open: boolean;
@@ -42,6 +45,7 @@ export function EditBookmarkDialog({
   categories,
   onBookmarkUpdated,
 }: EditBookmarkDialogProps) {
+  const t = useTranslations("Components.BookmarkDialog");
   const [url, setUrl] = useState(bookmark.url);
   const [title, setTitle] = useState(bookmark.title);
   const [category, setCategory] = useState(bookmark.category);
@@ -56,7 +60,7 @@ export function EditBookmarkDialog({
     setError(null);
 
     if (!url) {
-      setError("URL is required");
+      setError(t("errors.urlRequired"));
       return;
     }
 
@@ -64,14 +68,14 @@ export function EditBookmarkDialog({
     try {
       new URL(url);
     } catch (e) {
-      setError("Please enter a valid URL");
+      setError(t("errors.invalidUrl"));
       return;
     }
 
     const selectedCategory = isCustomCategory ? newCategory : category;
 
     if (isCustomCategory && !newCategory) {
-      setError("Category name is required");
+      setError(t("errors.categoryRequired"));
       return;
     }
 
@@ -100,7 +104,7 @@ export function EditBookmarkDialog({
       onOpenChange(false);
     } catch (error) {
       console.error("Failed to update bookmark:", error);
-      setError("Failed to update bookmark. Please try again.");
+      setError(t("errors.updateFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -108,51 +112,74 @@ export function EditBookmarkDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] border border-indigo-500/20 bg-card/95 backdrop-blur-sm">
         <DialogHeader>
-          <DialogTitle>Edit Bookmark</DialogTitle>
+          <DialogTitle className="text-xl flex items-center gap-2">
+            <span className="bg-indigo-500/10 p-1.5 rounded-md">
+              <Edit className="h-4 w-4 text-indigo-500" />
+            </span>
+            {t("editTitle")}
+          </DialogTitle>
+          <DialogDescription>
+            {t("editDescription")}
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
           <div className="space-y-2">
-            <Label htmlFor="url">URL</Label>
+            <Label htmlFor="url" className="flex items-center gap-1.5">
+              <Link className="h-3.5 w-3.5 text-blue-500" />
+              {t("url")}
+            </Label>
             <Input
               id="url"
-              placeholder="https://example.com"
+              placeholder={t("urlPlaceholder")}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               required
+              className="border-blue-500/20 focus:border-blue-500/40 bg-blue-500/5 focus:ring-blue-500/10"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
+            <Label htmlFor="title" className="flex items-center gap-1.5">
+              <FileText className="h-3.5 w-3.5 text-indigo-500" />
+              {t("title")}
+            </Label>
             <Input
               id="title"
-              placeholder="My Bookmark"
+              placeholder={t("titlePlaceholder")}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
+              className="border-indigo-500/20 focus:border-indigo-500/40 bg-indigo-500/5 focus:ring-indigo-500/10"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description" className="flex items-center gap-1.5">
+              <FileText className="h-3.5 w-3.5 text-purple-500" />
+              {t("description")}
+            </Label>
             <Textarea
               id="description"
-              placeholder="Add a description for this bookmark"
+              placeholder={t("descriptionPlaceholder")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
+              className="border-purple-500/20 focus:border-purple-500/40 bg-purple-500/5 focus:ring-purple-500/10"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
+            <Label htmlFor="category" className="flex items-center gap-1.5">
+              <Tag className="h-3.5 w-3.5 text-green-500" />
+              {t("category")}
+            </Label>
             {categories.length > 0 && !isCustomCategory ? (
               <div className="flex space-x-2">
                 <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a category" />
+                  <SelectTrigger className="w-full border-green-500/20 focus:border-green-500/40 bg-green-500/5 focus:ring-green-500/10">
+                    <SelectValue placeholder={t("categoryPlaceholder")} />
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map((cat) => (
@@ -162,53 +189,71 @@ export function EditBookmarkDialog({
                     ))}
                   </SelectContent>
                 </Select>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsCustomCategory(true)}
-                >
-                  New
-                </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsCustomCategory(true)}
+                    className="border-green-500/20 hover:border-green-500/40 bg-green-500/5 hover:bg-green-500/10"
+                  >
+                    {t("newCategory")}
+                  </Button>
+                </motion.div>
               </div>
             ) : (
               <div className="flex space-x-2">
                 <Input
                   id="newCategory"
-                  placeholder="New category name"
+                  placeholder={t("newCategoryPlaceholder")}
                   value={newCategory}
                   onChange={(e) => setNewCategory(e.target.value)}
+                  className="border-green-500/20 focus:border-green-500/40 bg-green-500/5 focus:ring-green-500/10"
                 />
                 {categories.length > 0 && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setIsCustomCategory(false)}
-                  >
-                    Existing
-                  </Button>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsCustomCategory(false)}
+                      className="border-green-500/20 hover:border-green-500/40 bg-green-500/5 hover:bg-green-500/10"
+                    >
+                      {t("existingCategory")}
+                    </Button>
+                  </motion.div>
                 )}
               </div>
             )}
           </div>
 
           {error && (
-            <div className="text-sm font-medium text-destructive">{error}</div>
+            <div className="text-sm font-medium text-destructive bg-destructive/10 p-2 rounded-md">
+              {error}
+            </div>
           )}
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Save Changes
-            </Button>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                className="border-gray-500/20 hover:border-gray-500/40 bg-gray-500/5 hover:bg-gray-500/10"
+              >
+                {t("cancel")}
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+              >
+                {isSubmitting && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                {t("saveButton")}
+              </Button>
+            </motion.div>
           </DialogFooter>
         </form>
       </DialogContent>
