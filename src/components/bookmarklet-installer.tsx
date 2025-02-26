@@ -135,8 +135,7 @@ export default function BookmarkletInstaller({
             <div className="max-h-[200px] overflow-y-auto">
               <pre className="p-4 bg-muted/50 backdrop-blur-sm rounded-lg text-sm whitespace-pre-wrap break-all border border-border/60">
                 <code>
-                  {bookmarkletCode.match(/.{1,50}/g)?.join("\n") ||
-                    bookmarkletCode}
+                  {bookmarkletCode}
                 </code>
               </pre>
             </div>

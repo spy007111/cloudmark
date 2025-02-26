@@ -32,7 +32,7 @@ function Navigation() {
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors duration-200"
       >
         <FileText className="h-4 w-4" />
-        <span>{t("docs")}</span>
+        <span>{t("quickstart")}</span>
       </Link>
       <Link
         href="https://github.com/wesleyel/cloudmark"

@@ -39,22 +39,25 @@ export function MarkInput({
               placeholder={t("placeholder")}
               className="pr-10 h-11 border-border/60 bg-background/50 backdrop-blur-sm focus:border-blue-500 focus:ring-blue-500/20 transition-all"
             />
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Button
-                size="icon"
-                variant="ghost"
-                className={cn(
-                  "absolute right-0 top-0 h-full w-10 px-3 transition-all text-muted-foreground hover:text-foreground",
-                  isGenerating && "animate-spin",
-                )}
-                onClick={onGenerateRandom}
+            <div className="absolute right-0 top-0 h-full z-10">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="h-full flex items-center"
               >
-                <RefreshCcw className="h-4 w-4" />
-              </Button>
-            </motion.div>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className={cn(
+                    "h-full w-10 px-3 transition-all text-muted-foreground hover:text-foreground",
+                    isGenerating && "animate-spin",
+                  )}
+                  onClick={onGenerateRandom}
+                >
+                  <RefreshCcw className="h-4 w-4" />
+                </Button>
+              </motion.div>
+            </div>
           </div>
           <motion.div
             whileHover={{ scale: 1.05 }}
