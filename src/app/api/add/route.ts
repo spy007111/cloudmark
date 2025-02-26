@@ -6,6 +6,12 @@ import {
   createDefaultBookmarksData,
 } from "../../../lib/types";
 import { getFavicon } from "@/lib/actions";
+import { defaultCategory } from "@/lib/types";
+
+// 生成UUID的函数
+function generateUUID(): string {
+  return crypto.randomUUID();
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,7 +19,6 @@ export async function GET(request: NextRequest) {
     const mark = searchParams.get("mark") || "default";
     const title = searchParams.get("title") || "Untitled";
     const url = searchParams.get("url");
-    const defaultCategory = "Uncategorized";
 
     // 验证必要参数
     if (!url) {
@@ -25,6 +30,7 @@ export async function GET(request: NextRequest) {
     const favicon = await getFavicon(url);
 
     const bookmark: BookmarkInstance = {
+      uuid: generateUUID(),
       url: decodeURIComponent(url),
       title: decodeURIComponent(title),
       favicon,
@@ -52,7 +58,6 @@ export async function GET(request: NextRequest) {
     }
 
     data.bookmarks.push(bookmark);
-    data.categories = [...new Set(data.bookmarks.map((b) => b.category))];
     await KV.put(mark, JSON.stringify(data));
 
     return NextResponse.redirect(

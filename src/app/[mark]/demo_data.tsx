@@ -1,120 +1,11 @@
-// export const NAV_DATA: NavData[] = [
-//     {
-//       title: '常用工具',
-//       items: [
-//         // {
-//         //   icon: 'https://caniuse.com/img/favicon-128.png',
-//         //   title: 'Can I use',
-//         //   desc: '前端 API 兼容性查询',
-//         //   link: 'https://caniuse.com',
-//         // },
-//       ],
-//     },
-//     {
-//       title: 'AI 相关',
-//       items: [
-//         {
-//           icon: '/icons/chatgpt.png',
-//           title: 'ChatGPT',
-//           link: 'https://chat.openai.com/chat',
-//         },
-//         {
-//           icon: 'https://www.deepseek.com/favicon.ico',
-//           title: 'Deepseek',
-//           link: 'https://chat.deepseek.com',
-//         },
-//         {
-//           icon: 'https://grok.com/icon-192x192.png',
-//           title: 'Grok',
-//           link: 'https://grok.com',
-//         },
-//         {
-//           icon: 'https://devv.ai/favicon-light.png',
-//           title: 'Devv AI',
-//           desc: 'Devv AI代码搜索',
-//           link: 'https://devv.ai/zh',
-//         },
-//         {
-//           icon: 'https://metaso.cn/favicon.ico',
-//           title: 'Metaso AI',
-//           desc: '秘塔AI搜索',
-//           link: 'https://metaso.cn',
-//         },
-//       ],
-//     },
-//     {
-//       title: '流行趋势',
-//       items: [
-//         {
-//           icon: 'https://ph-static.imgix.net/ph-favicon-brand-500.ico',
-//           title: 'Product Hunt',
-//           desc: '发现新产品和创业公司',
-//           link: 'https://www.producthunt.com',
-//         },
-//         {
-//           icon: 'https://openalternative.co/favicon.png',
-//           title: 'Open Alternative',
-//           desc: '发现流行软件的开源替代品',
-//           link: 'https://openalternative.co/?sort=publishedAt.desc',
-//         },
-//         {
-//           icon: 'https://startupfa.me/favicon.ico',
-//           title: 'Startup Frame',
-//           desc: 'Explore the best trending startups & products on the internet.',
-//           link: 'https://startupfa.me/',
-//         },
-//         {
-//           icon: 'https://trendshift.io/favicon.ico',
-//           title: 'Trendshift',
-//           desc: '查看Github的流行趋势',
-//           link: 'https://trendshift.io/?trending-range=7',
-//         },
-//       ],
-//     },
-//     {
-//       title: '新闻网站',
-//       items: [
-//         {
-//           icon: 'https://www.buzzing.cc/favicon.ico?v=20230310',
-//           title: 'Buzzing',
-//           desc: '聚合各个国外平台的新闻',
-//           link: 'https://www.buzzing.cc',
-//         },
-//         {
-//           icon: 'https://momoyu.cc/icon-192.png',
-//           title: '摸摸鱼',
-//           desc: '国内新闻热搜',
-//           link: 'https://momoyu.cc',
-//         },
-//       ],
-//     },
-//     {
-//       title: '逛逛论坛',
-//       items: [
-//         {
-//           icon: 'https://www.v2ex.com/static/icon-196.png',
-//           title: 'V2EX',
-//           desc: '创意工作者们的社区',
-//           link: 'https://www.v2ex.com',
-//         },
-//         {
-//           icon: 'https://linux.do/uploads/default/original/3X/9/d/9dd49731091ce8656e94433a26a3ef36062b3994.png',
-//           title: 'linux.do',
-//           desc: '搞七捻三的技术论坛',
-//           link: 'https://linux.do',
-//         },
-//       ],
-//     },
-//   ]
-
 import { BookmarksData } from "@/lib/types";
 
 // 演示用的书签数据
 export const DEMO_BOOKMARKS_DATA: BookmarksData = {
   mark: "demo",
-  categories: ["AI工具", "开发工具", "学习资源", "设计资源", "新闻资讯"],
   bookmarks: [
     {
+      uuid: "4d283ee2-1c03-4d39-89e4-910989028ae1",
       url: "https://chat.openai.com",
       title: "ChatGPT",
       favicon: "https://chat.openai.com/favicon.ico",
@@ -124,6 +15,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "OpenAI开发的对话式人工智能助手",
     },
     {
+      uuid: "62e24d2a-a1ab-49f3-899c-6b9212077605",
       url: "https://github.com",
       title: "GitHub",
       favicon: "https://github.com/favicon.ico",
@@ -133,6 +25,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "全球最大的代码托管平台",
     },
     {
+      uuid: "67d1a74c-5f5d-4734-b22b-823848fea115",
       url: "https://reactjs.org",
       title: "React",
       favicon: "https://reactjs.org/favicon.ico",
@@ -142,6 +35,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "用于构建用户界面的JavaScript库",
     },
     {
+      uuid: "e1cd6e04-0f83-41cd-a99b-4d4bc26b015f",
       url: "https://nextjs.org",
       title: "Next.js",
       favicon: "https://nextjs.org/favicon.ico",
@@ -151,6 +45,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "React框架，用于生产环境的应用",
     },
     {
+      uuid: "06acb5e2-4373-4aaf-900d-f4e740267501",
       url: "https://www.coursera.org",
       title: "Coursera",
       favicon: "https://www.coursera.org/favicon.ico",
@@ -160,6 +55,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "提供来自世界各地大学的在线课程",
     },
     {
+      uuid: "f36a531c-10e3-42b3-953c-52ac74668cbf",
       url: "https://www.figma.com",
       title: "Figma",
       favicon: "https://www.figma.com/favicon.ico",
@@ -169,6 +65,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "基于浏览器的界面设计工具",
     },
     {
+      uuid: "8db6a3e1-a4ec-4a7c-94e5-3524b627cdc6",
       url: "https://news.ycombinator.com",
       title: "Hacker News",
       favicon: "https://news.ycombinator.com/favicon.ico",
@@ -178,6 +75,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "专注于计算机科学和创业的社交新闻网站",
     },
     {
+      uuid: "276b97ba-1596-4553-b4a1-014b92d83d8f",
       url: "https://claude.ai",
       title: "Claude AI",
       favicon: "https://claude.ai/favicon.ico",
@@ -187,6 +85,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "Anthropic开发的AI助手",
     },
     {
+      uuid: "b063e870-a9e6-4fc1-8f17-f425e0e9b346",
       url: "https://www.midjourney.com",
       title: "Midjourney",
       favicon: "https://www.midjourney.com/favicon.ico",
@@ -196,6 +95,7 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "AI图像生成工具",
     },
     {
+      uuid: "289309e8-1728-42cd-8a1a-5ba4216ba60b",
       url: "https://tailwindcss.com",
       title: "Tailwind CSS",
       favicon: "https://tailwindcss.com/favicon.ico",

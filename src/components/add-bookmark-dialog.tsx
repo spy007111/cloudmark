@@ -85,6 +85,7 @@ export function AddBookmarkDialog({
       // Demo模式下，直接创建新书签对象而不调用API
       if (isDemo) {
         const newBookmark: BookmarkInstance = {
+          uuid: crypto.randomUUID(),
           url,
           title: title || new URL(url).hostname,
           favicon: `https://${new URL(url).hostname}/favicon.ico`,

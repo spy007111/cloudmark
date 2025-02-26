@@ -1,4 +1,5 @@
 export interface BookmarkInstance {
+  uuid: string;
   url: string;
   title: string;
   favicon?: string;
@@ -10,16 +11,15 @@ export interface BookmarkInstance {
 
 export interface BookmarksData {
   mark: string;
-  categories: string[];
   bookmarks: BookmarkInstance[];
 }
 
 export const defaultMark = "default";
+export const defaultCategory = "default";
 
 export function createDefaultBookmarksData(mark: string): BookmarksData {
   return {
     mark,
-    categories: [],
     bookmarks: [],
   };
 }

@@ -33,6 +33,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+// 从书签列表中提取所有唯一分类
+const getCategories = (bookmarks: BookmarkInstance[]): string[] => {
+  return [...new Set(bookmarks.map((bookmark) => bookmark.category))].sort();
+};
+
 // 排序类型
 type SortOption = "time" | "category" | "title";
 
@@ -261,28 +266,21 @@ export default function BookmarksPage() {
     generateBookmarkletCode();
   }, [mark, generateBookmarkletCode, loadPreferences]);
 
-  const handleDeleteBookmark = async (url: string) => {
+  const handleDeleteBookmark = async (uuid: string) => {
     if (!bookmarksData) return;
 
     // 如果是demo模式，只更新本地状态
     if (mark === "demo") {
       setBookmarksData({
         ...bookmarksData,
-        bookmarks: bookmarksData.bookmarks.filter((b) => b.url !== url),
-        categories: [
-          ...new Set(
-            bookmarksData.bookmarks
-              .filter((b) => b.url !== url)
-              .map((b) => b.category),
-          ),
-        ],
+        bookmarks: bookmarksData.bookmarks.filter((b) => b.uuid !== uuid),
       });
       return;
     }
 
     const formData = new FormData();
     formData.append("mark", mark);
-    formData.append("url", url);
+    formData.append("uuid", uuid);
 
     try {
       await deleteBookmarkData(formData);
@@ -290,14 +288,7 @@ export default function BookmarksPage() {
       // Update local state
       setBookmarksData({
         ...bookmarksData,
-        bookmarks: bookmarksData.bookmarks.filter((b) => b.url !== url),
-        categories: [
-          ...new Set(
-            bookmarksData.bookmarks
-              .filter((b) => b.url !== url)
-              .map((b) => b.category),
-          ),
-        ],
+        bookmarks: bookmarksData.bookmarks.filter((b) => b.uuid !== uuid),
       });
     } catch (error) {
       console.error("Failed to delete bookmark:", error);
@@ -314,13 +305,12 @@ export default function BookmarksPage() {
 
     // Update local state
     const updatedBookmarks = bookmarksData.bookmarks.map((b) =>
-      b.url === updatedBookmark.url ? updatedBookmark : b,
+      b.uuid === updatedBookmark.uuid ? updatedBookmark : b,
     );
 
     setBookmarksData({
       ...bookmarksData,
       bookmarks: updatedBookmarks,
-      categories: [...new Set(updatedBookmarks.map((b) => b.category))],
     });
   };
 
@@ -329,9 +319,6 @@ export default function BookmarksPage() {
       setBookmarksData({
         ...bookmarksData,
         bookmarks: [...bookmarksData.bookmarks, newBookmark],
-        categories: [
-          ...new Set([...bookmarksData.categories, newBookmark.category]),
-        ],
       });
     }
   };
@@ -555,7 +542,7 @@ export default function BookmarksPage() {
 
         {/* 分类筛选 */}
         {bookmarksData &&
-          bookmarksData.categories.length > 0 &&
+          bookmarksData.bookmarks.length > 0 &&
           layoutMode === "grid" && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -564,7 +551,7 @@ export default function BookmarksPage() {
               className="mb-8"
             >
               <CategoryFilter
-                categories={bookmarksData.categories}
+                categories={getCategories(bookmarksData.bookmarks)}
                 selectedCategory={selectedCategory}
                 onSelectCategory={setSelectedCategory}
               />
@@ -582,10 +569,10 @@ export default function BookmarksPage() {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {getSortedBookmarks(bookmarksData.bookmarks).map((bookmark) => (
-                <motion.div key={bookmark.url} variants={item}>
+                <motion.div key={bookmark.uuid} variants={item}>
                   <BookmarkCard
                     bookmark={bookmark}
-                    onDelete={() => handleDeleteBookmark(bookmark.url)}
+                    onDelete={() => handleDeleteBookmark(bookmark.uuid)}
                     onEdit={() => handleEditBookmark(bookmark)}
                   />
                 </motion.div>
@@ -599,53 +586,48 @@ export default function BookmarksPage() {
               animate="show"
               className="space-y-8"
             >
-              {bookmarksData &&
-                [...new Set(bookmarksData.bookmarks.map((b) => b.category))]
-                  .sort()
-                  .map((category) => {
-                    // 如果有选中的分类，只显示该分类
-                    if (selectedCategory && category !== selectedCategory)
-                      return null;
+              {getCategories(bookmarksData.bookmarks).map((category) => {
+                // 如果有选中的分类，只显示该分类
+                if (selectedCategory && category !== selectedCategory)
+                  return null;
 
-                    const categoryBookmarks = getSortedBookmarks(
-                      bookmarksData.bookmarks.filter(
-                        (b) => b.category === category,
-                      ),
-                    );
+                const categoryBookmarks = getSortedBookmarks(
+                  bookmarksData.bookmarks.filter(
+                    (b) => b.category === category,
+                  ),
+                );
 
-                    if (categoryBookmarks.length === 0) return null;
+                if (categoryBookmarks.length === 0) return null;
 
-                    return (
-                      <motion.div
-                        key={category}
-                        variants={item}
-                        className="overflow-hidden"
-                      >
-                        <div className="flex items-center gap-2 mb-4">
-                          <div className="flex items-center px-3 py-1.5 bg-primary/10 text-primary rounded-lg">
-                            <Layers className="h-4 w-4 mr-2 opacity-70" />
-                            <h3 className="text-md font-medium">{category}</h3>
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            ({categoryBookmarks.length})
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                          {categoryBookmarks.map((bookmark) => (
-                            <motion.div key={bookmark.url} variants={item}>
-                              <BookmarkCard
-                                bookmark={bookmark}
-                                onDelete={() =>
-                                  handleDeleteBookmark(bookmark.url)
-                                }
-                                onEdit={() => handleEditBookmark(bookmark)}
-                              />
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    );
-                  })}
+                return (
+                  <motion.div
+                    key={category}
+                    variants={item}
+                    className="overflow-hidden"
+                  >
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="flex items-center px-3 py-1.5 bg-primary/10 text-primary rounded-lg">
+                        <Layers className="h-4 w-4 mr-2 opacity-70" />
+                        <h3 className="text-md font-medium">{category}</h3>
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        ({categoryBookmarks.length})
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {categoryBookmarks.map((bookmark) => (
+                        <motion.div key={bookmark.uuid} variants={item}>
+                          <BookmarkCard
+                            bookmark={bookmark}
+                            onDelete={() => handleDeleteBookmark(bookmark.uuid)}
+                            onEdit={() => handleEditBookmark(bookmark)}
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           )
         ) : (
@@ -690,7 +672,7 @@ export default function BookmarksPage() {
         open={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
         mark={mark}
-        categories={bookmarksData?.categories || []}
+        categories={bookmarksData ? getCategories(bookmarksData.bookmarks) : []}
         onBookmarkAdded={handleBookmarkAdded}
         isDemo={mark === "demo"}
       />
@@ -701,7 +683,9 @@ export default function BookmarksPage() {
           onOpenChange={setIsEditDialogOpen}
           mark={mark}
           bookmark={selectedBookmark}
-          categories={bookmarksData?.categories || []}
+          categories={
+            bookmarksData ? getCategories(bookmarksData.bookmarks) : []
+          }
           onBookmarkUpdated={handleBookmarkUpdated}
           isDemo={mark === "demo"}
         />

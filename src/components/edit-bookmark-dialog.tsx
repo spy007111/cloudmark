@@ -98,6 +98,7 @@ export function EditBookmarkDialog({
       if (!isDemo) {
         const formData = new FormData();
         formData.append("mark", mark);
+        formData.append("uuid", bookmark.uuid);
         formData.append("url", url);
         formData.append("title", title);
         formData.append("category", selectedCategory);
