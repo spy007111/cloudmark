@@ -35,6 +35,7 @@ interface EditBookmarkDialogProps {
   bookmark: BookmarkInstance;
   categories: string[];
   onBookmarkUpdated: (updatedBookmark: BookmarkInstance) => void;
+  isDemo?: boolean;
 }
 
 export function EditBookmarkDialog({
@@ -44,6 +45,7 @@ export function EditBookmarkDialog({
   bookmark,
   categories,
   onBookmarkUpdated,
+  isDemo = false,
 }: EditBookmarkDialogProps) {
   const t = useTranslations("Components.BookmarkDialog");
   const [url, setUrl] = useState(bookmark.url);
@@ -82,14 +84,16 @@ export function EditBookmarkDialog({
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData();
-      formData.append("mark", mark);
-      formData.append("url", url);
-      formData.append("title", title);
-      formData.append("category", selectedCategory);
-      formData.append("description", description);
+      if (!isDemo) {
+        const formData = new FormData();
+        formData.append("mark", mark);
+        formData.append("url", url);
+        formData.append("title", title);
+        formData.append("category", selectedCategory);
+        formData.append("description", description);
 
-      await putBookmarkData(formData);
+        await putBookmarkData(formData);
+      }
 
       const updatedBookmark: BookmarkInstance = {
         ...bookmark,

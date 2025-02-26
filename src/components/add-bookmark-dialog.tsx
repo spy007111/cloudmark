@@ -34,6 +34,7 @@ interface AddBookmarkDialogProps {
   mark: string;
   categories: string[];
   onBookmarkAdded: (bookmark: BookmarkInstance) => void;
+  isDemo?: boolean;
 }
 
 export function AddBookmarkDialog({
@@ -42,6 +43,7 @@ export function AddBookmarkDialog({
   mark,
   categories,
   onBookmarkAdded,
+  isDemo = false,
 }: AddBookmarkDialogProps) {
   const t = useTranslations("Components.BookmarkDialog");
   const [url, setUrl] = useState("");
@@ -80,18 +82,33 @@ export function AddBookmarkDialog({
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData();
-      formData.append("mark", mark);
-      formData.append("url", url);
-      formData.append("title", title || new URL(url).hostname);
-      formData.append("category", selectedCategory);
-      formData.append("description", description);
+      // Demo模式下，直接创建新书签对象而不调用API
+      if (isDemo) {
+        const newBookmark: BookmarkInstance = {
+          url,
+          title: title || new URL(url).hostname,
+          favicon: `https://${new URL(url).hostname}/favicon.ico`,
+          category: selectedCategory,
+          description: description,
+          createdAt: new Date().toISOString(),
+          modifiedAt: new Date().toISOString(),
+        };
+        
+        onBookmarkAdded(newBookmark);
+      } else {
+        // 正常模式，调用API
+        const formData = new FormData();
+        formData.append("mark", mark);
+        formData.append("url", url);
+        formData.append("title", title || new URL(url).hostname);
+        formData.append("category", selectedCategory);
+        formData.append("description", description);
 
-      const newBookmark = await putBookmarkData(formData);
+        const newBookmark = await putBookmarkData(formData);
+        onBookmarkAdded(newBookmark);
+      }
 
-      onBookmarkAdded(newBookmark);
-
-      // Reset form
+      // 重置表单
       setUrl("");
       setTitle("");
       setDescription("");

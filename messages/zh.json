@@ -83,6 +83,9 @@
     "addFirstBookmark": "添加第一个书签",
     "loading": "正在加载书签...",
     "bookmarkletTip": "拖拽此按钮到书签栏，一键保存网页到此收藏",
+    "demoMode": "演示模式",
+    "demoDescription": "这是一个演示集合，您可以自由添加、编辑和删除书签，所有操作仅在本地生效，不会保存到服务器。",
+    "createOwn": "创建自己的收藏",
     "categories": {
       "all": "全部",
       "filter": "筛选"

@@ -83,6 +83,9 @@
     "addFirstBookmark": "Add your first bookmark",
     "loading": "Loading bookmarks...",
     "bookmarkletTip": "Drag this button to your bookmarks bar to save webpages to this collection",
+    "demoMode": "Demo Mode",
+    "demoDescription": "This is a demo collection. You can freely add, edit, and delete bookmarks. All operations are local and won't be saved to the server.",
+    "createOwn": "Create Your Own",
     "categories": {
       "all": "All",
       "filter": "Filter"
