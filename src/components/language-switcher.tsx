@@ -21,7 +21,7 @@ const languages = [
 export function LanguageSwitcher() {
   const currentLang = useLocale();
   const t = useTranslations("Navigation");
-  
+
   const handleLanguageChange = (langCode: string) => {
     const locale = langCode as Locale;
     setUserLocale(locale);
@@ -30,8 +30,8 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           size="icon"
           className="rounded-full hover:bg-primary/10 transition-colors duration-200 focus-visible:ring-offset-0"
         >
@@ -45,8 +45,8 @@ export function LanguageSwitcher() {
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code)}
             className={`flex items-center justify-between px-3 py-2 cursor-pointer transition-colors duration-200 ${
-              currentLang === lang.code 
-                ? "bg-primary/10 text-primary" 
+              currentLang === lang.code
+                ? "bg-primary/10 text-primary"
                 : "hover:bg-accent"
             }`}
           >

@@ -140,5 +140,15 @@
     "CategoryFilter": {
       "title": "Filter by Category"
     }
+  },
+  "Notifications": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information",
+    "bookmarkAdded": "Bookmark added successfully",
+    "bookmarkExists": "Bookmark with this URL already exists",
+    "urlRequired": "URL is required",
+    "processingError": "Error processing bookmark"
   }
 }

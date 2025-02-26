@@ -83,7 +83,7 @@ export async function deleteBookmarkData(formData: FormData) {
     return;
   }
   bookmarksdata.bookmarks = bookmarksdata.bookmarks.filter(
-    (b) => b.url !== url
+    (b) => b.url !== url,
   );
   bookmarksdata.categories = [
     ...new Set(bookmarksdata.bookmarks.map((b) => b.category)),

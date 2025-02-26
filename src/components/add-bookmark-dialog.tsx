@@ -118,9 +118,7 @@ export function AddBookmarkDialog({
             </span>
             {t("addTitle")}
           </DialogTitle>
-          <DialogDescription>
-            {t("addDescription", { mark })}
-          </DialogDescription>
+          <DialogDescription>{t("addDescription", { mark })}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
           <div className="space-y-2">
@@ -186,7 +184,10 @@ export function AddBookmarkDialog({
                     ))}
                   </SelectContent>
                 </Select>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Button
                     type="button"
                     variant="outline"
@@ -207,7 +208,10 @@ export function AddBookmarkDialog({
                   className="border-green-500/20 focus:border-green-500/40 bg-green-500/5 focus:ring-green-500/10"
                 />
                 {categories.length > 0 && (
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Button
                       type="button"
                       variant="outline"
@@ -240,8 +244,8 @@ export function AddBookmarkDialog({
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isSubmitting}
                 className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600"
               >

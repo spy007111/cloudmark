@@ -20,12 +20,12 @@ export function MarkInput({
   isGenerating,
 }: MarkInputProps) {
   const t = useTranslations("Components.MarkInput");
-  
+
   return (
     <div className="space-y-4">
       <div className="space-y-3">
-        <Label 
-          htmlFor="mark" 
+        <Label
+          htmlFor="mark"
           className="text-lg font-medium bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-500"
         >
           {t("label")}
@@ -59,10 +59,7 @@ export function MarkInput({
               </motion.div>
             </div>
           </div>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               variant="secondary"
               className="flex-shrink-0 h-11 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 border border-indigo-500/20 shadow-sm"

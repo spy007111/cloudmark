@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { useParams } from "next/navigation";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import type { BookmarkInstance, BookmarksData } from "@/lib/types";
 import { getBookmarkData, deleteBookmarkData } from "@/lib/actions";
 import { BookmarkCard } from "@/components/bookmark-card";
@@ -12,14 +12,18 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle, Bookmark, Search, BookmarkPlus } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/components/toast-provider";
 
 export const runtime = "edge";
 
 export default function BookmarksPage() {
-  const params = useParams();
-  const mark = params.mark as string;
+  const params = useParams<{ mark: string }>();
+  const searchParams = useSearchParams();
+  const { showToast } = useToast();
+  const mark = params.mark;
   const t = useTranslations("BookmarksPage");
   const tButtons = useTranslations("Components.BookmarkButtons");
+  const tNotifications = useTranslations("Notifications");
 
   const [bookmarksData, setBookmarksData] = useState<BookmarksData | null>(
     null,
@@ -31,6 +35,9 @@ export default function BookmarksPage() {
   const [selectedBookmark, setSelectedBookmark] =
     useState<BookmarkInstance | null>(null);
   const [bookmarkletCode, setBookmarkletCode] = useState("");
+
+  // 使用 ref 跟踪是否已经显示过通知
+  const toastShownRef = useRef(false);
 
   // 获取当前网站的基础 URL
   const baseUrl =
@@ -49,15 +56,73 @@ export default function BookmarksPage() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
-  
+
   const item = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
+    show: { opacity: 1, y: 0 },
   };
+
+  useEffect(() => {
+    // 处理 URL 参数中的状态和消息
+    const status = searchParams.get("status");
+    const messageKey = searchParams.get("message");
+
+    // 只有当状态和消息存在，且尚未显示过通知时，才显示通知
+    if (status && messageKey && !toastShownRef.current) {
+      try {
+        // 标记已显示通知
+        toastShownRef.current = true;
+
+        // 根据状态显示不同类型的 Toast
+        switch (status) {
+          case "success":
+            showToast({
+              title: tNotifications("success"),
+              description: tNotifications(messageKey),
+              variant: "success",
+            });
+            break;
+          case "error":
+            showToast({
+              title: tNotifications("error"),
+              description: tNotifications(messageKey),
+              variant: "error",
+            });
+            break;
+          case "warning":
+            showToast({
+              title: tNotifications("warning"),
+              description: tNotifications(messageKey),
+              variant: "warning",
+            });
+            break;
+          default:
+            showToast({
+              title: tNotifications("info"),
+              description: tNotifications(messageKey),
+              variant: "info",
+            });
+        }
+
+        // 清除 URL 中的状态和消息参数
+        const url = new URL(window.location.href);
+        url.searchParams.delete("status");
+        url.searchParams.delete("message");
+        window.history.replaceState({}, "", url.toString());
+      } catch (error) {
+        console.error("Failed to process notification:", error);
+      }
+    }
+
+    // 清理函数，在组件卸载时重置 toastShownRef
+    return () => {
+      toastShownRef.current = false;
+    };
+  }, [searchParams, showToast, tNotifications]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,10 +216,10 @@ export default function BookmarksPage() {
         <div className="absolute bottom-0 left-0 w-[50rem] h-[50rem] bg-purple-500/10 rounded-full blur-3xl transform translate-y-12 -translate-x-12" />
         <div className="absolute bottom-1/3 right-1/4 w-[30rem] h-[30rem] bg-indigo-500/5 rounded-full blur-3xl" />
       </div>
-      
+
       <div className="py-12 lg:py-16">
         {/* 标题区域 */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -171,7 +236,7 @@ export default function BookmarksPage() {
                 {t("title")}
               </h1>
             </motion.div>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -180,7 +245,7 @@ export default function BookmarksPage() {
               {t("collection", { mark })}
             </motion.p>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row gap-3">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -197,7 +262,7 @@ export default function BookmarksPage() {
                 {t("addBookmark")}
               </Button>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -230,7 +295,7 @@ export default function BookmarksPage() {
 
         {/* 分类筛选 */}
         {bookmarksData && bookmarksData.categories.length > 0 && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
@@ -246,7 +311,7 @@ export default function BookmarksPage() {
 
         {/* 书签列表 */}
         {filteredBookmarks && filteredBookmarks.length > 0 ? (
-          <motion.div 
+          <motion.div
             variants={container}
             initial="hidden"
             animate="show"
@@ -263,7 +328,7 @@ export default function BookmarksPage() {
             ))}
           </motion.div>
         ) : (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
@@ -277,7 +342,9 @@ export default function BookmarksPage() {
                     <Search className="h-8 w-8 text-muted-foreground" />
                   </div>
                 </div>
-                <p className="text-muted-foreground text-lg mb-6">{t("noBookmarks")}</p>
+                <p className="text-muted-foreground text-lg mb-6">
+                  {t("noBookmarks")}
+                </p>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

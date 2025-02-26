@@ -11,21 +11,21 @@ export default function Page() {
   const messages = useMessages();
   // @ts-expect-error
   const keys = Object.keys(messages.HomePage.features);
-  
+
   // 动画变体
   const container = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
-  
+
   const item = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
+    show: { opacity: 1, y: 0 },
   };
 
   return (
@@ -36,9 +36,9 @@ export default function Page() {
         <div className="absolute bottom-0 left-0 w-[50rem] h-[50rem] bg-purple-500/10 rounded-full blur-3xl transform translate-y-12 -translate-x-12" />
         <div className="absolute bottom-1/3 right-1/4 w-[30rem] h-[30rem] bg-indigo-500/5 rounded-full blur-3xl" />
       </div>
-      
+
       {/* Hero 区域 */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -56,8 +56,8 @@ export default function Page() {
           </h1>
           <div className="absolute -inset-1 bg-blue-500/20 rounded-full blur-xl -z-10" />
         </motion.div>
-        
-        <motion.h2 
+
+        <motion.h2
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
@@ -65,8 +65,8 @@ export default function Page() {
         >
           {t("title")}
         </motion.h2>
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
@@ -74,7 +74,7 @@ export default function Page() {
         >
           {t("description")}
         </motion.p>
-        
+
         <div className="flex gap-4">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -90,7 +90,7 @@ export default function Page() {
               </Link>
             </Button>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -98,7 +98,12 @@ export default function Page() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Button asChild size="lg" variant="outline" className="rounded-full text-base px-8">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full text-base px-8"
+            >
               <Link href="/demo" className="flex items-center gap-2">
                 Demo
                 <ExternalLink className="h-4 w-4" />
@@ -109,7 +114,7 @@ export default function Page() {
       </motion.div>
 
       {/* 特性卡片 */}
-      <motion.div 
+      <motion.div
         variants={container}
         initial="hidden"
         animate="show"
@@ -119,9 +124,10 @@ export default function Page() {
           <motion.div
             key={key}
             variants={item}
-            whileHover={{ 
-              y: -5, 
-              boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" 
+            whileHover={{
+              y: -5,
+              boxShadow:
+                "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
             }}
             className="relative rounded-xl border border-border/60 bg-card/50 backdrop-blur-sm p-6 transition-all"
           >
@@ -129,9 +135,7 @@ export default function Page() {
             <h3 className="font-semibold mb-3 text-xl">
               {t(`features.${key}.title`)}
             </h3>
-            <p className="text-muted-foreground">
-              {t(`features.${key}.desc`)}
-            </p>
+            <p className="text-muted-foreground">{t(`features.${key}.desc`)}</p>
           </motion.div>
         ))}
       </motion.div>

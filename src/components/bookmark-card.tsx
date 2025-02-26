@@ -78,8 +78,8 @@ export function BookmarkCard({
           </p>
         )}
         <div className="flex items-center justify-between">
-          <Badge 
-            variant="outline" 
+          <Badge
+            variant="outline"
             className="text-xs bg-blue-500/5 border-blue-500/20 text-blue-700 dark:text-blue-300"
           >
             {category}
@@ -88,7 +88,7 @@ export function BookmarkCard({
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between">
-        <motion.div 
+        <motion.div
           className="w-full mr-2"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -105,9 +105,9 @@ export function BookmarkCard({
         </motion.div>
         <div className="flex space-x-2">
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               onClick={onEdit}
               className="border-indigo-500/20 hover:border-indigo-500/40 bg-indigo-500/5 hover:bg-indigo-500/10"
             >
@@ -116,9 +116,9 @@ export function BookmarkCard({
             </Button>
           </motion.div>
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               onClick={handleDelete}
               className="border-red-500/20 hover:border-red-500/40 bg-red-500/5 hover:bg-red-500/10 text-red-500/80 hover:text-red-500"
             >

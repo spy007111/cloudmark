@@ -15,13 +15,10 @@ export function BookmarkButtons({
   baseUrl,
 }: BookmarkButtonsProps) {
   const t = useTranslations("Components.BookmarkButtons");
-  
+
   return (
     <div className="flex flex-col sm:flex-row gap-3">
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <a
           href="#"
           draggable={true}
@@ -37,11 +34,8 @@ export function BookmarkButtons({
           {t("saveButton", { mark })}
         </a>
       </motion.div>
-      
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
+
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <a
           href={`${baseUrl}/${mark}`}
           draggable={true}
@@ -52,7 +46,7 @@ export function BookmarkButtons({
           {t("openButton", { mark })}
         </a>
       </motion.div>
-      
+
       <div className="hidden sm:flex items-center ml-2 text-sm text-muted-foreground">
         <span className="animate-pulse">←</span>
         <span className="ml-2">{t("dragTip")}</span>

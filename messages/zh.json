@@ -140,5 +140,15 @@
     "CategoryFilter": {
       "title": "分类筛选"
     }
+  },
+  "Notifications": {
+    "success": "成功",
+    "error": "错误",
+    "warning": "警告",
+    "info": "通知",
+    "bookmarkAdded": "书签已成功添加",
+    "bookmarkExists": "该 URL 的书签已存在",
+    "urlRequired": "URL 是必需的",
+    "processingError": "处理书签时出错"
   }
 }

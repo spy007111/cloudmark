@@ -19,8 +19,11 @@ export async function GET(request: NextRequest) {
 
     // 验证必要参数
     if (!url) {
-      return NextResponse.json({ error: "URL is required" }, { status: 400 });
+      return NextResponse.redirect(
+        new URL(`/${mark}?status=error&message=urlRequired`, request.url),
+      );
     }
+
     const favicon = await getFavicon(url);
 
     const bookmark: BookmarkInstance = {
@@ -39,19 +42,30 @@ export async function GET(request: NextRequest) {
       data = createDefaultBookmarksData(mark);
     }
 
+    // 检查是否已存在相同 URL 的书签
+    const existingBookmarkIndex = data.bookmarks.findIndex(
+      (b) => b.url === bookmark.url,
+    );
+
+    if (existingBookmarkIndex !== -1) {
+      return NextResponse.redirect(
+        new URL(`/${mark}?status=warning&message=bookmarkExists`, request.url),
+      );
+    }
+
     data.bookmarks.push(bookmark);
     data.categories = [...new Set(data.bookmarks.map((b) => b.category))];
     await KV.put(mark, JSON.stringify(data));
 
-    return NextResponse.redirect(new URL(`/${mark}`, request.url));
+    return NextResponse.redirect(
+      new URL(`/${mark}?status=success&message=bookmarkAdded`, request.url),
+    );
   } catch (error) {
     console.error("Error processing bookmark:", error);
-    return NextResponse.json(
-      {
-        error: "Failed to process bookmark",
-        details: error instanceof Error ? error.message : String(error),
-      },
-      { status: 500 }
+
+    const mark = new URL(request.url).searchParams.get("mark") || "default";
+    return NextResponse.redirect(
+      new URL(`/${mark}?status=error&message=processingError`, request.url),
     );
   }
 }

@@ -120,9 +120,7 @@ export function EditBookmarkDialog({
             </span>
             {t("editTitle")}
           </DialogTitle>
-          <DialogDescription>
-            {t("editDescription")}
-          </DialogDescription>
+          <DialogDescription>{t("editDescription")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
           <div className="space-y-2">
@@ -189,7 +187,10 @@ export function EditBookmarkDialog({
                     ))}
                   </SelectContent>
                 </Select>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Button
                     type="button"
                     variant="outline"
@@ -210,7 +211,10 @@ export function EditBookmarkDialog({
                   className="border-green-500/20 focus:border-green-500/40 bg-green-500/5 focus:ring-green-500/10"
                 />
                 {categories.length > 0 && (
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Button
                       type="button"
                       variant="outline"
@@ -243,8 +247,8 @@ export function EditBookmarkDialog({
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isSubmitting}
                 className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
               >
