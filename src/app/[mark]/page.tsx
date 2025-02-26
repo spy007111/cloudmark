@@ -566,10 +566,10 @@ export default function BookmarksPage() {
               variants={container}
               initial="hidden"
               animate="show"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
             >
               {getSortedBookmarks(bookmarksData.bookmarks).map((bookmark) => (
-                <motion.div key={bookmark.uuid} variants={item}>
+                <motion.div key={bookmark.uuid} variants={item} className="h-full w-full">
                   <BookmarkCard
                     bookmark={bookmark}
                     onDelete={() => handleDeleteBookmark(bookmark.uuid)}

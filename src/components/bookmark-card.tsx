@@ -41,10 +41,10 @@ export function BookmarkCard({
   };
 
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-md backdrop-blur-sm bg-card/50 border border-border/60">
-      <CardHeader className="p-4 pb-0 flex flex-row items-center gap-2">
+    <Card className="h-[240px] w-full flex flex-col overflow-hidden transition-all hover:shadow-md backdrop-blur-sm bg-card/50 border border-border/60">
+      <CardHeader className="p-4 pb-2 flex flex-row items-center gap-2 flex-shrink-0">
         {favicon ? (
-          <div className="relative w-8 h-8 flex items-center justify-center">
+          <div className="relative w-8 h-8 flex-shrink-0 flex items-center justify-center">
             <div className="absolute inset-0 bg-blue-500/5 rounded-md"></div>
             <img
               src={favicon || `https://favicone.com/${domain}?s=32`}
@@ -58,7 +58,7 @@ export function BookmarkCard({
             />
           </div>
         ) : (
-          <div className="w-8 h-8 bg-blue-500/5 rounded-md flex items-center justify-center">
+          <div className="w-8 h-8 flex-shrink-0 bg-blue-500/5 rounded-md flex items-center justify-center">
             <ExternalLink className="w-4 h-4 text-blue-500/70" />
           </div>
         )}
@@ -71,23 +71,25 @@ export function BookmarkCard({
           </p>
         </div>
       </CardHeader>
-      <CardContent className="p-4">
-        {description && (
-          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+      <CardContent className="p-4 flex-grow overflow-hidden flex flex-col">
+        {description ? (
+          <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-shrink-0" title={description}>
             {description}
           </p>
+        ) : (
+          <div className="flex-grow"></div>
         )}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-auto flex-shrink-0">
           <Badge
             variant="outline"
-            className="text-xs bg-blue-500/5 border-blue-500/20 text-blue-700 dark:text-blue-300"
+            className="text-xs bg-blue-500/5 border-blue-500/20 text-blue-700 dark:text-blue-300 truncate max-w-[60%]"
           >
             {category}
           </Badge>
           <span className="text-xs text-muted-foreground">{formattedDate}</span>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex justify-between">
+      <CardFooter className="p-4 pt-0 flex justify-between flex-shrink-0">
         <motion.div
           className="w-full mr-2"
           whileHover={{ scale: 1.02 }}
@@ -103,7 +105,7 @@ export function BookmarkCard({
             {t("visit")}
           </Button>
         </motion.div>
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 flex-shrink-0">
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             <Button
               variant="outline"
