@@ -12,6 +12,7 @@ import { Bookmark } from "lucide-react";
 import { useMessages, useTranslations } from "next-intl";
 import { defaultMark } from "@/lib/types";
 import { motion } from "framer-motion";
+import { Metadata } from "next";
 
 export default function DocPage() {
   const t = useTranslations("DocPage");
@@ -199,3 +200,13 @@ export default function DocPage() {
     </div>
   );
 }
+
+export const generateMetadata = async (): Promise<Metadata> => {
+  return {
+    title: "How to Use Cloudmark | Cloud Bookmark Manager Guide",
+    description:
+      "Learn how to set up and use Cloudmark's cloud bookmarking tool in minutes. Save websites with one click and access from any device.",
+    keywords:
+      "bookmark tutorial, how to use cloudmark, cloud bookmarks, save bookmarks online, bookmark manager guide",
+  };
+};
