@@ -1,69 +1,111 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`c3`](https://developers.cloudflare.com/pages/get-started/c3).
+# Cloudmark
 
-## Getting Started
+[![AGPL LICENSE](https://img.shields.io/badge/LICENSE-AGPL-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.html)
+[![Try It Online](https://img.shields.io/badge/TryIt-Online-orange.svg)](https://cloudmark.site)
 
-First, run the development server:
+[中文文档](README.zh.md)
+
+## Introduction
+
+Cloudmark is a universal cloud bookmark management tool that allows you to easily save and access your bookmarks from anywhere. No login or registration required - simply create your personalized bookmark collection and start using it right away.
+
+Try it online: [cloudmark.site](https://cloudmark.site)
+
+## Key Features
+
+- 🔑 **No Registration**: Access your bookmark collection using a unique identifier
+- 🔖 **One-Click Save**: Quickly save the current webpage using a bookmarklet
+- 🏷️ **Category Management**: Add custom categories to your bookmarks for easy organization
+- 🌐 **Cross-Device Access**: Access your bookmarks on any device
+- 📝 **Detailed Descriptions**: Add personalized descriptions to your bookmarks
+- 🌍 **Multi-Language Support**: English and Chinese interfaces available
+- ✨ **Modern Interface**: Responsive design for all devices
+
+## Quick Start
+
+1. Visit [cloudmark.site](https://cloudmark.site)
+2. Generate a unique identifier (mark) or use a custom one
+3. Install the bookmarklet to your browser
+4. Click the bookmarklet to save webpages while browsing
+5. Visit `cloudmark.site/your-mark` anytime to view and manage your bookmarks
+
+## Local Development
+
+### Prerequisites
+
+- Node.js 15+ and pnpm
+- Cloudflare account (for preview and deployment)
+
+### Install Dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Development Mode
 
-## Cloudflare integration
+```bash
+pnpm dev
+```
 
-Besides the `dev` script mentioned above `c3` has added a few extra scripts that allow you to integrate the application with the [Cloudflare Pages](https://pages.cloudflare.com/) environment, these are:
+Visit [http://localhost:3000](http://localhost:3000) to see the result.
 
-- `pages:build` to build the application for Pages using the [`@cloudflare/next-on-pages`](https://github.com/cloudflare/next-on-pages) CLI
-- `preview` to locally preview your Pages application using the [Wrangler](https://developers.cloudflare.com/workers/wrangler/) CLI
-- `deploy` to deploy your Pages application using the [Wrangler](https://developers.cloudflare.com/workers/wrangler/) CLI
+### Local Preview with Cloudflare Pages
 
-> **Note:** while the `dev` script is optimal for local development you should preview your Pages application as well (periodically or before deployments) in order to make sure that it can properly work in the Pages environment (for more details see the [`@cloudflare/next-on-pages` recommended workflow](https://github.com/cloudflare/next-on-pages/blob/main/internal-packages/next-dev/README.md#recommended-development-workflow))
+```bash
+pnpm preview
+```
 
-### Bindings
+### Build and Deploy
 
-Cloudflare [Bindings](https://developers.cloudflare.com/pages/functions/bindings/) are what allows you to interact with resources available in the Cloudflare Platform.
+```bash
+pnpm deploy
+```
 
-You can use bindings during development, when previewing locally your application and of course in the deployed application:
+## Cloudflare Configuration
 
-- To use bindings in dev mode you need to define them in the `next.config.js` file under `setupDevBindings`, this mode uses the `next-dev` `@cloudflare/next-on-pages` submodule. For more details see its [documentation](https://github.com/cloudflare/next-on-pages/blob/05b6256/internal-packages/next-dev/README.md).
+### KV Namespace
 
-- To use bindings in the preview mode you need to add them to the `pages:preview` script accordingly to the `wrangler pages dev` command. For more details see its [documentation](https://developers.cloudflare.com/workers/wrangler/commands/#dev-1) or the [Pages Bindings documentation](https://developers.cloudflare.com/pages/functions/bindings/).
+Cloudmark uses Cloudflare KV to store bookmark data. You need to:
 
-- To use bindings in the deployed application you will need to configure them in the Cloudflare [dashboard](https://dash.cloudflare.com/). For more details see the [Pages Bindings documentation](https://developers.cloudflare.com/pages/functions/bindings/).
+1. Create a KV namespace in your Cloudflare Dashboard
+2. Update the `wrangler.jsonc` file:
+   ```json
+   "kv_namespaces": [
+      { 
+        "binding": "cloudmark", 
+        "id": "your-kv-namespace-id" 
+      }
+   ]
+   ```
 
-#### KV Example
+### Environment Variables
 
-`c3` has added for you an example showing how you can use a KV binding.
+- `NEXT_PUBLIC_BASE_URL` - Base URL of the site (optional, defaults to current domain)
 
-In order to enable the example:
+## Technology Stack
 
-- Search for javascript/typescript lines containing the following comment:
-  ```ts
-  // KV Example:
-  ```
-  and uncomment the commented lines below it (also uncomment the relevant imports).
-- In the `wrangler.jsonc` file add the following configuration line:
-  ```
-  "kv_namespaces": [{ "binding": "MY_KV_NAMESPACE", "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" }],
-  ```
-- If you're using TypeScript run the `cf-typegen` script to update the `env.d.ts` file:
-  ```bash
-  npm run cf-typegen
-  # or
-  yarn cf-typegen
-  # or
-  pnpm cf-typegen
-  # or
-  bun cf-typegen
-  ```
+- [Next.js](https://nextjs.org/) - React framework
+- [Cloudflare Pages](https://pages.cloudflare.com/) - Hosting and serverless functions
+- [Cloudflare KV](https://developers.cloudflare.com/workers/runtime-apis/kv/) - Data storage
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Next-Intl](https://next-intl-docs.vercel.app/) - Internationalization
+- [Framer Motion](https://www.framer.com/motion/) - Animation effects
 
-After doing this you can run the `dev` or `preview` script and visit the `/api/hello` route to see the example in action.
+## License
 
-Finally, if you also want to see the example work in the deployed application make sure to add a `MY_KV_NAMESPACE` binding to your Pages application in its [dashboard kv bindings settings section](https://dash.cloudflare.com/?to=/:account/pages/view/:pages-project/settings/functions#kv_namespace_bindings_section). After having configured it make sure to re-deploy your application.
+This project is open-sourced under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html) license.
+
+## Contributing
+
+Issues and Pull Requests are welcome!
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Contact
+
+If you have any questions, please contact us through GitHub Issues.

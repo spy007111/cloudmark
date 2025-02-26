@@ -121,10 +121,10 @@ export default async function RootLayout({
               <footer className="border-t border-border/40 mt-auto">
                 <div className="container flex flex-col gap-2 py-6 text-center">
                   <p className="text-xs text-muted-foreground">
-                    Released under the MIT License.
+                    Released under the AGPL License.
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Copyright © {new Date().getFullYear()} BookmarkHub
+                    Copyright © {new Date().getFullYear()} Wesley Yang
                   </p>
                 </div>
               </footer>

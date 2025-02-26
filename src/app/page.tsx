@@ -5,6 +5,7 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useMessages, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Page() {
   const t = useTranslations("HomePage");
@@ -74,6 +75,22 @@ export default function Page() {
         >
           {t("description")}
         </motion.p>
+
+        {/* GitHub Star Badge */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+          className="mb-8"
+        >
+          <a href="https://github.com/wesleyel/cloudmark" target="_blank" rel="noopener noreferrer">
+            <img 
+              src="https://img.shields.io/github/stars/wesleyel/cloudmark?style=social" 
+              alt="GitHub stars" 
+              className="transition-transform hover:scale-105"
+            />
+          </a>
+        </motion.div>
 
         <div className="flex gap-4">
           <motion.div
