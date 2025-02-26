@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  compress: true,
+  swcMinify: true,
 };
 
 export default withNextIntl(nextConfig);
