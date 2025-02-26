@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useMessages, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
@@ -75,20 +75,37 @@ export default function Page() {
           {t("description")}
         </motion.p>
         
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Button asChild size="lg" className="rounded-full text-base px-8">
-            <Link href="/doc" className="flex items-center gap-2">
-              {t("quickstart")}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-        </motion.div>
+        <div className="flex gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button asChild size="lg" className="rounded-full text-base px-8">
+              <Link href="/doc" className="flex items-center gap-2">
+                {t("quickstart")}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button asChild size="lg" variant="outline" className="rounded-full text-base px-8">
+              <Link href="/demo" className="flex items-center gap-2">
+                Demo
+                <ExternalLink className="h-4 w-4" />
+              </Link>
+            </Button>
+          </motion.div>
+        </div>
       </motion.div>
 
       {/* 特性卡片 */}
