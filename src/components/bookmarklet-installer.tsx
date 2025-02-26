@@ -7,6 +7,7 @@ import { BookmarkButtons } from "@/components/bookmark-buttons";
 import styles from "./bookmarklet-installer.module.css";
 import { Button } from "@/components/ui/button";
 import { defaultMark } from "@/lib/types";
+import { motion } from "framer-motion";
 
 interface BookmarkletInstallerProps {
   mark?: string;
@@ -95,7 +96,12 @@ export default function BookmarkletInstaller({
   };
 
   return (
-    <div className="space-y-6">
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="space-y-8"
+    >
       {/* Mark输入区域 */}
       <MarkInput
         mark={mark}
@@ -104,51 +110,55 @@ export default function BookmarkletInstaller({
         isGenerating={isGenerating}
       />
 
-      {/* 书签按钮区域 - 响应式布局 */}
-      <div className="space-y-4 sm:space-y-0">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <BookmarkButtons
-            mark={mark}
-            bookmarkletCode={bookmarkletCode}
-            baseUrl={baseUrl}
-          />
-          <span className="text-sm text-muted-foreground whitespace-nowrap">
-            ← 拖拽到书签栏
-          </span>
-        </div>
+      {/* 书签按钮区域 */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500 mb-3">
+          书签工具
+        </h3>
+        <BookmarkButtons
+          mark={mark}
+          bookmarkletCode={bookmarkletCode}
+          baseUrl={baseUrl}
+        />
       </div>
 
-      {/* 代码显示区域 - 自动换行和滚动 */}
-      <details className={`space-y-4 ${styles.details}`}>
-        <summary
-          className={`flex items-center gap-2 cursor-pointer ${styles.summary}`}
-        >
+      {/* 代码显示区域 */}
+      <details className={styles.details}>
+        <summary className={styles.summary}>
           <Wand2 className="h-5 w-5" />
           查看代码
         </summary>
-        <div className="relative">
-          <div className="max-h-[200px] overflow-y-auto">
-            <pre className="p-4 bg-muted rounded-lg text-sm whitespace-pre-wrap break-all">
-              <code>
-                {bookmarkletCode.match(/.{1,50}/g)?.join("\n") ||
-                  bookmarkletCode}
-              </code>
-            </pre>
+        <div className={styles.content}>
+          <div className="relative mt-3">
+            <div className="max-h-[200px] overflow-y-auto">
+              <pre className="p-4 bg-muted/50 backdrop-blur-sm rounded-lg text-sm whitespace-pre-wrap break-all border border-border/60">
+                <code>
+                  {bookmarkletCode.match(/.{1,50}/g)?.join("\n") ||
+                    bookmarkletCode}
+                </code>
+              </pre>
+            </div>
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="absolute right-2 top-2"
+            >
+              <Button
+                size="sm"
+                variant="ghost"
+                className="bg-background/80 backdrop-blur-sm hover:bg-background"
+                onClick={copyToClipboard}
+              >
+                {copied ? (
+                  <Check className="h-4 w-4 text-green-500" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+            </motion.div>
           </div>
-          <Button
-            size="sm"
-            variant="ghost"
-            className="absolute right-2 top-2"
-            onClick={copyToClipboard}
-          >
-            {copied ? (
-              <Check className="h-4 w-4" />
-            ) : (
-              <Copy className="h-4 w-4" />
-            )}
-          </Button>
         </div>
       </details>
-    </div>
+    </motion.div>
   );
 }
