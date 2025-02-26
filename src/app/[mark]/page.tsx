@@ -14,7 +14,6 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/components/toast-provider";
 
-export const runtime = "edge";
 
 export default function BookmarksPage() {
   const params = useParams<{ mark: string }>();
