@@ -13,7 +13,6 @@ import { useMessages, useTranslations } from "next-intl";
 import { defaultMark } from "@/lib/types";
 import { motion } from "framer-motion";
 
-
 export default function DocPage() {
   const t = useTranslations("DocPage");
   const messages = useMessages();

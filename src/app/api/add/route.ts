@@ -1,13 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import {
   BookmarkInstance,
   BookmarksData,
   createDefaultBookmarksData,
 } from "../../../lib/types";
 import { getFavicon } from "@/lib/actions";
-
-export const runtime = "edge";
 
 export async function GET(request: NextRequest) {
   try {
@@ -36,7 +34,7 @@ export async function GET(request: NextRequest) {
       category: defaultCategory,
     };
 
-    const KV = getRequestContext().env.cloudmark;
+    const KV = getCloudflareContext().env.cloudmark;
     let data = await KV.get<BookmarksData>(mark, "json");
     if (!data) {
       data = createDefaultBookmarksData(mark);

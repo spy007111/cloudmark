@@ -41,7 +41,9 @@ export default function BookmarkletInstaller({
   // 获取当前网站的基础 URL
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL ||
-    (typeof window !== "undefined" ? window.location.origin : "");
+    (typeof window !== "undefined"
+      ? window.location.origin
+      : "http://localhost:3000");
 
   // 生成bookmarklet代码
   const generateBookmarkletCode = useCallback(

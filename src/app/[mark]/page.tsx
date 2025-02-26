@@ -14,7 +14,6 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/components/toast-provider";
 
-
 export default function BookmarksPage() {
   const params = useParams<{ mark: string }>();
   const searchParams = useSearchParams();
@@ -41,7 +40,9 @@ export default function BookmarksPage() {
   // 获取当前网站的基础 URL
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL ||
-    (typeof window !== "undefined" ? window.location.origin : "");
+    (typeof window !== "undefined"
+      ? window.location.origin
+      : "http://localhost:3000");
 
   // 生成bookmarklet代码
   const generateBookmarkletCode = useCallback(() => {

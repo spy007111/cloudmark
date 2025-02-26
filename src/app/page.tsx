@@ -7,7 +7,6 @@ import { useMessages, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-
 export default function Page() {
   const t = useTranslations("HomePage");
   const messages = useMessages();
@@ -84,10 +83,14 @@ export default function Page() {
           transition={{ duration: 0.5, delay: 0.7 }}
           className="mb-8"
         >
-          <a href="https://github.com/wesleyel/cloudmark" target="_blank" rel="noopener noreferrer">
-            <img 
-              src="https://img.shields.io/github/stars/wesleyel/cloudmark?style=social" 
-              alt="GitHub stars" 
+          <a
+            href="https://github.com/wesleyel/cloudmark"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://img.shields.io/github/stars/wesleyel/cloudmark?style=social"
+              alt="GitHub stars"
               className="transition-transform hover:scale-105"
             />
           </a>

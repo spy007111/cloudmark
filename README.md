@@ -72,9 +72,9 @@ Cloudmark uses Cloudflare KV to store bookmark data. You need to:
 2. Update the `wrangler.jsonc` file:
    ```json
    "kv_namespaces": [
-      { 
-        "binding": "cloudmark", 
-        "id": "your-kv-namespace-id" 
+      {
+        "binding": "cloudmark",
+        "id": "your-kv-namespace-id"
       }
    ]
    ```

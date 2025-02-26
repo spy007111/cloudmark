@@ -72,9 +72,9 @@ Cloudmark 使用 Cloudflare KV 存储书签数据。您需要：
 2. 更新 `wrangler.jsonc` 文件：
    ```json
    "kv_namespaces": [
-      { 
-        "binding": "cloudmark", 
-        "id": "您的KV命名空间ID" 
+      {
+        "binding": "cloudmark",
+        "id": "您的KV命名空间ID"
       }
    ]
    ```
@@ -108,4 +108,4 @@ Cloudmark 使用 Cloudflare KV 存储书签数据。您需要：
 
 ## 联系方式
 
-如有问题，请通过 GitHub Issues 联系我们。 
+如有问题，请通过 GitHub Issues 联系我们。

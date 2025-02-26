@@ -6,7 +6,7 @@ import {
   createDefaultBookmarksData,
   defaultMark,
 } from "@/lib/types";
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export async function getFavicon(url: string, size: number = 64) {
   const domain = new URL(url).hostname.replace("www.", "");
@@ -23,7 +23,7 @@ export async function getFavicon(url: string, size: number = 64) {
 
 export async function getBookmarkData(formData: FormData) {
   const mark = (formData.get("mark") || defaultMark) as string;
-  const KV = getRequestContext().env.cloudmark;
+  const KV = getCloudflareContext().env.cloudmark;
   let bookmarksdata = await KV.get<BookmarksData>(mark, "json");
   if (!bookmarksdata) {
     bookmarksdata = createDefaultBookmarksData(mark);
@@ -40,7 +40,7 @@ export async function putBookmarkData(formData: FormData) {
   const description = formData.get("description") as string;
   const favicon = await getFavicon(url);
 
-  const KV = getRequestContext().env.cloudmark;
+  const KV = getCloudflareContext().env.cloudmark;
   let bookmarksdata = await KV.get<BookmarksData>(mark, "json");
   if (!bookmarksdata) {
     bookmarksdata = createDefaultBookmarksData(mark);
@@ -77,7 +77,7 @@ export async function deleteBookmarkData(formData: FormData) {
   const mark = (formData.get("mark") || defaultMark) as string;
   const url = formData.get("url") as string;
 
-  const KV = getRequestContext().env.cloudmark;
+  const KV = getCloudflareContext().env.cloudmark;
   const bookmarksdata = await KV.get<BookmarksData>(mark, "json");
   if (!bookmarksdata) {
     return;

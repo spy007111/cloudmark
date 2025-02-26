@@ -11,7 +11,9 @@ import { useTranslations } from "next-intl";
 import { ToastProvider } from "@/components/toast-provider";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || ""),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+  ),
   title: "Cloudmark - Your Universal Bookmark Manager",
   description:
     "Save and access your bookmarks from anywhere with Cloudmark, the seamless cloud bookmarking tool for professionals and casual users alike",
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_BASE_URL,
+    url: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
     title: "Cloudmark - Your Universal Bookmark Manager",
     description:
       "Save and access your bookmarks from anywhere with Cloudmark, the seamless cloud bookmarking tool for professionals and casual users alike",

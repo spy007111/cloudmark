@@ -13,6 +13,9 @@ wrangler.jsonc
 !.yarn/releases
 !.yarn/versions
 
+# opennextjs
+.open-next/
+
 # testing
 /coverage
 
