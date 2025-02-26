@@ -77,16 +77,24 @@
     "switchLanguage": "Switch Language"
   },
   "BookmarksPage": {
-    "title": "Bookmark Collection",
-    "collection": "{mark}'s Collection",
+    "title": "Bookmarks",
+    "collection": "Collection {mark}",
     "addBookmark": "Add Bookmark",
     "noBookmarks": "No bookmarks yet",
     "addFirstBookmark": "Add your first bookmark",
     "loading": "Loading bookmarks...",
-    "bookmarkletTip": "Drag this button to your bookmarks bar to save webpages to this collection",
+    "bookmarkletTip": "Drag this button to your bookmarks bar to save pages with one click",
     "demoMode": "Demo Mode",
-    "demoDescription": "This is a demo collection. You can freely add, edit, and delete bookmarks. All operations are local and won't be saved to the server.",
+    "demoDescription": "This is a demo collection. You can freely add, edit, and delete bookmarks. All changes will only affect your local view and won't be saved to the server.",
     "createOwn": "Create Your Own",
+    "gridView": "Grid View",
+    "categoryView": "Category View",
+    "sortBy": "Sort by",
+    "sortOptions": {
+      "time": "Time",
+      "title": "Title",
+      "category": "Category"
+    },
     "categories": {
       "all": "All",
       "filter": "Filter"

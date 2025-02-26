@@ -2,7 +2,6 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tag } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
 
 interface CategoryFilterProps {
   categories: string[];
@@ -27,7 +26,7 @@ export function CategoryFilter({
       </div>
       <ScrollArea className="w-full whitespace-nowrap">
         <div className="flex space-x-2 pb-1">
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <div>
             <Badge
               variant={selectedCategory === null ? "default" : "outline"}
               className={`cursor-pointer ${
@@ -39,13 +38,9 @@ export function CategoryFilter({
             >
               {t("all")}
             </Badge>
-          </motion.div>
+          </div>
           {categories.map((category) => (
-            <motion.div
-              key={category}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <div key={category}>
               <Badge
                 variant={selectedCategory === category ? "default" : "outline"}
                 className={`cursor-pointer ${
@@ -57,7 +52,7 @@ export function CategoryFilter({
               >
                 {category}
               </Badge>
-            </motion.div>
+            </div>
           ))}
         </div>
         <ScrollBar orientation="horizontal" className="h-2" />

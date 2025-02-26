@@ -9,11 +9,32 @@ import { CategoryFilter } from "@/components/category-filter";
 import { AddBookmarkDialog } from "@/components/add-bookmark-dialog";
 import { EditBookmarkDialog } from "@/components/edit-bookmark-dialog";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Bookmark, Search, BookmarkPlus } from "lucide-react";
+import {
+  PlusCircle,
+  Bookmark,
+  Search,
+  BookmarkPlus,
+  LayoutGrid,
+  Layers,
+  ToggleLeft,
+  Clock,
+  AlignLeft,
+  Tag,
+  ChevronDown,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/components/toast-provider";
 import { DEMO_BOOKMARKS_DATA } from "./demo_data";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+// 排序类型
+type SortOption = "time" | "category" | "title";
 
 export default function BookmarksPage() {
   const params = useParams<{ mark: string }>();
@@ -35,8 +56,47 @@ export default function BookmarksPage() {
     useState<BookmarkInstance | null>(null);
   const [bookmarkletCode, setBookmarkletCode] = useState("");
 
+  // 用户界面偏好状态
+  const [layoutMode, setLayoutMode] = useState<"grid" | "category">("grid");
+  const [sortBy, setSortBy] = useState<SortOption>("time");
+
   // 使用 ref 跟踪是否已经显示过通知
   const toastShownRef = useRef(false);
+  // 使用 ref 跟踪是否已经从localStorage加载过偏好设置
+  const preferencesLoadedRef = useRef(false);
+
+  // 保存用户偏好到本地存储
+  const savePreferences = useCallback(() => {
+    if (typeof window !== "undefined") {
+      const preferences = {
+        layoutMode,
+        sortBy,
+        selectedCategory,
+      };
+      localStorage.setItem(
+        `cloudmark_prefs_${mark}`,
+        JSON.stringify(preferences),
+      );
+    }
+  }, [layoutMode, sortBy, selectedCategory, mark]);
+
+  // 加载用户偏好
+  const loadPreferences = useCallback(() => {
+    if (typeof window !== "undefined" && !preferencesLoadedRef.current) {
+      try {
+        const savedPrefs = localStorage.getItem(`cloudmark_prefs_${mark}`);
+        if (savedPrefs) {
+          const preferences = JSON.parse(savedPrefs);
+          setLayoutMode(preferences.layoutMode || "grid");
+          setSortBy(preferences.sortBy || "time");
+          setSelectedCategory(preferences.selectedCategory || null);
+        }
+        preferencesLoadedRef.current = true;
+      } catch (error) {
+        console.error("Failed to load preferences:", error);
+      }
+    }
+  }, [mark]);
 
   // 获取当前网站的基础 URL
   const baseUrl =
@@ -66,6 +126,49 @@ export default function BookmarksPage() {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
   };
+
+  // 处理排序逻辑
+  const getSortedBookmarks = useCallback(
+    (bookmarks: BookmarkInstance[]) => {
+      if (!bookmarks) return [];
+
+      // 先筛选分类
+      const filtered = !selectedCategory
+        ? [...bookmarks]
+        : bookmarks.filter((b) => b.category === selectedCategory);
+
+      // 根据排序选项进行排序
+      return filtered.sort((a, b) => {
+        switch (sortBy) {
+          case "time":
+            // 按创建时间降序排列（新的在前）
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+          case "title":
+            // 按标题字母升序排列
+            return a.title.localeCompare(b.title);
+          case "category":
+            // 先按分类名称，然后按标题排列
+            const catCompare = a.category.localeCompare(b.category);
+            return catCompare !== 0
+              ? catCompare
+              : a.title.localeCompare(b.title);
+          default:
+            return 0;
+        }
+      });
+    },
+    [selectedCategory, sortBy],
+  );
+
+  // 当用户偏好变化时保存到本地存储
+  useEffect(() => {
+    // 只有在非加载状态下才保存偏好
+    if (!isLoading && preferencesLoadedRef.current) {
+      savePreferences();
+    }
+  }, [layoutMode, sortBy, selectedCategory, savePreferences, isLoading]);
 
   useEffect(() => {
     // 处理 URL 参数中的状态和消息
@@ -133,6 +236,8 @@ export default function BookmarksPage() {
       if (mark === "demo") {
         setBookmarksData(DEMO_BOOKMARKS_DATA);
         setIsLoading(false);
+        // 加载用户偏好
+        loadPreferences();
         return;
       }
 
@@ -147,12 +252,14 @@ export default function BookmarksPage() {
         console.error("Failed to fetch bookmarks:", error);
       } finally {
         setIsLoading(false);
+        // 加载用户偏好
+        loadPreferences();
       }
     };
 
     fetchData();
     generateBookmarkletCode();
-  }, [mark, generateBookmarkletCode]);
+  }, [mark, generateBookmarkletCode, loadPreferences]);
 
   const handleDeleteBookmark = async (url: string) => {
     if (!bookmarksData) return;
@@ -385,40 +492,162 @@ export default function BookmarksPage() {
           </div>
         </motion.div>
 
-        {/* 分类筛选 */}
-        {bookmarksData && bookmarksData.categories.length > 0 && (
+        {/* 布局切换按钮和排序下拉菜单 */}
+        {bookmarksData && bookmarksData.bookmarks.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
-            className="mb-8"
+            className="flex justify-between items-center mb-4"
           >
-            <CategoryFilter
-              categories={bookmarksData.categories}
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
+            {/* 排序下拉菜单 */}
+            <div className="flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1">
+                    {sortBy === "time" && <Clock className="h-4 w-4" />}
+                    {sortBy === "title" && <AlignLeft className="h-4 w-4" />}
+                    {sortBy === "category" && <Tag className="h-4 w-4" />}
+                    {t("sortBy")}: {t(`sortOptions.${sortBy}`)}
+                    <ChevronDown className="h-3 w-3 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem onClick={() => setSortBy("time")}>
+                    <Clock className="h-4 w-4 mr-2" />
+                    {t("sortOptions.time")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setSortBy("title")}>
+                    <AlignLeft className="h-4 w-4 mr-2" />
+                    {t("sortOptions.title")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setSortBy("category")}>
+                    <Tag className="h-4 w-4 mr-2" />
+                    {t("sortOptions.category")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            {/* 布局切换按钮 */}
+            <div className="bg-card/30 backdrop-blur-sm rounded-lg border border-border/50 p-1 flex gap-1 shadow-sm">
+              <Button
+                variant={layoutMode === "grid" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setLayoutMode("grid")}
+                className={layoutMode === "grid" ? "bg-primary/90" : ""}
+                title={t("gridView")}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={layoutMode === "category" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setLayoutMode("category")}
+                className={layoutMode === "category" ? "bg-primary/90" : ""}
+                title={t("categoryView")}
+              >
+                <Layers className="h-4 w-4" />
+              </Button>
+            </div>
           </motion.div>
         )}
 
+        {/* 分类筛选 */}
+        {bookmarksData &&
+          bookmarksData.categories.length > 0 &&
+          layoutMode === "grid" && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
+              className="mb-8"
+            >
+              <CategoryFilter
+                categories={bookmarksData.categories}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+              />
+            </motion.div>
+          )}
+
         {/* 书签列表 */}
-        {filteredBookmarks && filteredBookmarks.length > 0 ? (
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {filteredBookmarks.map((bookmark) => (
-              <motion.div key={bookmark.url} variants={item}>
-                <BookmarkCard
-                  bookmark={bookmark}
-                  onDelete={() => handleDeleteBookmark(bookmark.url)}
-                  onEdit={() => handleEditBookmark(bookmark)}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+        {bookmarksData && bookmarksData.bookmarks.length > 0 ? (
+          layoutMode === "grid" ? (
+            // 网格布局视图
+            <motion.div
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {getSortedBookmarks(bookmarksData.bookmarks).map((bookmark) => (
+                <motion.div key={bookmark.url} variants={item}>
+                  <BookmarkCard
+                    bookmark={bookmark}
+                    onDelete={() => handleDeleteBookmark(bookmark.url)}
+                    onEdit={() => handleEditBookmark(bookmark)}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            // 分类归纳视图
+            <motion.div
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="space-y-8"
+            >
+              {bookmarksData &&
+                [...new Set(bookmarksData.bookmarks.map((b) => b.category))]
+                  .sort()
+                  .map((category) => {
+                    // 如果有选中的分类，只显示该分类
+                    if (selectedCategory && category !== selectedCategory)
+                      return null;
+
+                    const categoryBookmarks = getSortedBookmarks(
+                      bookmarksData.bookmarks.filter(
+                        (b) => b.category === category,
+                      ),
+                    );
+
+                    if (categoryBookmarks.length === 0) return null;
+
+                    return (
+                      <motion.div
+                        key={category}
+                        variants={item}
+                        className="overflow-hidden"
+                      >
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="flex items-center px-3 py-1.5 bg-primary/10 text-primary rounded-lg">
+                            <Layers className="h-4 w-4 mr-2 opacity-70" />
+                            <h3 className="text-md font-medium">{category}</h3>
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            ({categoryBookmarks.length})
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                          {categoryBookmarks.map((bookmark) => (
+                            <motion.div key={bookmark.url} variants={item}>
+                              <BookmarkCard
+                                bookmark={bookmark}
+                                onDelete={() =>
+                                  handleDeleteBookmark(bookmark.url)
+                                }
+                                onEdit={() => handleEditBookmark(bookmark)}
+                              />
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+            </motion.div>
+          )
         ) : (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
