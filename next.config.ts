@@ -12,7 +12,6 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   compress: true,
-  swcMinify: true,
 };
 
 export default withNextIntl(nextConfig);
