@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { BookmarkInstance } from "@/lib/types";
 import { putBookmarkData } from "@/lib/actions";
 import {
@@ -56,6 +56,17 @@ export function EditBookmarkDialog({
   const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (bookmark) {
+      setUrl(bookmark.url);
+      setTitle(bookmark.title);
+      setCategory(bookmark.category);
+      setDescription(bookmark.description || "");
+      setIsCustomCategory(false);
+      setError(null);
+    }
+  }, [bookmark]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

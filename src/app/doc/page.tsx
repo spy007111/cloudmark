@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BookmarkletInstaller from "@/components/bookmarklet-installer";
 import {
   Card,
@@ -16,7 +16,26 @@ import { motion } from "framer-motion";
 export default function DocPage() {
   const t = useTranslations("DocPage");
   const messages = useMessages();
-  const [mark, setMark] = useState(defaultMark);
+  const [mark, setMark] = useState("");
+  
+  useEffect(() => {
+    const generateRandomMark = () => {
+      const adjectives = [
+        "vacuous", "tearful", "faint", "jumbled", "wandering", "mature", 
+        "savory", "mighty", "disgusted", "abstracted", "telling"
+      ];
+      const nouns = [
+        "person", "inspector", "significance", "chapter", "reputation", 
+        "outcome", "association", "failure", "population", "wealth", "bird"
+      ];
+      const randomNum = Math.floor(Math.random() * 10000);
+      return `${
+        adjectives[Math.floor(Math.random() * adjectives.length)]
+      }-${nouns[Math.floor(Math.random() * nouns.length)]}-${randomNum}`;
+    };
+    
+    setMark(generateRandomMark());
+  }, []);
 
   // 动画变体
   const container = {
@@ -33,6 +52,20 @@ export default function DocPage() {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
   };
+
+  if (!mark) {
+    return (
+      <div className="container flex items-center justify-center min-h-screen">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center"
+        >
+          <p className="text-muted-foreground">{t("loading") || "加载中..."}</p>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="container relative">
