@@ -1,10 +1,9 @@
 "use client";
 
 import type React from "react";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { BookmarkInstance } from "@/lib/types";
-import { putBookmarkData } from "@/lib/actions";
+import { updateBookmarkData } from "@/lib/actions";
 import {
   Dialog,
   DialogContent,
@@ -24,24 +23,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Link, FileText, Tag, Edit } from "lucide-react";
+import { Loader2, Link, FileText, Tag, Pencil } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import "./animations.css";
 
 interface EditBookmarkDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  mark: string;
   bookmark: BookmarkInstance;
   categories: string[];
-  onBookmarkUpdated: (updatedBookmark: BookmarkInstance) => void;
+  onBookmarkUpdated: (bookmark: BookmarkInstance) => void;
   isDemo?: boolean;
 }
 
 export function EditBookmarkDialog({
   open,
   onOpenChange,
-  mark,
   bookmark,
   categories,
   onBookmarkUpdated,
@@ -50,23 +47,14 @@ export function EditBookmarkDialog({
   const t = useTranslations("Components.BookmarkDialog");
   const [url, setUrl] = useState(bookmark.url);
   const [title, setTitle] = useState(bookmark.title);
-  const [category, setCategory] = useState(bookmark.category);
   const [description, setDescription] = useState(bookmark.description || "");
+  const [category, setCategory] = useState(bookmark.category);
   const [newCategory, setNewCategory] = useState("");
-  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [isCustomCategory, setIsCustomCategory] = useState(
+    !categories.includes(bookmark.category),
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (bookmark) {
-      setUrl(bookmark.url);
-      setTitle(bookmark.title);
-      setCategory(bookmark.category);
-      setDescription(bookmark.description || "");
-      setIsCustomCategory(false);
-      setError(null);
-    }
-  }, [bookmark]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,28 +83,33 @@ export function EditBookmarkDialog({
     setIsSubmitting(true);
 
     try {
-      if (!isDemo) {
+      // Demo模式下，直接更新书签对象而不调用API
+      if (isDemo) {
+        const updatedBookmark: BookmarkInstance = {
+          ...bookmark,
+          url,
+          title,
+          category: selectedCategory,
+          description,
+          modifiedAt: new Date().toISOString(),
+        };
+
+        onBookmarkUpdated(updatedBookmark);
+      } else {
+        // 正常模式，调用API
         const formData = new FormData();
-        formData.append("mark", mark);
         formData.append("uuid", bookmark.uuid);
         formData.append("url", url);
         formData.append("title", title);
         formData.append("category", selectedCategory);
         formData.append("description", description);
 
-        await putBookmarkData(formData);
+        const updatedBookmark = await updateBookmarkData(formData);
+        if (updatedBookmark) {
+          onBookmarkUpdated(updatedBookmark);
+        }
       }
 
-      const updatedBookmark: BookmarkInstance = {
-        ...bookmark,
-        url,
-        title,
-        category: selectedCategory,
-        description,
-        modifiedAt: new Date().toISOString(),
-      };
-
-      onBookmarkUpdated(updatedBookmark);
       onOpenChange(false);
     } catch (error) {
       console.error("Failed to update bookmark:", error);
@@ -128,15 +121,17 @@ export function EditBookmarkDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] border border-indigo-500/20 bg-card/95 backdrop-blur-sm">
+      <DialogContent className="dialog-content sm:max-w-[425px] border border-amber-500/20 bg-card/95 backdrop-blur-sm">
         <DialogHeader>
           <DialogTitle className="text-xl flex items-center gap-2">
-            <span className="bg-indigo-500/10 p-1.5 rounded-md">
-              <Edit className="h-4 w-4 text-indigo-500" />
+            <span className="bg-amber-500/10 p-1.5 rounded-md">
+              <Pencil className="h-4 w-4 text-amber-500" />
             </span>
             {t("editTitle")}
           </DialogTitle>
-          <DialogDescription>{t("editDescription")}</DialogDescription>
+          <DialogDescription>
+            {t("editDescription", { title: bookmark.title })}
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
           <div className="space-y-2">
@@ -164,7 +159,6 @@ export function EditBookmarkDialog({
               placeholder={t("titlePlaceholder")}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              required
               className="border-indigo-500/20 focus:border-indigo-500/40 bg-indigo-500/5 focus:ring-indigo-500/10"
             />
           </div>
@@ -203,10 +197,7 @@ export function EditBookmarkDialog({
                     ))}
                   </SelectContent>
                 </Select>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <div className="hover-scale">
                   <Button
                     type="button"
                     variant="outline"
@@ -215,22 +206,19 @@ export function EditBookmarkDialog({
                   >
                     {t("newCategory")}
                   </Button>
-                </motion.div>
+                </div>
               </div>
             ) : (
               <div className="flex space-x-2">
                 <Input
                   id="newCategory"
                   placeholder={t("newCategoryPlaceholder")}
-                  value={newCategory}
+                  value={newCategory || (isCustomCategory ? category : "")}
                   onChange={(e) => setNewCategory(e.target.value)}
                   className="border-green-500/20 focus:border-green-500/40 bg-green-500/5 focus:ring-green-500/10"
                 />
                 {categories.length > 0 && (
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
+                  <div className="hover-scale">
                     <Button
                       type="button"
                       variant="outline"
@@ -239,7 +227,7 @@ export function EditBookmarkDialog({
                     >
                       {t("existingCategory")}
                     </Button>
-                  </motion.div>
+                  </div>
                 )}
               </div>
             )}
@@ -252,7 +240,7 @@ export function EditBookmarkDialog({
           )}
 
           <DialogFooter className="gap-2 sm:gap-0">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <div className="hover-scale-sm">
               <Button
                 type="button"
                 variant="outline"
@@ -261,19 +249,19 @@ export function EditBookmarkDialog({
               >
                 {t("cancel")}
               </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            </div>
+            <div className="hover-scale-sm">
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+                className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
               >
                 {isSubmitting && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                {t("saveButton")}
+                {t("updateButton")}
               </Button>
-            </motion.div>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>

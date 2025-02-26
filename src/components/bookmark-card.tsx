@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Trash2, Edit2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { memo } from "react";
+import "./animations.css";
 
 interface BookmarkCardProps {
   bookmark: BookmarkInstance;
@@ -18,7 +19,8 @@ interface BookmarkCardProps {
   onEdit: () => void;
 }
 
-export function BookmarkCard({
+// 使用memo包装组件以避免不必要的重渲染
+export const BookmarkCard = memo(function BookmarkCard({
   bookmark,
   onDelete,
   onEdit,
@@ -50,6 +52,9 @@ export function BookmarkCard({
               src={favicon || `https://favicone.com/${domain}?s=32`}
               alt={`${title} favicon`}
               className="w-6 h-6 rounded-sm relative z-10"
+              loading="lazy"
+              width="24"
+              height="24"
               onError={(e) => {
                 // If favicon fails to load, replace with a default icon
                 (e.target as HTMLImageElement).src =
@@ -73,7 +78,10 @@ export function BookmarkCard({
       </CardHeader>
       <CardContent className="p-4 flex-grow overflow-hidden flex flex-col">
         {description ? (
-          <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-shrink-0" title={description}>
+          <p
+            className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-shrink-0"
+            title={description}
+          >
             {description}
           </p>
         ) : (
@@ -90,11 +98,7 @@ export function BookmarkCard({
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between flex-shrink-0">
-        <motion.div
-          className="w-full mr-2"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
+        <div className="w-full mr-2 hover-scale-sm">
           <Button
             variant="outline"
             size="sm"
@@ -104,9 +108,9 @@ export function BookmarkCard({
             <ExternalLink className="h-3 w-3 mr-2" />
             {t("visit")}
           </Button>
-        </motion.div>
+        </div>
         <div className="flex space-x-2 flex-shrink-0">
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+          <div className="hover-scale">
             <Button
               variant="outline"
               size="sm"
@@ -116,8 +120,8 @@ export function BookmarkCard({
               <Edit2 className="h-3 w-3" />
               <span className="sr-only">{t("edit")}</span>
             </Button>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+          </div>
+          <div className="hover-scale">
             <Button
               variant="outline"
               size="sm"
@@ -127,9 +131,9 @@ export function BookmarkCard({
               <Trash2 className="h-3 w-3" />
               <span className="sr-only">{t("delete")}</span>
             </Button>
-          </motion.div>
+          </div>
         </div>
       </CardFooter>
     </Card>
   );
-}
+});

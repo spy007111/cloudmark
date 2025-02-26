@@ -2,7 +2,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import "../animations.css";
 
 const toastVariants = cva(
   "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-4 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full",
@@ -44,6 +44,19 @@ export function Toast({
 }: ToastProps) {
   // 使用 ref 跟踪定时器
   const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+  const [isExiting, setIsExiting] = React.useState(false);
+  const [shouldRender, setShouldRender] = React.useState(visible);
+
+  // 处理关闭动画和实际关闭
+  const handleClose = React.useCallback(() => {
+    setIsExiting(true);
+    // 等待动画完成后再移除元素
+    setTimeout(() => {
+      setIsExiting(false);
+      onClose();
+      setShouldRender(false);
+    }, 200); // 匹配 CSS 动画时间
+  }, [onClose]);
 
   // 清除之前的定时器
   React.useEffect(() => {
@@ -53,9 +66,13 @@ export function Toast({
     }
 
     if (visible) {
+      setShouldRender(true);
+      setIsExiting(false);
       timerRef.current = setTimeout(() => {
-        onClose();
+        handleClose();
       }, duration);
+    } else if (!visible && !isExiting) {
+      setShouldRender(false);
     }
 
     return () => {
@@ -63,36 +80,31 @@ export function Toast({
         clearTimeout(timerRef.current);
       }
     };
-  }, [visible, duration, onClose]);
+  }, [visible, duration, handleClose, isExiting]);
+
+  if (!shouldRender && !visible) {
+    return null;
+  }
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: -20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -20, scale: 0.95 }}
-          transition={{ duration: 0.2 }}
-          className={cn(
-            toastVariants({ variant }),
-            "fixed top-4 right-4 z-50 max-w-md",
-            className,
-          )}
-        >
-          <div className="flex-1">
-            {title && <div className="font-medium">{title}</div>}
-            {description && (
-              <div className="text-sm opacity-90">{description}</div>
-            )}
-          </div>
-          <button
-            onClick={onClose}
-            className="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </motion.div>
+    <div
+      className={cn(
+        toastVariants({ variant }),
+        "fixed top-4 right-4 z-50 max-w-md",
+        isExiting ? "fade-out-up" : "fade-in-down",
+        className,
       )}
-    </AnimatePresence>
+    >
+      <div className="flex-1">
+        {title && <div className="font-medium">{title}</div>}
+        {description && <div className="text-sm opacity-90">{description}</div>}
+      </div>
+      <button
+        onClick={handleClose}
+        className="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100"
+      >
+        <X className="h-4 w-4" />
+      </button>
+    </div>
   );
 }

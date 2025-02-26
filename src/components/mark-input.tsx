@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
 interface MarkInputProps {
@@ -40,11 +39,7 @@ export function MarkInput({
               className="pr-10 h-11 border-border/60 bg-background/50 backdrop-blur-sm focus:border-blue-500 focus:ring-blue-500/20 transition-all"
             />
             <div className="absolute right-0 top-0 h-full z-10">
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="h-full flex items-center"
-              >
+              <div className="h-full flex items-center hover-scale">
                 <Button
                   size="icon"
                   variant="ghost"
@@ -56,10 +51,10 @@ export function MarkInput({
                 >
                   <RefreshCcw className="h-4 w-4" />
                 </Button>
-              </motion.div>
+              </div>
             </div>
           </div>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <div className="hover-scale">
             <Button
               variant="secondary"
               className="flex-shrink-0 h-11 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 border border-indigo-500/20 shadow-sm"
@@ -68,7 +63,7 @@ export function MarkInput({
               <Wand2 className="mr-2 h-4 w-4" />
               {t("randomButton")}
             </Button>
-          </motion.div>
+          </div>
         </div>
         <div className="bg-blue-500/5 border border-blue-500/10 rounded-md p-3 text-sm text-muted-foreground">
           <p>

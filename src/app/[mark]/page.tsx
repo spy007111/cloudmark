@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import type { BookmarkInstance, BookmarksData } from "@/lib/types";
 import { getBookmarkData, deleteBookmarkData } from "@/lib/actions";
@@ -22,7 +22,6 @@ import {
   Tag,
   ChevronDown,
 } from "lucide-react";
-import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/components/toast-provider";
 import { DEMO_BOOKMARKS_DATA } from "./demo_data";
@@ -32,6 +31,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import "./page.css"; // 导入CSS动画样式
 
 // 从书签列表中提取所有唯一分类
 const getCategories = (bookmarks: BookmarkInstance[]): string[] => {
@@ -116,22 +117,6 @@ export default function BookmarksPage() {
     setBookmarkletCode(code);
   }, [mark, baseUrl]);
 
-  // 动画变体
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
-  };
-
   // 处理排序逻辑
   const getSortedBookmarks = useCallback(
     (bookmarks: BookmarkInstance[]) => {
@@ -166,6 +151,18 @@ export default function BookmarksPage() {
     },
     [selectedCategory, sortBy],
   );
+
+  // 使用useMemo计算过滤后的书签列表，避免不必要的重新计算
+  const filteredBookmarks = useMemo(() => {
+    return bookmarksData?.bookmarks.filter(
+      (bookmark) => !selectedCategory || bookmark.category === selectedCategory,
+    );
+  }, [bookmarksData, selectedCategory]);
+
+  // 使用useMemo计算分类列表，避免不必要的重新计算
+  const categories = useMemo(() => {
+    return bookmarksData ? getCategories(bookmarksData.bookmarks) : [];
+  }, [bookmarksData]);
 
   // 当用户偏好变化时保存到本地存储
   useEffect(() => {
@@ -266,65 +263,70 @@ export default function BookmarksPage() {
     generateBookmarkletCode();
   }, [mark, generateBookmarkletCode, loadPreferences]);
 
-  const handleDeleteBookmark = async (uuid: string) => {
-    if (!bookmarksData) return;
+  const handleDeleteBookmark = useCallback(
+    async (uuid: string) => {
+      if (!bookmarksData) return;
 
-    // 如果是demo模式，只更新本地状态
-    if (mark === "demo") {
-      setBookmarksData({
-        ...bookmarksData,
-        bookmarks: bookmarksData.bookmarks.filter((b) => b.uuid !== uuid),
-      });
-      return;
-    }
+      // 如果是demo模式，只更新本地状态
+      if (mark === "demo") {
+        setBookmarksData({
+          ...bookmarksData,
+          bookmarks: bookmarksData.bookmarks.filter((b) => b.uuid !== uuid),
+        });
+        return;
+      }
 
-    const formData = new FormData();
-    formData.append("mark", mark);
-    formData.append("uuid", uuid);
+      const formData = new FormData();
+      formData.append("mark", mark);
+      formData.append("uuid", uuid);
 
-    try {
-      await deleteBookmarkData(formData);
+      try {
+        await deleteBookmarkData(formData);
 
-      // Update local state
-      setBookmarksData({
-        ...bookmarksData,
-        bookmarks: bookmarksData.bookmarks.filter((b) => b.uuid !== uuid),
-      });
-    } catch (error) {
-      console.error("Failed to delete bookmark:", error);
-    }
-  };
+        // Update local state
+        setBookmarksData({
+          ...bookmarksData,
+          bookmarks: bookmarksData.bookmarks.filter((b) => b.uuid !== uuid),
+        });
+      } catch (error) {
+        console.error("Failed to delete bookmark:", error);
+      }
+    },
+    [bookmarksData, mark],
+  );
 
-  const handleEditBookmark = (bookmark: BookmarkInstance) => {
+  const handleEditBookmark = useCallback((bookmark: BookmarkInstance) => {
     setSelectedBookmark(bookmark);
     setIsEditDialogOpen(true);
-  };
+  }, []);
 
-  const handleBookmarkUpdated = (updatedBookmark: BookmarkInstance) => {
-    if (!bookmarksData) return;
+  const handleBookmarkUpdated = useCallback(
+    (updatedBookmark: BookmarkInstance) => {
+      if (!bookmarksData) return;
 
-    // Update local state
-    const updatedBookmarks = bookmarksData.bookmarks.map((b) =>
-      b.uuid === updatedBookmark.uuid ? updatedBookmark : b,
-    );
+      // Update local state
+      const updatedBookmarks = bookmarksData.bookmarks.map((b) =>
+        b.uuid === updatedBookmark.uuid ? updatedBookmark : b,
+      );
 
-    setBookmarksData({
-      ...bookmarksData,
-      bookmarks: updatedBookmarks,
-    });
-  };
-
-  const handleBookmarkAdded = (newBookmark: BookmarkInstance) => {
-    if (bookmarksData) {
       setBookmarksData({
         ...bookmarksData,
-        bookmarks: [...bookmarksData.bookmarks, newBookmark],
+        bookmarks: updatedBookmarks,
       });
-    }
-  };
+    },
+    [bookmarksData],
+  );
 
-  const filteredBookmarks = bookmarksData?.bookmarks.filter(
-    (bookmark) => !selectedCategory || bookmark.category === selectedCategory,
+  const handleBookmarkAdded = useCallback(
+    (newBookmark: BookmarkInstance) => {
+      if (bookmarksData) {
+        setBookmarksData({
+          ...bookmarksData,
+          bookmarks: [...bookmarksData.bookmarks, newBookmark],
+        });
+      }
+    },
+    [bookmarksData],
   );
 
   if (isLoading) {
@@ -352,12 +354,7 @@ export default function BookmarksPage() {
       <div className="py-12 lg:py-16">
         {/* 演示模式提示条 */}
         {mark === "demo" && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-8 rounded-lg border border-amber-500/30 bg-amber-500/10 backdrop-blur-sm p-4 shadow-sm"
-          >
+          <div className="demo-banner mb-8 rounded-lg border border-amber-500/30 bg-amber-500/10 backdrop-blur-sm p-4 shadow-sm">
             <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
               <div className="flex items-center gap-2 text-amber-600 font-medium">
                 <svg
@@ -401,45 +398,24 @@ export default function BookmarksPage() {
                 {t("createOwn")}
               </Button>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* 标题区域 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6"
-        >
+        <div className="title-area flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
           <div>
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex items-center gap-2 mb-2"
-            >
+            <div className="title-text flex items-center gap-2 mb-2">
               <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500">
                 {t("title")}
               </h1>
-            </motion.div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-muted-foreground"
-            >
+            </div>
+            <p className="subtitle-text text-muted-foreground">
               {t("collection", { mark })}
-            </motion.p>
+            </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <div className="button-container hover-scale">
               <Button
                 onClick={() => setIsAddDialogOpen(true)}
                 className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-md"
@@ -447,15 +423,9 @@ export default function BookmarksPage() {
                 <PlusCircle className="h-4 w-4" />
                 {t("addBookmark")}
               </Button>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <div className="bookmarklet-button hover-scale">
               <a
                 href="#"
                 draggable={true}
@@ -475,18 +445,13 @@ export default function BookmarksPage() {
                 <span className="animate-pulse">↑</span>
                 <span className="ml-1">{tButtons("dragTip")}</span>
               </div>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* 布局切换按钮和排序下拉菜单 */}
         {bookmarksData && bookmarksData.bookmarks.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.5 }}
-            className="flex justify-between items-center mb-4"
-          >
+          <div className="controls-area flex justify-between items-center mb-4">
             {/* 排序下拉菜单 */}
             <div className="flex items-center gap-2">
               <DropdownMenu>
@@ -537,56 +502,46 @@ export default function BookmarksPage() {
                 <Layers className="h-4 w-4" />
               </Button>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* 分类筛选 */}
         {bookmarksData &&
           bookmarksData.bookmarks.length > 0 &&
           layoutMode === "grid" && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
-              className="mb-8"
-            >
+            <div className="filter-area mb-8">
               <CategoryFilter
-                categories={getCategories(bookmarksData.bookmarks)}
+                categories={categories}
                 selectedCategory={selectedCategory}
                 onSelectCategory={setSelectedCategory}
               />
-            </motion.div>
+            </div>
           )}
 
         {/* 书签列表 */}
         {bookmarksData && bookmarksData.bookmarks.length > 0 ? (
           layoutMode === "grid" ? (
             // 网格布局视图
-            <motion.div
-              variants={container}
-              initial="hidden"
-              animate="show"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
-            >
-              {getSortedBookmarks(bookmarksData.bookmarks).map((bookmark) => (
-                <motion.div key={bookmark.uuid} variants={item} className="h-full w-full">
-                  <BookmarkCard
-                    bookmark={bookmark}
-                    onDelete={() => handleDeleteBookmark(bookmark.uuid)}
-                    onEdit={() => handleEditBookmark(bookmark)}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
+            <div className="grid-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+              {getSortedBookmarks(bookmarksData.bookmarks).map(
+                (bookmark, index) => (
+                  <div
+                    key={bookmark.uuid}
+                    className={`grid-item h-full w-full delay-${(index % 9) * 100}`}
+                  >
+                    <BookmarkCard
+                      bookmark={bookmark}
+                      onDelete={() => handleDeleteBookmark(bookmark.uuid)}
+                      onEdit={() => handleEditBookmark(bookmark)}
+                    />
+                  </div>
+                ),
+              )}
+            </div>
           ) : (
             // 分类归纳视图
-            <motion.div
-              variants={container}
-              initial="hidden"
-              animate="show"
-              className="space-y-8"
-            >
-              {getCategories(bookmarksData.bookmarks).map((category) => {
+            <div className="stagger-container space-y-8">
+              {categories.map((category, categoryIndex) => {
                 // 如果有选中的分类，只显示该分类
                 if (selectedCategory && category !== selectedCategory)
                   return null;
@@ -600,10 +555,9 @@ export default function BookmarksPage() {
                 if (categoryBookmarks.length === 0) return null;
 
                 return (
-                  <motion.div
+                  <div
                     key={category}
-                    variants={item}
-                    className="overflow-hidden"
+                    className={`stagger-item delay-${categoryIndex * 100} overflow-hidden`}
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <div className="flex items-center px-3 py-1.5 bg-primary/10 text-primary rounded-lg">
@@ -615,28 +569,26 @@ export default function BookmarksPage() {
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                      {categoryBookmarks.map((bookmark) => (
-                        <motion.div key={bookmark.uuid} variants={item}>
+                      {categoryBookmarks.map((bookmark, bookmarkIndex) => (
+                        <div
+                          key={bookmark.uuid}
+                          className={`stagger-item delay-${(bookmarkIndex % 5) * 100 + 100}`}
+                        >
                           <BookmarkCard
                             bookmark={bookmark}
                             onDelete={() => handleDeleteBookmark(bookmark.uuid)}
                             onEdit={() => handleEditBookmark(bookmark)}
                           />
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
-            </motion.div>
+            </div>
           )
         ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="text-center py-16 px-4"
-          >
+          <div className="empty-state text-center py-16 px-4">
             <div className="max-w-md mx-auto">
               <div className="bg-card/50 backdrop-blur-sm border border-border/60 rounded-xl p-8 shadow-sm">
                 <div className="flex justify-center mb-4">
@@ -648,10 +600,7 @@ export default function BookmarksPage() {
                 <p className="text-muted-foreground text-lg mb-6">
                   {t("noBookmarks")}
                 </p>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <div className="hover-scale">
                   <Button
                     variant="outline"
                     className="border-blue-500/20 hover:border-blue-500/40 bg-blue-500/5"
@@ -660,10 +609,10 @@ export default function BookmarksPage() {
                     <PlusCircle className="mr-2 h-4 w-4" />
                     {t("addFirstBookmark")}
                   </Button>
-                </motion.div>
+                </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
 
@@ -672,7 +621,7 @@ export default function BookmarksPage() {
         open={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
         mark={mark}
-        categories={bookmarksData ? getCategories(bookmarksData.bookmarks) : []}
+        categories={categories}
         onBookmarkAdded={handleBookmarkAdded}
         isDemo={mark === "demo"}
       />
@@ -681,11 +630,8 @@ export default function BookmarksPage() {
         <EditBookmarkDialog
           open={isEditDialogOpen}
           onOpenChange={setIsEditDialogOpen}
-          mark={mark}
           bookmark={selectedBookmark}
-          categories={
-            bookmarksData ? getCategories(bookmarksData.bookmarks) : []
-          }
+          categories={categories}
           onBookmarkUpdated={handleBookmarkUpdated}
           isDemo={mark === "demo"}
         />

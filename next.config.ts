@@ -1,11 +1,14 @@
 import createNextIntlPlugin from "next-intl/plugin";
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+import type { NextConfig } from "next";
 
 initOpenNextCloudflareForDev();
 
 const withNextIntl = createNextIntlPlugin();
 
-import type { NextConfig } from "next";
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const nextConfig: NextConfig = {
   eslint: {
@@ -14,4 +17,4 @@ const nextConfig: NextConfig = {
   compress: true,
 };
 
-export default withNextIntl(nextConfig);
+export default withBundleAnalyzer(withNextIntl(nextConfig));

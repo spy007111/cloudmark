@@ -3,6 +3,7 @@ import { Github, FileText } from "lucide-react";
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import "./globals.css";
+import "@/components/animations.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import Image from "next/image";
@@ -52,6 +53,9 @@ export const metadata: Metadata = {
       },
     ],
   },
+  other: {
+    "google-site-verification": "",
+  },
 };
 
 function Navigation() {
@@ -62,6 +66,7 @@ function Navigation() {
       <Link
         href="/doc"
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors duration-200"
+        prefetch={false}
       >
         <FileText className="h-4 w-4" />
         <span className="hidden sm:inline">{t("quickstart")}</span>
@@ -69,6 +74,9 @@ function Navigation() {
       <Link
         href="https://github.com/wesleyel/cloudmark"
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors duration-200"
+        prefetch={false}
+        target="_blank"
+        rel="noopener noreferrer"
       >
         <Github className="h-4 w-4" />
         <span className="hidden sm:inline">{t("github")}</span>
@@ -92,7 +100,17 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className="!scroll-smooth">
+      <head>
+        <link
+          rel="preload"
+          href="/favicon.svg"
+          as="image"
+          type="image/svg+xml"
+        />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           <ToastProvider>
@@ -110,6 +128,7 @@ export default async function RootLayout({
                       width={24}
                       height={24}
                       className="h-6 w-6 text-primary"
+                      priority
                     />
                     <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
                       Cloudmark
@@ -131,6 +150,8 @@ export default async function RootLayout({
                     <Link
                       href="https://github.com/wesleyel"
                       className="hover:text-primary"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       Wesley Yang
                     </Link>

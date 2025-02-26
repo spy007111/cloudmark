@@ -11,7 +11,6 @@ import { Globe, Check } from "lucide-react";
 import { Locale } from "@/i18n/config";
 import { setUserLocale } from "@/services/locale";
 import { useLocale, useTranslations } from "next-intl";
-import { motion } from "framer-motion";
 
 const languages = [
   { code: "en", name: "English" },

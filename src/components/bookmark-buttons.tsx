@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Bookmark, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
@@ -18,7 +17,7 @@ export function BookmarkButtons({
 
   return (
     <div className="flex flex-col sm:flex-row gap-3">
-      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <div className="hover-scale">
         <a
           href="#"
           draggable={true}
@@ -33,9 +32,9 @@ export function BookmarkButtons({
           <Bookmark className="mr-2 h-4 w-4" />
           {t("saveButton", { mark })}
         </a>
-      </motion.div>
+      </div>
 
-      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <div className="hover-scale">
         <a
           href={`${baseUrl}/${mark}`}
           draggable={true}
@@ -45,7 +44,7 @@ export function BookmarkButtons({
           <ExternalLink className="mr-2 h-4 w-4" />
           {t("openButton", { mark })}
         </a>
-      </motion.div>
+      </div>
 
       <div className="hidden sm:flex items-center ml-2 text-sm text-muted-foreground">
         <span className="animate-pulse">←</span>

@@ -90,7 +90,6 @@ Cloudmark 使用 Cloudflare KV 存储书签数据。您需要：
 - [Cloudflare KV](https://developers.cloudflare.com/workers/runtime-apis/kv/) - 数据存储
 - [Tailwind CSS](https://tailwindcss.com/) - 样式
 - [Next-Intl](https://next-intl-docs.vercel.app/) - 国际化
-- [Framer Motion](https://www.framer.com/motion/) - 动画效果
 
 ## 许可证
 

@@ -11,7 +11,7 @@ import {
 import { Bookmark } from "lucide-react";
 import { useMessages, useTranslations } from "next-intl";
 import { defaultMark } from "@/lib/types";
-import { motion } from "framer-motion";
+import "./page.css";
 
 export default function DocPage() {
   const t = useTranslations("DocPage");
@@ -55,32 +55,12 @@ export default function DocPage() {
     setMark(generateRandomMark());
   }, []);
 
-  // 动画变体
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
-  };
-
   if (!mark) {
     return (
       <div className="container flex items-center justify-center min-h-screen">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center"
-        >
+        <div className="fade-in text-center">
           <p className="text-muted-foreground">{t("loading") || "加载中..."}</p>
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -96,45 +76,25 @@ export default function DocPage() {
 
       <div className="py-12 lg:py-16">
         {/* 标题区域 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-10"
-        >
-          <motion.h1
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
-          >
+        <div className="title-area text-center mb-10">
+          <h1 className="title-text text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500">
             {t("title")}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-xl text-muted-foreground max-w-2xl mx-auto"
-          >
+          </h1>
+          <p className="subtitle-text text-xl text-muted-foreground max-w-2xl mx-auto">
             {t("description")}
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* 主要内容卡片 */}
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="max-w-3xl mx-auto"
-        >
-          <Card className="backdrop-blur-sm bg-card/50 border border-border/60">
+        <div className="stagger-container max-w-3xl mx-auto">
+          <Card className="content-card backdrop-blur-sm bg-card/50 border border-border/60">
             <CardContent className="p-6 md:p-8 space-y-8">
-              <motion.div variants={item}>
+              <div className="installer-container">
                 <BookmarkletInstaller mark={mark} onMarkChange={setMark} />
-              </motion.div>
+              </div>
 
               {/* 安装说明 */}
-              <motion.div variants={item} className="space-y-6">
+              <div className="method-section delay-200 space-y-6">
                 <h2 className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-500">
                   {t("method1.title")}
                 </h2>
@@ -163,9 +123,9 @@ export default function DocPage() {
                     </span>
                   </li>
                 </ol>
-              </motion.div>
+              </div>
 
-              <motion.div variants={item} className="space-y-6">
+              <div className="method-section delay-300 space-y-6">
                 <h2 className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">
                   {t("method2.title")}
                 </h2>
@@ -205,10 +165,10 @@ export default function DocPage() {
                     </span>
                   </li>
                 </ol>
-              </motion.div>
+              </div>
 
               {/* 使用说明 */}
-              <motion.div variants={item} className="space-y-6">
+              <div className="usage-section delay-400 space-y-6">
                 <h2 className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
                   {t("usage.title")}
                 </h2>
@@ -242,10 +202,10 @@ export default function DocPage() {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

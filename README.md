@@ -90,7 +90,6 @@ Cloudmark uses Cloudflare KV to store bookmark data. You need to:
 - [Cloudflare KV](https://developers.cloudflare.com/workers/runtime-apis/kv/) - Data storage
 - [Tailwind CSS](https://tailwindcss.com/) - Styling
 - [Next-Intl](https://next-intl-docs.vercel.app/) - Internationalization
-- [Framer Motion](https://www.framer.com/motion/) - Animation effects
 
 ## License
 

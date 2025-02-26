@@ -7,7 +7,6 @@ import { BookmarkButtons } from "@/components/bookmark-buttons";
 import styles from "./bookmarklet-installer.module.css";
 import { Button } from "@/components/ui/button";
 import { defaultMark } from "@/lib/types";
-import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
 interface BookmarkletInstallerProps {
@@ -184,12 +183,7 @@ export default function BookmarkletInstaller({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="space-y-8"
-    >
+    <div className="fade-in-up space-y-8">
       {/* Mark输入区域 */}
       <MarkInput
         mark={mark}
@@ -223,11 +217,7 @@ export default function BookmarkletInstaller({
                 <code>{bookmarkletCode}</code>
               </pre>
             </div>
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="absolute right-2 top-2"
-            >
+            <div className="absolute right-2 top-2 hover-scale">
               <Button
                 size="sm"
                 variant="ghost"
@@ -240,10 +230,10 @@ export default function BookmarkletInstaller({
                   <Copy className="h-4 w-4" />
                 )}
               </Button>
-            </motion.div>
+            </div>
           </div>
         </div>
       </details>
-    </motion.div>
+    </div>
   );
 }

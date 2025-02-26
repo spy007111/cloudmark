@@ -26,7 +26,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Link, FileText, Tag, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import "./animations.css";
 
 interface AddBookmarkDialogProps {
   open: boolean;
@@ -128,7 +128,7 @@ export function AddBookmarkDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] border border-blue-500/20 bg-card/95 backdrop-blur-sm">
+      <DialogContent className="dialog-content sm:max-w-[425px] border border-blue-500/20 bg-card/95 backdrop-blur-sm">
         <DialogHeader>
           <DialogTitle className="text-xl flex items-center gap-2">
             <span className="bg-blue-500/10 p-1.5 rounded-md">
@@ -202,10 +202,7 @@ export function AddBookmarkDialog({
                     ))}
                   </SelectContent>
                 </Select>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <div className="hover-scale">
                   <Button
                     type="button"
                     variant="outline"
@@ -214,7 +211,7 @@ export function AddBookmarkDialog({
                   >
                     {t("newCategory")}
                   </Button>
-                </motion.div>
+                </div>
               </div>
             ) : (
               <div className="flex space-x-2">
@@ -226,10 +223,7 @@ export function AddBookmarkDialog({
                   className="border-green-500/20 focus:border-green-500/40 bg-green-500/5 focus:ring-green-500/10"
                 />
                 {categories.length > 0 && (
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
+                  <div className="hover-scale">
                     <Button
                       type="button"
                       variant="outline"
@@ -238,7 +232,7 @@ export function AddBookmarkDialog({
                     >
                       {t("existingCategory")}
                     </Button>
-                  </motion.div>
+                  </div>
                 )}
               </div>
             )}
@@ -251,7 +245,7 @@ export function AddBookmarkDialog({
           )}
 
           <DialogFooter className="gap-2 sm:gap-0">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <div className="hover-scale-sm">
               <Button
                 type="button"
                 variant="outline"
@@ -260,8 +254,8 @@ export function AddBookmarkDialog({
               >
                 {t("cancel")}
               </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            </div>
+            <div className="hover-scale-sm">
               <Button
                 type="submit"
                 disabled={isSubmitting}
@@ -272,7 +266,7 @@ export function AddBookmarkDialog({
                 )}
                 {t("addButton")}
               </Button>
-            </motion.div>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -9,7 +9,8 @@
     "lint": "next lint",
     "preview": "opennextjs-cloudflare && wrangler dev",
     "deploy": "opennextjs-cloudflare && wrangler deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@next/third-parties": "^15.1.7",
@@ -24,7 +25,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "framer-motion": "^12.4.7",
     "lucide-react": "^0.475.0",
     "next": "15.1.6",
     "next-intl": "^3.26.5",
@@ -37,6 +37,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250214.0",
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.1.6",
     "@opennextjs/cloudflare": "^0.5.4",
     "@types/node": "^20",
     "@types/react": "^19",
