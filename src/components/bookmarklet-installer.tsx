@@ -8,6 +8,7 @@ import styles from "./bookmarklet-installer.module.css";
 import { Button } from "@/components/ui/button";
 import { defaultMark } from "@/lib/types";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 interface BookmarkletInstallerProps {
   mark?: string;
@@ -18,6 +19,7 @@ export default function BookmarkletInstaller({
   mark: externalMark,
   onMarkChange: externalOnMarkChange,
 }: BookmarkletInstallerProps) {
+  const t = useTranslations("Components.BookmarkletInstaller");
   const [localMark, setLocalMark] = useState(defaultMark);
   const [bookmarkletCode, setBookmarkletCode] = useState("");
   const [copied, setCopied] = useState(false);
@@ -113,7 +115,7 @@ export default function BookmarkletInstaller({
       {/* 书签按钮区域 */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500 mb-3">
-          书签工具
+          {t("bookmarkTools")}
         </h3>
         <BookmarkButtons
           mark={mark}
@@ -126,7 +128,7 @@ export default function BookmarkletInstaller({
       <details className={styles.details}>
         <summary className={styles.summary}>
           <Wand2 className="h-5 w-5" />
-          查看代码
+          {t("viewCode")}
         </summary>
         <div className={styles.content}>
           <div className="relative mt-3">

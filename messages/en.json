@@ -69,5 +69,22 @@
       },
       "tip": "Tip: You can return to this page anytime to regenerate bookmark tools with different markers. Different markers can help you better categorize and manage your saved content."
     }
+  },
+  "Components": {
+    "MarkInput": {
+      "label": "Bookmark Marker",
+      "placeholder": "Enter custom marker",
+      "randomButton": "Generate Random",
+      "description": "The marker is used to distinguish different bookmark collections. We recommend using meaningful phrases. Current marker:"
+    },
+    "BookmarkButtons": {
+      "saveButton": "Save to {mark}",
+      "openButton": "Open {mark}",
+      "dragTip": "Drag to bookmark bar"
+    },
+    "BookmarkletInstaller": {
+      "bookmarkTools": "Bookmark Tools",
+      "viewCode": "View Code"
+    }
   }
 }

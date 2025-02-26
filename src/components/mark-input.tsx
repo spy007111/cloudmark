@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 interface MarkInputProps {
   mark: string;
@@ -18,6 +19,8 @@ export function MarkInput({
   onGenerateRandom,
   isGenerating,
 }: MarkInputProps) {
+  const t = useTranslations("Components.MarkInput");
+  
   return (
     <div className="space-y-4">
       <div className="space-y-3">
@@ -25,7 +28,7 @@ export function MarkInput({
           htmlFor="mark" 
           className="text-lg font-medium bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-500"
         >
-          书签标记
+          {t("label")}
         </Label>
         <div className="flex gap-3">
           <div className="relative flex-1 group">
@@ -33,7 +36,7 @@ export function MarkInput({
               id="mark"
               value={mark}
               onChange={(e) => onChange(e.target.value)}
-              placeholder="输入自定义标记"
+              placeholder={t("placeholder")}
               className="pr-10 h-11 border-border/60 bg-background/50 backdrop-blur-sm focus:border-blue-500 focus:ring-blue-500/20 transition-all"
             />
             <motion.div
@@ -63,13 +66,13 @@ export function MarkInput({
               onClick={onGenerateRandom}
             >
               <Wand2 className="mr-2 h-4 w-4" />
-              随机生成
+              {t("randomButton")}
             </Button>
           </motion.div>
         </div>
         <div className="bg-blue-500/5 border border-blue-500/10 rounded-md p-3 text-sm text-muted-foreground">
           <p>
-            标记将用于区分不同的书签收藏，建议使用有意义的词组。当前标记：
+            {t("description")}
             <span className="font-medium text-foreground ml-1">{mark}</span>
           </p>
         </div>
