@@ -45,14 +45,6 @@ export const metadata: Metadata = {
     description: "Save and access your bookmarks from anywhere with Cloudmark",
     images: ["/og-image-en.png"],
   },
-  icons: {
-    icon: [
-      {
-        url: "/favicon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-  },
   other: {
     "google-site-verification": "",
   },
@@ -102,12 +94,6 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="!scroll-smooth">
       <head>
-        <link
-          rel="preload"
-          href="/favicon.svg"
-          as="image"
-          type="image/svg+xml"
-        />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="preconnect" href="https://www.google-analytics.com" />
       </head>
@@ -123,7 +109,7 @@ export default async function RootLayout({
                     className="flex items-center space-x-2 transition-transform duration-200 hover:scale-105"
                   >
                     <Image
-                      src="/favicon.svg"
+                      src="/icon1.svg"
                       alt="Cloudmark logo"
                       width={24}
                       height={24}
