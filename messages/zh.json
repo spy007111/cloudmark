@@ -28,8 +28,8 @@
     "description": "无法找到此页面。"
   },
   "DocPage": {
-    "title": "自定义Cloudmark书签",
-    "description": "自定义你的书签ID，或使用随机生成的标记",
+    "title": "Cloudmark 快速入门",
+    "description": "跨设备、跨浏览器的云端书签管理工具",
     "keyboard": {
       "showBookmarks": "Ctrl+Shift+B / Cmd+Shift+B"
     },
@@ -108,7 +108,7 @@
       "description": "标记将用于区分不同的书签收藏，建议使用有意义的词组。当前标记："
     },
     "BookmarkButtons": {
-      "updateButton": "保存到 {mark}",
+      "saveButton": "保存到 {mark}",
       "openButton": "打开 {mark}",
       "dragTip": "拖拽到书签栏"
     },
@@ -140,6 +140,7 @@
       "existingCategory": "已有",
       "cancel": "取消",
       "addButton": "添加书签",
+      "updateButton": "更新书签",
       "saveButton": "保存更改",
       "errors": {
         "urlRequired": "网址是必填项",

@@ -28,8 +28,8 @@
     "description": "This page could not be found."
   },
   "DocPage": {
-    "title": "Customize Your Cloudmark Bookmark",
-    "description": "Customize your bookmark ID, or use a randomly generated marker",
+    "title": "Cloudmark Quick Start",
+    "description": "Cross-device, cross-browser cloud bookmark management tool",
     "keyboard": {
       "showBookmarks": "Ctrl+Shift+B / Cmd+Shift+B"
     },
@@ -108,7 +108,7 @@
       "description": "The mark will be used to distinguish different bookmark collections. It's recommended to use meaningful phrases. Current mark: "
     },
     "BookmarkButtons": {
-      "updateButton": "Save to {mark}",
+      "saveButton": "Save to {mark}",
       "openButton": "Open {mark}",
       "dragTip": "Drag to bookmarks bar"
     },
@@ -140,6 +140,7 @@
       "existingCategory": "Existing",
       "cancel": "Cancel",
       "addButton": "Add Bookmark",
+      "updateButton": "Update Bookmark",
       "saveButton": "Save Changes",
       "errors": {
         "urlRequired": "URL is required",
