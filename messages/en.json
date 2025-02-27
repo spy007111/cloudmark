@@ -108,7 +108,7 @@
       "description": "The mark will be used to distinguish different bookmark collections. It's recommended to use meaningful phrases. Current mark: "
     },
     "BookmarkButtons": {
-      "saveButton": "Save to {mark}",
+      "updateButton": "Save to {mark}",
       "openButton": "Open {mark}",
       "dragTip": "Drag to bookmarks bar"
     },

@@ -108,7 +108,7 @@
       "description": "标记将用于区分不同的书签收藏，建议使用有意义的词组。当前标记："
     },
     "BookmarkButtons": {
-      "saveButton": "保存到 {mark}",
+      "updateButton": "保存到 {mark}",
       "openButton": "打开 {mark}",
       "dragTip": "拖拽到书签栏"
     },
