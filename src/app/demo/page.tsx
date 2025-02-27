@@ -1,22 +1,15 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { BookmarksUI } from "@/components/bookmarks-ui";
 import type { BookmarkInstance } from "@/lib/types";
-import { getBookmarkData, putBookmarkData, updateBookmarkData, deleteBookmarkData } from "@/lib/actions";
 import { DEMO_BOOKMARKS_DATA } from "./demo_data";
 import "./page.css";
+import { getBaseUrl } from "@/lib/utils";
 
 export default function DemoPage() {
   const [bookmarksData, setBookmarksData] = useState(DEMO_BOOKMARKS_DATA);
   const [isLoading, setIsLoading] = useState(false);
-
-  // 获取当前网站的基础 URL
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    (typeof window !== "undefined"
-      ? window.location.origin
-      : "http://localhost:3000");
 
   // Demo模式中的删除操作 - 使用本地状态
   const handleDeleteBookmark = useCallback(async (uuid: string) => {
@@ -55,7 +48,7 @@ export default function DemoPage() {
       onDeleteBookmark={handleDeleteBookmark}
       onUpdateBookmark={handleUpdateBookmark}
       onAddBookmark={handleAddBookmark}
-      baseUrl={baseUrl}
+      baseUrl={getBaseUrl()}
     />
   );
 } 

@@ -30,46 +30,72 @@
   "DocPage": {
     "title": "Cloudmark Quick Start",
     "description": "Cross-device, cross-browser cloud bookmark management tool",
-    "keyboard": {
-      "showBookmarks": "Ctrl+Shift+B / Cmd+Shift+B"
-    },
-    "method1": {
-      "title": "Method 1: Drag and Drop (Recommended)",
-      "steps": {
-        "1": "Make sure your browser shows the bookmark bar (Press",
-        "1_end": " to show in Chrome)",
-        "2": "Drag both buttons above to your bookmark bar:",
-        "2_1": "\"Save to {mark}\" - to save the current page",
-        "2_2": "\"Open {mark}\" - to quickly view your saved content",
-        "3": "Release the mouse to complete installation"
+    "loading": "Loading...",
+    "intro": {
+      "title": "What is Cloudmark?",
+      "description": "Cloudmark is a cloud-based bookmark collection tool that allows you to save and organize web bookmarks with one click and access them from any device.",
+      "features": {
+        "title": "Key Features",
+        "oneClick": "One-click saving of current webpage",
+        "cloud": "Cloud storage for cross-device access",
+        "categories": "Organize and filter bookmarks by categories", 
+        "custom": "Customizable bookmark collections",
+        "sorting": "Multiple sorting and layout options",
+        "multilingual": "Multilingual interface support"
       }
     },
-    "method2": {
-      "title": "Method 2: Manual Creation",
-      "steps": {
-        "1": "Make sure your browser shows the bookmark bar (Press",
-        "1_end": " to show in Chrome)",
-        "2": "Right-click on the bookmarks bar and select \"Add Page\" or \"Add Bookmark\"",
-        "3": "Change the bookmark name to \"{mark}\"",
-        "4": "Paste the complete code from the code box above in the URL/address field",
-        "5": "Choose to save in the \"Bookmarks Bar\" folder",
-        "6": "Click save to complete installation"
+    "setup": {
+      "title": "Set Up Your Bookmarklet",
+      "markName": {
+        "title": "Set Your Bookmark Name",
+        "placeholder": "Name your bookmark ID",
+        "description": "This name will be used for your bookmark collection and can only contain letters, numbers, underscores, and hyphens.",
+        "button": "Generate Random"
+      },
+      "bookmarklet": {
+        "title": "Install Bookmark Tool",
+        "saveButton": "Save to {mark}",
+        "openButton": "Open {mark} Bookmarks",
+        "dragTip": "Drag to bookmark bar",
+        "description": "Drag the button above to your browser's bookmark bar to save the current webpage anytime."
+      },
+      "code": {
+        "title": "View Bookmarklet Code",
+        "copied": "Copied"
       }
     },
     "usage": {
-      "title": "Usage Instructions:",
-      "intro": "When you browse to a page you want to save",
+      "title": "How to Use Cloudmark",
       "steps": {
-        "1": "Click on \"Save to {mark}\" in your bookmarks bar",
-        "2": "The page will automatically redirect to the collection system",
-        "3": "The system will save the current page's",
-        "3_1": "Page title",
-        "3_2": "URL address",
-        "3_3": "Website icon"
-      },
-      "tip": "Tip: You can return to this page anytime to regenerate bookmark tools with different markers. Different markers can help you better categorize and manage your saved content."
+        "setup": {
+          "title": "Set Up Your Bookmarklet",
+          "description": "Follow the instructions above to create your bookmark collection name and add the bookmarklet to your browser's bookmark bar. Each bookmark collection name corresponds to a separate bookmark collection."
+        },
+        "save": {
+          "title": "Save Webpages to Your Collection",
+          "description": "When browsing a webpage, click the Cloudmark bookmarklet in your bookmark bar to open the bookmark addition page. Fill in the category and description (optional), then save."
+        },
+        "access": {
+          "title": "Access Your Bookmark Collection",
+          "description": "Access {baseUrl}/{mark} to view and manage all your saved bookmarks. You can access this URL from any device or browser."
+        },
+        "manage": {
+          "title": "Organize and Manage Your Bookmarks",
+          "description": "You can edit or delete bookmarks, change category views, sort by different criteria, and use category filters to quickly find the bookmarks you need."
+        }
+      }
     },
-    "loading": "Loading..."
+    "demo": {
+      "title": "Want to Experience Cloudmark?",
+      "description": "Try all the features of Cloudmark without creating a bookmark collection",
+      "button": "View Demo"
+    },
+    "navigation": {
+      "intro": "Introduction",
+      "setup": "Setup",
+      "usage": "Usage",
+      "demo": "Demo"
+    }
   },
   "Navigation": {
     "quickstart": "Quick Start",

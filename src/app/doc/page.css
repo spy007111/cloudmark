@@ -1,27 +1,66 @@
-/* 此文件中的动画和效果已移至 src/components/animations.css */
-/* 仅保留页面特定的样式 */
+/* 文档页面核心动画和特殊效果 */
 
-/* 页面特有的动画类或扩展可以放在这里 */
-.content-card {
-  animation: fadeInUp 0.3s ease forwards;
-  animation-fill-mode: both;
-  opacity: 0;
+/* 动画时间变量 */
+:root {
+  --animation-duration: 0.5s;
+  --animation-delay-step: 0.1s;
 }
 
-.installer-container {
-  animation: fadeInUp 0.5s ease forwards;
-  animation-fill-mode: both;
+/* 基础动画类 */
+.fade-in {
   opacity: 0;
+  animation: fadeIn var(--animation-duration) ease forwards;
 }
 
-.method-section {
-  animation: fadeInUp 0.3s ease forwards;
-  animation-fill-mode: both;
+.fade-in-up {
   opacity: 0;
+  animation: fadeInUp var(--animation-duration) ease forwards;
 }
 
-.usage-section {
-  animation: fadeInUp 0.3s ease forwards;
-  animation-fill-mode: both;
-  opacity: 0;
+/* 动画延迟类 */
+.delay-1 { animation-delay: calc(var(--animation-delay-step) * 1); }
+.delay-2 { animation-delay: calc(var(--animation-delay-step) * 2); }
+.delay-3 { animation-delay: calc(var(--animation-delay-step) * 3); }
+.delay-4 { animation-delay: calc(var(--animation-delay-step) * 4); }
+
+/* 详情组件开关动画 */
+details[open] .summary svg {
+  transform: rotate(90deg);
 }
+
+details[open] .content {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* 悬停缩放效果 - 保留以防Tailwind无法完全替代 */
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* 动画关键帧定义 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} 

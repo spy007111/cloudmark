@@ -3,12 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import type { BookmarkInstance, BookmarksData } from "@/lib/types";
-import {
-  getBookmarkData,
-  deleteBookmarkData,
-  updateBookmarkData,
-  putBookmarkData,
-} from "@/lib/actions";
+import { getBookmarkData, deleteBookmarkData } from "@/lib/actions";
 import { BookmarksUI } from "@/components/bookmarks-ui";
 import { useToast } from "@/components/toast-provider";
 import { useTranslations } from "next-intl";
