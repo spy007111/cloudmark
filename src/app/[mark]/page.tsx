@@ -3,7 +3,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import type { BookmarkInstance, BookmarksData } from "@/lib/types";
-import { getBookmarkData, deleteBookmarkData } from "@/lib/actions";
+import {
+  getBookmarkData,
+  deleteBookmarkData,
+  updateBookmark,
+  createBookmark,
+} from "@/lib/actions";
 import { BookmarksUI } from "@/components/bookmarks-ui";
 import { useToast } from "@/components/toast-provider";
 import { useTranslations } from "next-intl";
@@ -28,12 +33,8 @@ export default function BookmarksPage() {
   // 正常模式删除书签 - 使用API请求
   const handleDeleteBookmark = useCallback(
     async (uuid: string) => {
-      const formData = new FormData();
-      formData.append("mark", mark);
-      formData.append("uuid", uuid);
-
       try {
-        await deleteBookmarkData(formData);
+        await deleteBookmarkData({ mark, uuid });
 
         // 调用API后，刷新书签数据
         await refreshBookmarks();
@@ -47,8 +48,12 @@ export default function BookmarksPage() {
   // 正常模式更新书签 - 使用API请求
   const handleUpdateBookmark = useCallback(
     async (updatedBookmark: BookmarkInstance) => {
-      // 刷新书签数据
-      await refreshBookmarks();
+      try {
+        // 刷新书签数据
+        await refreshBookmarks();
+      } catch (error) {
+        console.error("Failed to update bookmark:", error);
+      }
     },
     [],
   );
@@ -56,19 +61,20 @@ export default function BookmarksPage() {
   // 正常模式添加书签 - 使用API请求
   const handleAddBookmark = useCallback(
     async (newBookmark: BookmarkInstance) => {
-      // 刷新书签数据
-      await refreshBookmarks();
+      try {
+        // 刷新书签数据
+        await refreshBookmarks();
+      } catch (error) {
+        console.error("Failed to add bookmark:", error);
+      }
     },
-    [],
+    [mark],
   );
 
   // 刷新书签数据的通用函数
   const refreshBookmarks = async () => {
-    const formData = new FormData();
-    formData.append("mark", mark);
-
     try {
-      const data = await getBookmarkData(formData);
+      const data = await getBookmarkData({ mark });
       setBookmarksData(data);
     } catch (error) {
       console.error("Failed to refresh bookmarks:", error);
@@ -137,13 +143,8 @@ export default function BookmarksPage() {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-
-      // 正常获取数据
-      const formData = new FormData();
-      formData.append("mark", mark);
-
       try {
-        const data = await getBookmarkData(formData);
+        const data = await getBookmarkData({ mark });
         setBookmarksData(data);
       } catch (error) {
         console.error("Failed to fetch bookmarks:", error);

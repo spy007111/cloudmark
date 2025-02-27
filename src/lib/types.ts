@@ -9,6 +9,20 @@ export interface BookmarkInstance {
   description?: string; // 添加可选的描述字段
 }
 
+export type InsertBookmarkInstance = Omit<
+  BookmarkInstance,
+  "uuid" | "createdAt" | "modifiedAt" | "favicon"
+> & {
+  mark: string;
+};
+
+export type UpdateBookmarkInstance = Omit<
+  BookmarkInstance,
+  "createdAt" | "modifiedAt" | "favicon"
+> & {
+  mark: string;
+};
+
 export interface BookmarksData {
   mark: string;
   bookmarks: BookmarkInstance[];

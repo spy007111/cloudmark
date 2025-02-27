@@ -475,6 +475,7 @@ export function BookmarksUI({
         <EditBookmarkDialog
           open={isEditDialogOpen}
           onOpenChange={setIsEditDialogOpen}
+          mark={mark}
           bookmark={selectedBookmark}
           categories={categories}
           onBookmarkUpdated={onUpdateBookmark}

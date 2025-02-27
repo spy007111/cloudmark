@@ -3,8 +3,8 @@
 import type React from "react";
 
 import { useState } from "react";
-import type { BookmarkInstance } from "@/lib/types";
-import { putBookmarkData } from "@/lib/actions";
+import { defaultCategory, type BookmarkInstance } from "@/lib/types";
+import { createBookmark } from "@/lib/actions";
 import {
   Dialog,
   DialogContent,
@@ -82,38 +82,25 @@ export function AddBookmarkDialog({
     setIsSubmitting(true);
 
     try {
-      // Demo模式下，直接创建新书签对象而不调用API
-      if (isDemo) {
-        const newBookmark: BookmarkInstance = {
-          uuid: crypto.randomUUID(),
+      const newBookmark = await createBookmark(
+        {
+          mark,
           url,
           title: title || new URL(url).hostname,
-          favicon: `https://${new URL(url).hostname}/favicon.ico`,
           category: selectedCategory,
-          description: description,
-          createdAt: new Date().toISOString(),
-          modifiedAt: new Date().toISOString(),
-        };
-
-        onBookmarkAdded(newBookmark);
-      } else {
-        // 正常模式，调用API
-        const formData = new FormData();
-        formData.append("mark", mark);
-        formData.append("url", url);
-        formData.append("title", title || new URL(url).hostname);
-        formData.append("category", selectedCategory);
-        formData.append("description", description);
-
-        const newBookmark = await putBookmarkData(formData);
-        onBookmarkAdded(newBookmark);
-      }
+          description,
+        },
+        {
+          isDemo,
+        }
+      );
+      onBookmarkAdded(newBookmark);
 
       // 重置表单
       setUrl("");
       setTitle("");
       setDescription("");
-      setCategory(categories[0] || "");
+      setCategory(categories[0] || defaultCategory);
       setNewCategory("");
       setIsCustomCategory(false);
 

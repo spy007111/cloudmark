@@ -3,7 +3,7 @@
 import type React from "react";
 import { useState } from "react";
 import type { BookmarkInstance } from "@/lib/types";
-import { updateBookmarkData } from "@/lib/actions";
+import { updateBookmark } from "@/lib/actions";
 import {
   Dialog,
   DialogContent,
@@ -30,6 +30,7 @@ import "./animations.css";
 interface EditBookmarkDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  mark: string;
   bookmark: BookmarkInstance;
   categories: string[];
   onBookmarkUpdated: (bookmark: BookmarkInstance) => void;
@@ -39,6 +40,7 @@ interface EditBookmarkDialogProps {
 export function EditBookmarkDialog({
   open,
   onOpenChange,
+  mark,
   bookmark,
   categories,
   onBookmarkUpdated,
@@ -83,31 +85,21 @@ export function EditBookmarkDialog({
     setIsSubmitting(true);
 
     try {
-      // Demo模式下，直接更新书签对象而不调用API
-      if (isDemo) {
-        const updatedBookmark: BookmarkInstance = {
-          ...bookmark,
+      const updatedBookmark = await updateBookmark(
+        {
+          uuid: bookmark.uuid,
           url,
           title,
           category: selectedCategory,
           description,
-          modifiedAt: new Date().toISOString(),
-        };
-
+          mark,
+        },
+        {
+          isDemo,
+        },
+      );
+      if (updatedBookmark) {
         onBookmarkUpdated(updatedBookmark);
-      } else {
-        // 正常模式，调用API
-        const formData = new FormData();
-        formData.append("uuid", bookmark.uuid);
-        formData.append("url", url);
-        formData.append("title", title);
-        formData.append("category", selectedCategory);
-        formData.append("description", description);
-
-        const updatedBookmark = await updateBookmarkData(formData);
-        if (updatedBookmark) {
-          onBookmarkUpdated(updatedBookmark);
-        }
       }
 
       onOpenChange(false);
