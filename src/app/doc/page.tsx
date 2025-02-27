@@ -46,7 +46,7 @@ export default function DocPage() {
       setBookmarkletCode(code);
       return code;
     },
-    [baseUrl]
+    [baseUrl],
   );
 
   // 当 mark 值改变时更新 bookmarklet 代码
@@ -64,7 +64,7 @@ export default function DocPage() {
   // 处理复制 bookmarklet 代码
   const handleCopy = () => {
     navigator.clipboard.writeText(
-      bookmarkletCode || generateBookmarkletCode(mark)
+      bookmarkletCode || generateBookmarkletCode(mark),
     );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -113,8 +113,8 @@ export default function DocPage() {
       {/* 右侧悬浮导航 */}
       <div className="fixed right-4 top-1/2 -translate-y-1/2 z-10 hidden md:block">
         <div className="flex flex-col gap-3 p-3 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 dark:border-white/5">
-          <a 
-            href="#intro" 
+          <a
+            href="#intro"
             className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 transition-all duration-200 px-4 py-3 rounded-xl hover:bg-blue-50/80 dark:hover:bg-blue-950/30 group relative"
           >
             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-500/0 rounded-r-full group-hover:bg-blue-500 transition-all duration-200"></span>
@@ -123,9 +123,9 @@ export default function DocPage() {
             </div>
             <span>{t("navigation.intro")}</span>
           </a>
-          
-          <a 
-            href="#setup" 
+
+          <a
+            href="#setup"
             className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-indigo-400 transition-all duration-200 px-4 py-3 rounded-xl hover:bg-indigo-50/80 dark:hover:bg-indigo-950/30 group relative"
           >
             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-indigo-500/0 rounded-r-full group-hover:bg-indigo-500 transition-all duration-200"></span>
@@ -134,9 +134,9 @@ export default function DocPage() {
             </div>
             <span>{t("navigation.setup")}</span>
           </a>
-          
-          <a 
-            href="#usage" 
+
+          <a
+            href="#usage"
             className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-emerald-600 dark:text-slate-300 dark:hover:text-emerald-400 transition-all duration-200 px-4 py-3 rounded-xl hover:bg-emerald-50/80 dark:hover:bg-emerald-950/30 group relative"
           >
             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-emerald-500/0 rounded-r-full group-hover:bg-emerald-500 transition-all duration-200"></span>
@@ -145,9 +145,9 @@ export default function DocPage() {
             </div>
             <span>{t("navigation.usage")}</span>
           </a>
-          
-          <a 
-            href="#demo" 
+
+          <a
+            href="#demo"
             className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-purple-600 dark:text-slate-300 dark:hover:text-purple-400 transition-all duration-200 px-4 py-3 rounded-xl hover:bg-purple-50/80 dark:hover:bg-purple-950/30 group relative"
           >
             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-purple-500/0 rounded-r-full group-hover:bg-purple-500 transition-all duration-200"></span>
@@ -162,32 +162,32 @@ export default function DocPage() {
       {/* 移动设备浮动导航 */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 md:hidden">
         <div className="flex gap-2 p-2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-full shadow-lg border border-white/20 dark:border-white/5">
-          <a 
-            href="#intro" 
+          <a
+            href="#intro"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-all duration-200"
             aria-label={t("navigation.intro")}
           >
             <BookOpen className="h-5 w-5" />
           </a>
-          
-          <a 
-            href="#setup" 
+
+          <a
+            href="#setup"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100/50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-all duration-200"
             aria-label={t("navigation.setup")}
           >
             <Code className="h-5 w-5" />
           </a>
-          
-          <a 
-            href="#usage" 
+
+          <a
+            href="#usage"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100/50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-all duration-200"
             aria-label={t("navigation.usage")}
           >
             <Book className="h-5 w-5" />
           </a>
-          
-          <a 
-            href="#demo" 
+
+          <a
+            href="#demo"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100/50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40 transition-all duration-200"
             aria-label={t("navigation.demo")}
           >
@@ -233,9 +233,7 @@ export default function DocPage() {
                   </a>
                 </h2>
               </div>
-              <p>
-                {t("intro.description")}
-              </p>
+              <p>{t("intro.description")}</p>
               <div className="bg-white/50 dark:bg-slate-900/50 border border-blue-100 dark:border-blue-900/30 rounded-lg p-6 my-6">
                 <h3 className="text-lg font-medium mb-2 flex items-center text-blue-700 dark:text-blue-400">
                   <CheckCircle className="h-5 w-5 mr-2" />
@@ -375,7 +373,9 @@ export default function DocPage() {
 
                       <div className="hidden sm:flex items-center ml-2 text-sm text-muted-foreground">
                         <span className="animate-pulse">←</span>
-                        <span className="ml-2">{t("setup.bookmarklet.dragTip")}</span>
+                        <span className="ml-2">
+                          {t("setup.bookmarklet.dragTip")}
+                        </span>
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground mt-4">

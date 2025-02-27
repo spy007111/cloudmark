@@ -18,10 +18,18 @@
 }
 
 /* 动画延迟类 */
-.delay-1 { animation-delay: calc(var(--animation-delay-step) * 1); }
-.delay-2 { animation-delay: calc(var(--animation-delay-step) * 2); }
-.delay-3 { animation-delay: calc(var(--animation-delay-step) * 3); }
-.delay-4 { animation-delay: calc(var(--animation-delay-step) * 4); }
+.delay-1 {
+  animation-delay: calc(var(--animation-delay-step) * 1);
+}
+.delay-2 {
+  animation-delay: calc(var(--animation-delay-step) * 2);
+}
+.delay-3 {
+  animation-delay: calc(var(--animation-delay-step) * 3);
+}
+.delay-4 {
+  animation-delay: calc(var(--animation-delay-step) * 4);
+}
 
 /* 详情组件开关动画 */
 details[open] .summary svg {
@@ -39,16 +47,20 @@ details[open] .content {
 
 /* 动画关键帧定义 */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(20px);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }
@@ -63,4 +75,4 @@ details[open] .content {
     opacity: 1;
     transform: translateY(0);
   }
-} 
+}

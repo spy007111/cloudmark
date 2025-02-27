@@ -18,7 +18,7 @@ export default function BookmarksPage() {
   const tNotifications = useTranslations("Notifications");
 
   const [bookmarksData, setBookmarksData] = useState<BookmarksData | null>(
-    null
+    null,
   );
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,7 +41,7 @@ export default function BookmarksPage() {
         console.error("Failed to delete bookmark:", error);
       }
     },
-    [mark]
+    [mark],
   );
 
   // 正常模式更新书签 - 使用API请求
@@ -50,7 +50,7 @@ export default function BookmarksPage() {
       // 刷新书签数据
       await refreshBookmarks();
     },
-    []
+    [],
   );
 
   // 正常模式添加书签 - 使用API请求
@@ -59,7 +59,7 @@ export default function BookmarksPage() {
       // 刷新书签数据
       await refreshBookmarks();
     },
-    []
+    [],
   );
 
   // 刷新书签数据的通用函数

@@ -60,11 +60,12 @@ export function BookmarksUI({
   const { showToast } = useToast();
   const t = useTranslations("BookmarksPage");
   const tButtons = useTranslations("Components.BookmarkButtons");
-  
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedBookmark, setSelectedBookmark] = useState<BookmarkInstance | null>(null);
+  const [selectedBookmark, setSelectedBookmark] =
+    useState<BookmarkInstance | null>(null);
   const [bookmarkletCode, setBookmarkletCode] = useState("");
 
   // 用户界面偏好状态
@@ -301,9 +302,9 @@ export function BookmarksUI({
 
         {/* 布局切换按钮和排序下拉菜单 */}
         {bookmarksData && bookmarksData.bookmarks.length > 0 && (
-          <div className="controls-area flex justify-between items-center mb-4">
-            {/* 排序下拉菜单 */}
-            <div className="flex items-center gap-2">
+          <div className="controls-area flex justify-between items-center mb-8">
+            {/* 排序和分类筛选 */}
+            <div className="flex items-center gap-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className="gap-1">
@@ -329,6 +330,13 @@ export function BookmarksUI({
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+
+              {/* 分类筛选下拉菜单 */}
+              <CategoryFilter
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+              />
             </div>
 
             {/* 布局切换按钮 */}
@@ -354,19 +362,6 @@ export function BookmarksUI({
             </div>
           </div>
         )}
-
-        {/* 分类筛选 */}
-        {bookmarksData &&
-          bookmarksData.bookmarks.length > 0 &&
-          layoutMode === "grid" && (
-            <div className="filter-area mb-8">
-              <CategoryFilter
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onSelectCategory={setSelectedCategory}
-              />
-            </div>
-          )}
 
         {/* 书签列表 */}
         {bookmarksData && bookmarksData.bookmarks.length > 0 ? (
@@ -488,4 +483,4 @@ export function BookmarksUI({
       )}
     </div>
   );
-} 
+}

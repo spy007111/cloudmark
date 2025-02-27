@@ -31,14 +31,17 @@ interface BookmarkActionOptions {
   isDemo?: boolean;
 }
 
-export async function getBookmarkData(formData: FormData, options?: BookmarkActionOptions) {
+export async function getBookmarkData(
+  formData: FormData,
+  options?: BookmarkActionOptions,
+) {
   const mark = (formData.get("mark") || defaultMark) as string;
-  
+
   // 如果是demo模式，直接返回演示数据
   if (options?.isDemo) {
     return DEMO_BOOKMARKS_DATA;
   }
-  
+
   const KV = getCloudflareContext().env.cloudmark;
   let bookmarksdata = await KV.get<BookmarksData>(mark, "json");
   if (!bookmarksdata) {
@@ -48,7 +51,10 @@ export async function getBookmarkData(formData: FormData, options?: BookmarkActi
   return bookmarksdata;
 }
 
-export async function putBookmarkData(formData: FormData, options?: BookmarkActionOptions) {
+export async function putBookmarkData(
+  formData: FormData,
+  options?: BookmarkActionOptions,
+) {
   const mark = (formData.get("mark") || defaultMark) as string;
   const title = formData.get("title") as string;
   const url = formData.get("url") as string;
@@ -72,7 +78,7 @@ export async function putBookmarkData(formData: FormData, options?: BookmarkActi
     };
     return newBookmark;
   }
-  
+
   const KV = getCloudflareContext().env.cloudmark;
   let bookmarksdata = await KV.get<BookmarksData>(mark, "json");
   if (!bookmarksdata) {
@@ -116,7 +122,10 @@ export async function putBookmarkData(formData: FormData, options?: BookmarkActi
   return newBookmark;
 }
 
-export async function updateBookmarkData(formData: FormData, options?: BookmarkActionOptions) {
+export async function updateBookmarkData(
+  formData: FormData,
+  options?: BookmarkActionOptions,
+) {
   const uuid = formData.get("uuid") as string;
   const title = formData.get("title") as string;
   const url = formData.get("url") as string;
@@ -169,12 +178,15 @@ export async function updateBookmarkData(formData: FormData, options?: BookmarkA
   return updatedBookmark;
 }
 
-export async function deleteBookmarkData(formData: FormData, options?: BookmarkActionOptions) {
+export async function deleteBookmarkData(
+  formData: FormData,
+  options?: BookmarkActionOptions,
+) {
   // Demo模式下不执行实际操作,直接返回
   if (options?.isDemo) {
     return;
   }
-  
+
   const mark = (formData.get("mark") || defaultMark) as string;
   const uuid = formData.get("uuid") as string;
 

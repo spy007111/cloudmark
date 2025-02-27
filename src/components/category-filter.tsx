@@ -1,7 +1,12 @@
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Tag } from "lucide-react";
+import { Tag, Check, ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 interface CategoryFilterProps {
   categories: string[];
@@ -17,46 +22,35 @@ export function CategoryFilter({
   const t = useTranslations("BookmarksPage.categories");
 
   return (
-    <div className="mb-4">
-      <div className="flex items-center gap-2 mb-3">
-        <Tag className="h-4 w-4 text-blue-500" />
-        <h2 className="text-sm font-medium text-muted-foreground">
-          {t("filter")}
-        </h2>
-      </div>
-      <ScrollArea className="w-full whitespace-nowrap">
-        <div className="flex space-x-2 pb-1">
-          <div>
-            <Badge
-              variant={selectedCategory === null ? "default" : "outline"}
-              className={`cursor-pointer ${
-                selectedCategory === null
-                  ? "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
-                  : "hover:bg-blue-500/10"
-              }`}
-              onClick={() => onSelectCategory(null)}
-            >
-              {t("all")}
-            </Badge>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="gap-1">
+          <Tag className="h-4 w-4" />
+          {selectedCategory ? selectedCategory : t("all")}
+          <ChevronDown className="h-3 w-3 opacity-50" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        <DropdownMenuItem onClick={() => onSelectCategory(null)}>
+          <div className="flex items-center justify-between w-full">
+            <span>{t("all")}</span>
+            {selectedCategory === null && <Check className="h-4 w-4 ml-2" />}
           </div>
-          {categories.map((category) => (
-            <div key={category}>
-              <Badge
-                variant={selectedCategory === category ? "default" : "outline"}
-                className={`cursor-pointer ${
-                  selectedCategory === category
-                    ? "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
-                    : "hover:bg-blue-500/10"
-                }`}
-                onClick={() => onSelectCategory(category)}
-              >
-                {category}
-              </Badge>
+        </DropdownMenuItem>
+        {categories.map((category) => (
+          <DropdownMenuItem
+            key={category}
+            onClick={() => onSelectCategory(category)}
+          >
+            <div className="flex items-center justify-between w-full">
+              <span>{category}</span>
+              {selectedCategory === category && (
+                <Check className="h-4 w-4 ml-2" />
+              )}
             </div>
-          ))}
-        </div>
-        <ScrollBar orientation="horizontal" className="h-2" />
-      </ScrollArea>
-    </div>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

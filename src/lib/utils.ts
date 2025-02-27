@@ -33,13 +33,16 @@ export const generateRandomMark = () => {
     "bird",
   ];
   const randomNum = Math.floor(Math.random() * 10000);
-  return `${adjectives[Math.floor(Math.random() * adjectives.length)]
-    }-${nouns[Math.floor(Math.random() * nouns.length)]}-${randomNum}`;
+  return `${
+    adjectives[Math.floor(Math.random() * adjectives.length)]
+  }-${nouns[Math.floor(Math.random() * nouns.length)]}-${randomNum}`;
 };
 
 export const getBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_BASE_URL ||
+  return (
+    process.env.NEXT_PUBLIC_BASE_URL ||
     (typeof window !== "undefined"
       ? window.location.origin
-      : "http://localhost:3000");
+      : "http://localhost:3000")
+  );
 };

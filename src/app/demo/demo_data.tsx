@@ -105,4 +105,4 @@ export const DEMO_BOOKMARKS_DATA: BookmarksData = {
       description: "功能类优先的CSS框架",
     },
   ],
-}; 
+};
