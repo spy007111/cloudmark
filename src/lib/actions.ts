@@ -2,7 +2,7 @@
 
 import { BookmarkInstance, type BookmarksData, isDemoMark } from "@/lib/types";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { DEMO_BOOKMARKS_DATA } from "@/app/demo/demo_data";
+import { DEMO_BOOKMARKS_DATA } from "@/data/demo_data";
 import { createServerAction } from "zsa";
 import { deleteSchema, insertSchema, updateSchema } from "./schema";
 

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 
 export function DemoBanner({ mark }: { mark: string }) {
   const t = useTranslations("BookmarksPage");
-  if (isDemoMark(mark)) {
+  if (!isDemoMark(mark)) {
     return null;
   }
   return (

@@ -110,21 +110,11 @@
     "addFirstBookmark": "添加第一个书签",
     "loading": "正在加载书签...",
     "bookmarkletTip": "拖拽此按钮到书签栏，一键保存网页到此收藏",
+    "saveButton": "保存到 {mark}",
+    "dragTip": "拖拽到书签栏",
     "demoMode": "演示模式",
     "demoDescription": "这是一个演示集合，您可以自由添加、编辑和删除书签，所有操作仅在本地生效，不会保存到服务器。",
-    "createOwn": "创建自己的收藏",
-    "gridView": "网格视图",
-    "categoryView": "分类视图",
-    "sortBy": "排序方式",
-    "sortOptions": {
-      "time": "时间",
-      "title": "标题",
-      "category": "分类"
-    },
-    "categories": {
-      "all": "全部",
-      "filter": "筛选"
-    }
+    "createOwn": "创建自己的收藏"
   },
   "Components": {
     "MarkInput": {
@@ -132,15 +122,6 @@
       "placeholder": "输入自定义标记",
       "randomButton": "随机生成",
       "description": "标记将用于区分不同的书签收藏，建议使用有意义的词组。当前标记："
-    },
-    "BookmarkButtons": {
-      "saveButton": "保存到 {mark}",
-      "openButton": "打开 {mark}",
-      "dragTip": "拖拽到书签栏"
-    },
-    "BookmarkletInstaller": {
-      "bookmarkTools": "书签工具",
-      "viewCode": "查看代码"
     },
     "BookmarkCard": {
       "visit": "访问",
@@ -189,10 +170,10 @@
         "addFailed": "添加书签失败",
         "updateFailed": "更新书签失败",
         "deleteFailed": "删除书签失败"
-      }
-    },
-    "CategoryFilter": {
-      "title": "分类筛选"
+      },
+      "addBookmark": "添加书签",
+      "delete": "删除书签",
+      "edit": "编辑"
     }
   },
   "Notifications": {

@@ -26,6 +26,7 @@ export function BookmarkUI({
   baseUrl,
 }: BookmarkUIProps) {
   const t = useTranslations("BookmarksPage");
+  const nt = useTranslations("Notifications");
   const { showToast } = useToast();
   const [currentBookmarksData, setCurrentBookmarksData] =
     useState<BookmarksData | null>(bookmarksData);
@@ -41,12 +42,12 @@ export function BookmarkUI({
             : "info";
       
       showToast({
-        title: toast.status.charAt(0).toUpperCase() + toast.status.slice(1),
-        description: toast.message,
+        title: nt(toast.status),
+        description: nt(toast.message),
         variant,
       });
     }
-  }, [toast, showToast]);
+  }, [toast, showToast, nt]);
 
   const onBookmarkAdded = useCallback(
     (bookmark: BookmarkInstance) => {
@@ -191,7 +192,7 @@ export function BookmarkUI({
                 <p className="text-muted-foreground text-lg mb-6">
                   {t("noBookmarks")}
                 </p>
-                <div className="hover-scale">
+                <div className="hover-scale flex justify-center">
                   <DialogAdd
                     mark={mark}
                     categories={categories}
