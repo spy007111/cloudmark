@@ -52,8 +52,17 @@ export const getCategories = (bookmarksdata: BookmarksData | null) => {
   if (!bookmarksdata) {
     return [defaultCategory];
   }
+
+  const uniqueCategories = [
+    ...new Set(bookmarksdata.bookmarks.map((bookmark) => bookmark.category)),
+  ];
+
+  if (!uniqueCategories.includes(defaultCategory)) {
+    return [defaultCategory, ...uniqueCategories];
+  }
+
   return [
     defaultCategory,
-    ...new Set(bookmarksdata.bookmarks.map((bookmark) => bookmark.category)),
+    ...uniqueCategories.filter((category) => category !== defaultCategory),
   ];
 };

@@ -7,11 +7,13 @@ export const baseSchema = z.object({
   category: z.string().min(1),
 });
 
-export const insertSchema = baseSchema.extend({
+export const insertSchema = z.object({
+  ...baseSchema.shape,
   mark: z.string().min(1),
 });
 
-export const updateSchema = baseSchema.extend({
+export const updateSchema = z.object({
+  ...baseSchema.shape,
   mark: z.string().min(1),
   uuid: z.string().min(1),
 });
