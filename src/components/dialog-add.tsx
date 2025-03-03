@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import { useTranslations } from "next-intl";
-import { Loader2, Link, FileText, Tag, Plus } from "lucide-react";
+import { Loader2, Link, FileText, Tag, Plus, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,7 +42,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { createBookmarkAction } from "@/lib/actions";
 import { insertSchema, type InsertSchema } from "@/lib/schema";
 import type { BookmarkInstance } from "@/lib/types";
-import "./animations.css";
 
 interface DialogCreateProps {
   mark: string;
@@ -50,7 +49,7 @@ interface DialogCreateProps {
   onBookmarkAdded: (bookmark: BookmarkInstance) => void;
 }
 
-export function DialogCreate({
+export function DialogAdd({
   mark,
   categories,
   onBookmarkAdded,
@@ -103,7 +102,12 @@ export function DialogCreate({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
+        <div className="hover-scale">
+          <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-md">
+            <PlusCircle className="h-4 w-4" />
+            {t("addBookmark")}
+          </Button>
+        </div>
       </DialogTrigger>
       <DialogContent className="dialog-content sm:max-w-[425px] border border-blue-500/20 bg-card/95 backdrop-blur-sm">
         <DialogHeader>

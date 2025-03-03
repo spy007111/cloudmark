@@ -13,7 +13,6 @@ import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { DialogEdit } from "@/components/dialog-edit";
 import { DialogDelete } from "@/components/dialog-delete";
-import "./animations.css";
 
 interface BookmarkCardProps {
   bookmark: BookmarkInstance;

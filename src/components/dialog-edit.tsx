@@ -42,7 +42,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { updateBookmarkAction } from "@/lib/actions";
 import { updateSchema, type UpdateSchema } from "@/lib/schema";
 import type { BookmarkInstance } from "@/lib/types";
-import "./animations.css";
 
 interface DialogEditProps {
   mark: string;

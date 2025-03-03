@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { BookmarksUI } from "@/components/bookmarks-ui";
+import { BookmarkUI } from "@/components/bookmark-ui";
 import type { BookmarkInstance } from "@/lib/types";
 import { DEMO_BOOKMARKS_DATA } from "./demo_data";
 import "./page.css";
@@ -49,7 +49,7 @@ export default function DemoPage() {
   );
 
   return (
-    <BookmarksUI
+    <BookmarkUI
       mark="demo"
       bookmarksData={bookmarksData}
       isLoading={isLoading}
