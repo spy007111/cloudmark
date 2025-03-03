@@ -114,7 +114,11 @@
     "dragTip": "Drag to bookmarks bar",
     "demoMode": "Demo Mode",
     "demoDescription": "This is a demo collection. You can freely add, edit, and delete bookmarks. All changes will only affect your local view and won't be saved to the server.",
-    "createOwn": "Create Your Own"
+    "createOwn": "Create Your Own",
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information"
   },
   "Components": {
     "MarkInput": {

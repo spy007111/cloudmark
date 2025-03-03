@@ -9,6 +9,7 @@ import { DemoBanner } from "./demo-banner";
 import { DialogAdd } from "./dialog-add";
 import { BookmarkletButton } from "./bookmarklet-button";
 import { useToast } from "./toast-provider";
+import { useRouter } from "next/navigation";
 
 export interface BookmarkUIProps {
   mark: string;
@@ -26,28 +27,33 @@ export function BookmarkUI({
   baseUrl,
 }: BookmarkUIProps) {
   const t = useTranslations("BookmarksPage");
-  const nt = useTranslations("Notifications");
   const { showToast } = useToast();
+  const router = useRouter();
   const [currentBookmarksData, setCurrentBookmarksData] =
     useState<BookmarksData | null>(bookmarksData);
 
   useEffect(() => {
     if (toast) {
-      const variant = toast.status === "success" 
-        ? "success" 
-        : toast.status === "error" 
-          ? "error" 
-          : toast.status === "warning" 
-            ? "warning" 
-            : "info";
-      
+      const variant =
+        toast.status === "success"
+          ? "success"
+          : toast.status === "error"
+          ? "error"
+          : toast.status === "warning"
+          ? "warning"
+          : "info";
+      const message = decodeURIComponent(toast.message);
       showToast({
-        title: nt(toast.status),
-        description: nt(toast.message),
+        title: t(toast.status),
+        description: message,
         variant,
       });
     }
-  }, [toast, showToast, nt]);
+  }, [toast, showToast, t]);
+
+  const refreshBookmarks = () => {
+    router.push(`/${mark}`);
+  };
 
   const onBookmarkAdded = useCallback(
     (bookmark: BookmarkInstance) => {
@@ -56,6 +62,7 @@ export function BookmarkUI({
           ...currentBookmarksData,
           bookmarks: [...currentBookmarksData.bookmarks, bookmark],
         });
+        refreshBookmarks();
       }
     },
     [currentBookmarksData]
@@ -70,6 +77,7 @@ export function BookmarkUI({
             b.uuid === bookmark.uuid ? bookmark : b
           ),
         });
+        refreshBookmarks();
       }
     },
     [currentBookmarksData]
@@ -84,6 +92,7 @@ export function BookmarkUI({
             (b) => b.uuid !== uuid
           ),
         });
+        refreshBookmarks();
       }
     },
     [currentBookmarksData]

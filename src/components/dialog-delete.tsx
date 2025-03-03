@@ -47,6 +47,7 @@ export function DialogDelete({
 }: DialogDeleteProps) {
   const t = useTranslations("Components.BookmarkDialog");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const form = useForm<DeleteSchema>({
     // @ts-ignore
@@ -73,6 +74,7 @@ export function DialogDelete({
       toast.success(t("deleteSuccess"));
       onBookmarkDeleted();
       form.reset();
+      setOpen(false);
     },
   });
 
@@ -85,7 +87,7 @@ export function DialogDelete({
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"

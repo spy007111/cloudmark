@@ -11,16 +11,23 @@ export async function GET(request: NextRequest) {
     const url = searchParams.get("url");
     // 验证必要参数
     if (!mark) {
+      const status = "error";
+      const message = encodeURIComponent("markRequired");
       return NextResponse.redirect(
         new URL(
-          `/${defaultMark}?status=error&message=markRequired`,
+          `/${defaultMark}?status=${status}&message=${message}`,
           request.url
         )
       );
     }
     if (!url) {
+      const status = "error";
+      const message = encodeURIComponent("urlRequired");
       return NextResponse.redirect(
-        new URL(`/${mark}?status=error&message=urlRequired`, request.url)
+        new URL(
+          `/${defaultMark}?status=${status}&message=${message}`,
+          request.url
+        )
       );
     }
 
@@ -33,19 +40,24 @@ export async function GET(request: NextRequest) {
     const [data, err] = await createBookmarkAction(formData);
 
     if (!data) {
+      const status = "error";
+      const message = encodeURIComponent(err.message);
       return NextResponse.redirect(
-        new URL(`/${mark}?status=error&message=${err.message}`, request.url)
+        new URL(`/${mark}?status=${status}&message=${message}`, request.url)
       );
     }
-
+    const status = "success";
+    const message = encodeURIComponent("bookmarkAdded");
     return NextResponse.redirect(
-      new URL(`/${mark}?status=success&message=bookmarkAdded`, request.url)
+      new URL(`/${mark}?status=${status}&message=${message}`, request.url)
     );
   } catch (error) {
+    const status = "error";
+    const message = encodeURIComponent("processingError");
     console.error("Error processing bookmark:", error);
     return NextResponse.redirect(
       new URL(
-        `/${defaultMark}?status=error&message=processingError`,
+        `/${defaultMark}?status=${status}&message=${message}`,
         request.url
       )
     );

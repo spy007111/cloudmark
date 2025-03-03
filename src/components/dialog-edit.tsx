@@ -58,6 +58,7 @@ export function DialogEdit({
 }: DialogEditProps) {
   const t = useTranslations("Components.BookmarkDialog");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const form = useForm<UpdateSchema>({
     // @ts-ignore
@@ -88,6 +89,7 @@ export function DialogEdit({
       toast.success(t("updateSuccess"));
       onBookmarkUpdated(bookmark.data);
       form.reset();
+      setOpen(false);
     },
   });
 
@@ -104,7 +106,7 @@ export function DialogEdit({
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"

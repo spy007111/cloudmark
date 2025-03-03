@@ -56,6 +56,7 @@ export function DialogAdd({
 }: DialogCreateProps) {
   const t = useTranslations("Components.BookmarkDialog");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const form = useForm<InsertSchema>({
     // @ts-ignore
@@ -85,6 +86,7 @@ export function DialogAdd({
       toast.success(t("addSuccess"));
       onBookmarkAdded(bookmark.data);
       form.reset();
+      setOpen(false);
     },
   });
 
@@ -100,7 +102,7 @@ export function DialogAdd({
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div className="hover-scale">
           <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-md">
@@ -228,7 +230,7 @@ export function DialogAdd({
             <DialogFooter className="gap-2 sm:gap-0">
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
-                  Close
+                  {t("cancel")}
                 </Button>
               </DialogClose>
               <div className="hover-scale-sm">

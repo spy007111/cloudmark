@@ -114,7 +114,11 @@
     "dragTip": "拖拽到书签栏",
     "demoMode": "演示模式",
     "demoDescription": "这是一个演示集合，您可以自由添加、编辑和删除书签，所有操作仅在本地生效，不会保存到服务器。",
-    "createOwn": "创建自己的收藏"
+    "createOwn": "创建自己的收藏",
+    "success": "成功",
+    "error": "错误",
+    "warning": "警告",
+    "info": "信息"
   },
   "Components": {
     "MarkInput": {
