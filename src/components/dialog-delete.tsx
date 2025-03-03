@@ -87,8 +87,13 @@ export function DialogDelete({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Trash2 className="h-4 w-4 text-red-500" />
+        <Button
+          variant="outline"
+          size="sm"
+          className="border-red-500/20 hover:border-red-500/40 bg-red-500/5 hover:bg-red-500/10 text-red-500/80 hover:text-red-500"
+        >
+          <Trash2 className="h-3 w-3" />
+          <span className="sr-only">{t("delete")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="dialog-content sm:max-w-[425px] border border-red-500/20 bg-card/95 backdrop-blur-sm">
@@ -105,7 +110,10 @@ export function DialogDelete({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 pt-4"
+          >
             <FormDescription className="text-center text-muted-foreground">
               {t("deleteConfirmation", { title: bookmark.title })}
             </FormDescription>
@@ -134,4 +142,4 @@ export function DialogDelete({
       </DialogContent>
     </Dialog>
   );
-} 
+}

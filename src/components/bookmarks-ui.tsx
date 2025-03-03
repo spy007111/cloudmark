@@ -5,7 +5,6 @@ import type { BookmarkInstance, BookmarksData } from "@/lib/types";
 import { BookmarkCard } from "@/components/bookmark-card";
 import { CategoryFilter } from "@/components/category-filter";
 import { AddBookmarkDialog } from "@/components/add-bookmark-dialog";
-import { EditBookmarkDialog } from "@/components/edit-bookmark-dialog";
 import { Button } from "@/components/ui/button";
 import {
   PlusCircle,
@@ -63,9 +62,6 @@ export function BookmarksUI({
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedBookmark, setSelectedBookmark] =
-    useState<BookmarkInstance | null>(null);
   const [bookmarkletCode, setBookmarkletCode] = useState("");
 
   // 用户界面偏好状态
@@ -174,11 +170,6 @@ export function BookmarksUI({
     loadPreferences();
     generateBookmarkletCode();
   }, [loadPreferences, generateBookmarkletCode]);
-
-  const handleEditBookmark = useCallback((bookmark: BookmarkInstance) => {
-    setSelectedBookmark(bookmark);
-    setIsEditDialogOpen(true);
-  }, []);
 
   if (isLoading) {
     return (
@@ -376,8 +367,10 @@ export function BookmarksUI({
                   >
                     <BookmarkCard
                       bookmark={bookmark}
-                      onDelete={() => onDeleteBookmark(bookmark.uuid)}
-                      onEdit={() => handleEditBookmark(bookmark)}
+                      mark={mark}
+                      categories={categories}
+                      onBookmarkUpdated={onUpdateBookmark}
+                      onBookmarkDeleted={() => onDeleteBookmark(bookmark.uuid)}
                     />
                   </div>
                 ),
@@ -413,16 +406,18 @@ export function BookmarksUI({
                         ({categoryBookmarks.length})
                       </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                      {categoryBookmarks.map((bookmark, bookmarkIndex) => (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {categoryBookmarks.map((bookmark, index) => (
                         <div
                           key={bookmark.uuid}
-                          className={`stagger-item delay-${(bookmarkIndex % 5) * 100 + 100}`}
+                          className={`h-full w-full delay-${(index % 9) * 100}`}
                         >
                           <BookmarkCard
                             bookmark={bookmark}
-                            onDelete={() => onDeleteBookmark(bookmark.uuid)}
-                            onEdit={() => handleEditBookmark(bookmark)}
+                            mark={mark}
+                            categories={categories}
+                            onBookmarkUpdated={onUpdateBookmark}
+                            onBookmarkDeleted={() => onDeleteBookmark(bookmark.uuid)}
                           />
                         </div>
                       ))}
@@ -470,18 +465,6 @@ export function BookmarksUI({
         onBookmarkAdded={onAddBookmark}
         isDemo={isDemo}
       />
-
-      {selectedBookmark && (
-        <EditBookmarkDialog
-          open={isEditDialogOpen}
-          onOpenChange={setIsEditDialogOpen}
-          mark={mark}
-          bookmark={selectedBookmark}
-          categories={categories}
-          onBookmarkUpdated={onUpdateBookmark}
-          isDemo={isDemo}
-        />
-      )}
     </div>
   );
 }

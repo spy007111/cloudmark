@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import { useTranslations } from "next-intl";
-import { Loader2, Link, FileText, Tag, Pencil } from "lucide-react";
+import { Loader2, Link, FileText, Tag, Pencil, Edit2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -107,8 +107,13 @@ export function DialogEdit({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Pencil className="h-4 w-4" />
+        <Button
+          variant="outline"
+          size="sm"
+          className="border-indigo-500/20 hover:border-indigo-500/40 bg-indigo-500/5 hover:bg-indigo-500/10"
+        >
+          <Edit2 className="h-3 w-3" />
+          <span className="sr-only">{t("edit")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="dialog-content sm:max-w-[425px] border border-blue-500/20 bg-card/95 backdrop-blur-sm">
@@ -251,4 +256,4 @@ export function DialogEdit({
       </DialogContent>
     </Dialog>
   );
-} 
+}
