@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { DemoBanner } from "./demo-banner";
 import { DialogAdd } from "./dialog-add";
 import { BookmarkletButton } from "./bookmarklet-button";
+import { useToast } from "./toast-provider";
 
 export interface BookmarkUIProps {
   mark: string;
@@ -25,8 +26,27 @@ export function BookmarkUI({
   baseUrl,
 }: BookmarkUIProps) {
   const t = useTranslations("BookmarksPage");
+  const { showToast } = useToast();
   const [currentBookmarksData, setCurrentBookmarksData] =
     useState<BookmarksData | null>(bookmarksData);
+
+  useEffect(() => {
+    if (toast) {
+      const variant = toast.status === "success" 
+        ? "success" 
+        : toast.status === "error" 
+          ? "error" 
+          : toast.status === "warning" 
+            ? "warning" 
+            : "info";
+      
+      showToast({
+        title: toast.status.charAt(0).toUpperCase() + toast.status.slice(1),
+        description: toast.message,
+        variant,
+      });
+    }
+  }, [toast, showToast]);
 
   const onBookmarkAdded = useCallback(
     (bookmark: BookmarkInstance) => {
