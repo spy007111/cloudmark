@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { BookmarksData } from "./types";
+import { BookmarksData, defaultCategory } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -48,8 +48,12 @@ export const getBaseUrl = () => {
   );
 };
 
-export const getCategories = (bookmarksdata: BookmarksData) => {
+export const getCategories = (bookmarksdata: BookmarksData | null) => {
+  if (!bookmarksdata) {
+    return [defaultCategory];
+  }
   return [
+    defaultCategory,
     ...new Set(bookmarksdata.bookmarks.map((bookmark) => bookmark.category)),
   ];
 };
