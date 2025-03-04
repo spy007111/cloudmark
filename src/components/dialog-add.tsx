@@ -57,6 +57,8 @@ export function DialogAdd({
   const t = useTranslations("Components.BookmarkDialog");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isCreatingNewCategory, setIsCreatingNewCategory] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
 
   const form = useForm<InsertSchema>({
     // @ts-ignore
@@ -90,13 +92,32 @@ export function DialogAdd({
     },
   });
 
+  const handleCategoryChange = (value: string) => {
+    if (value === "new_category") {
+      setIsCreatingNewCategory(true);
+      form.setValue("category", "");
+    } else {
+      setIsCreatingNewCategory(false);
+      form.setValue("category", value);
+    }
+  };
+
+  const handleNewCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setNewCategory(value);
+    form.setValue("category", value);
+  };
+
   const onSubmit = async (data: InsertSchema) => {
     const formData = new FormData();
     formData.append("mark", data.mark);
     formData.append("url", data.url);
     formData.append("title", data.title);
     formData.append("description", data.description || "");
-    formData.append("category", data.category);
+
+    // 使用新分类或选择的分类
+    const categoryValue = isCreatingNewCategory ? newCategory : data.category;
+    formData.append("category", categoryValue);
 
     create(formData);
   };
@@ -204,23 +225,63 @@ export function DialogAdd({
                     <Tag className="h-3.5 w-3.5 text-green-500" />
                     {t("category")}
                   </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="border-green-500/20 focus:border-green-500/40 bg-green-500/5 focus:ring-green-500/10">
-                        <SelectValue placeholder={t("categoryPlaceholder")} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  {!isCreatingNewCategory ? (
+                    <div className="space-y-2">
+                      <div className="flex gap-2">
+                        <Select
+                          onValueChange={handleCategoryChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="border-green-500/20 focus:border-green-500/40 bg-green-500/5 focus:ring-green-500/10">
+                              <SelectValue
+                                placeholder={t("categoryPlaceholder")}
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {categories.map((category) => (
+                              <SelectItem key={category} value={category}>
+                                {category}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => setIsCreatingNewCategory(true)}
+                          className="h-9 w-9 border-green-500/20 hover:bg-green-500/10"
+                          title={t("newCategory")}
+                        >
+                          <Plus className="h-4 w-4 text-green-500" />
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input
+                          value={newCategory}
+                          onChange={handleNewCategoryChange}
+                          placeholder={t("newCategoryPlaceholder")}
+                          className="border-green-500/20 focus:border-green-500/40 bg-green-500/5 focus:ring-green-500/10"
+                          autoFocus
+                        />
+                      </FormControl>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setIsCreatingNewCategory(false)}
+                        className="h-9 w-9 border-green-500/20 hover:bg-green-500/10"
+                        title={t("backToCategories")}
+                      >
+                        <Tag className="h-4 w-4 text-green-500" />
+                      </Button>
+                    </div>
+                  )}
                   <FormDescription>{t("categoryDescription")}</FormDescription>
                   <FormMessage />
                 </FormItem>
