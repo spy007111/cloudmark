@@ -13,6 +13,7 @@ import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { DialogEdit } from "@/components/dialog-edit";
 import { DialogDelete } from "@/components/dialog-delete";
+import { getDomain } from "@/lib/utils";
 
 interface BookmarkCardProps {
   bookmark: BookmarkInstance;
@@ -36,7 +37,7 @@ export const BookmarkCard = memo(function BookmarkCard({
     addSuffix: true,
   });
 
-  const domain = new URL(url).hostname.replace("www.", "");
+  const domain = getDomain(url);
 
   return (
     <>

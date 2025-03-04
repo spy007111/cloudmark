@@ -66,3 +66,7 @@ export const getCategories = (bookmarksdata: BookmarksData | null) => {
     ...uniqueCategories.filter((category) => category !== defaultCategory),
   ];
 };
+
+export const getDomain = (url: string) => {
+  return new URL(url).hostname.replace("www.", "");
+};

@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import { useTranslations } from "next-intl";
 import { Loader2, Trash2 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,16 +19,8 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-
+import { Form, FormDescription } from "@/components/ui/form";
+import { getDomain } from "@/lib/utils";
 import { deleteBookmarkAction } from "@/lib/actions";
 import { deleteSchema, type DeleteSchema } from "@/lib/schema";
 import type { BookmarkInstance } from "@/lib/types";
@@ -107,7 +98,7 @@ export function DialogDelete({
             {t("deleteTitle")}
           </DialogTitle>
           <DialogDescription>
-            {t("deleteDescription", { title: bookmark.title })}
+            {t("deleteDescription", { title: getDomain(bookmark.url) })}
           </DialogDescription>
         </DialogHeader>
 
@@ -117,12 +108,12 @@ export function DialogDelete({
             className="space-y-4 pt-4"
           >
             <FormDescription className="text-center text-muted-foreground">
-              {t("deleteConfirmation", { title: bookmark.title })}
+              {t("deleteConfirmation")}
             </FormDescription>
 
             <DialogFooter className="gap-2 sm:gap-0">
               <DialogClose asChild>
-                <Button type="button" variant="secondary">
+                <Button type="button" variant="outline">
                   {t("cancel")}
                 </Button>
               </DialogClose>
