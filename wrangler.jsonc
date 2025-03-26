@@ -27,12 +27,12 @@
    * databases, object storage, AI inference, real-time communication and more.
    * https://developers.cloudflare.com/workers/runtime-apis/bindings/
    */
-  "kv_namespaces": [
-    {
-      "binding": "cloudmark",
-      "id": "38a8d89cb0a44b0cb66f798009f16a93",
-    },
-  ],
+ "kv_namespaces": [
+   {
+     "binding": "cloudmark",
+     "id": "aff941a1eb70467498c8ac92cb84bcf6"
+   }
+]
   "routes": [
     {
       "pattern": "cloudmark.site",
